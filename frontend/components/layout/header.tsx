@@ -27,7 +27,7 @@ export function Header({ className, fixed, children, ...props }: HeaderProps) {
   return (
     <header
       className={cn(
-        "z-50 h-16",
+        "z-50 h-16 border-b",
         fixed && "header-fixed peer/header sticky top-0 w-[inherit]",
         offset > 10 && fixed ? "shadow" : "shadow-none",
         className
@@ -44,6 +44,7 @@ export function Header({ className, fixed, children, ...props }: HeaderProps) {
       >
         <SidebarTrigger variant="outline" className="max-md:scale-125" />
         <Separator orientation="vertical" className="h-6" />
+
         {children}
       </div>
     </header>

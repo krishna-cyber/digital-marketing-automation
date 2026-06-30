@@ -7,6 +7,7 @@ import { ProfileDropdown } from "../profile-dropdown"
 import { SidebarInset, SidebarProvider } from "../ui/sidebar"
 import { AppSidebar } from "./app-sidebar"
 import { Header } from "./header"
+import { NotificationCenter } from "./notification-center"
 import { SkipToMain } from "./skip-to-main"
 import { TopNav } from "./top-nav"
 
@@ -41,6 +42,7 @@ const AppLayout = ({ children }: AuthenticatedLayoutProps) => {
             {/* <Search /> */}
             {/* <ThemeSwitch /> */}
             {/* <ConfigDrawer /> */}
+            <NotificationCenter />
             <ProfileDropdown />
           </Header>
           {children}
