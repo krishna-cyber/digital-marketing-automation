@@ -16,3 +16,12 @@ export type Notification = {
   createdAt: string
   actions?: NotificationAction[]
 }
+
+export interface CalendarEvent {
+  id: string
+  title: string
+  start: Date
+  end: Date
+  backgroundColor?: string
+  description: string
+}
