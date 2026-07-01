@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { JSX } from "react/jsx-runtime"
 
 type SidebarNavProps = React.HTMLAttributes<HTMLElement> & {
@@ -23,12 +23,13 @@ type SidebarNavProps = React.HTMLAttributes<HTMLElement> & {
 
 export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
   const pathname = usePathname()
+  const router = useRouter()
   return (
     <>
       <div className="p-1 md:hidden">
-        <Select>
+        <Select value={pathname} onValueChange={(value) => router.push(value)}>
           <SelectTrigger className="h-12 sm:w-48">
-            <SelectValue placeholder="Theme" />
+            <SelectValue placeholder="Settings" />
           </SelectTrigger>
           <SelectContent>
             {items.map((item) => (
