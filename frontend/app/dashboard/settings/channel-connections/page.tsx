@@ -1,6 +1,11 @@
 "use client"
 import { Main } from "@/components/layout/main"
 import { Button } from "@/components/ui/button"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -10,10 +15,11 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Separator } from "@/components/ui/separator"
+import { OctagonX } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
-type AppType = "all" | "connected" | "notConnected"
 
+type AppType = "all" | "connected" | "notConnected"
 const channels = [
   {
     name: "LinkedIn",
@@ -107,6 +113,20 @@ export default function Page() {
           </div>
         </div>
         <Separator className="shadow-sm" />
+        {/* Information regarding channel configuration */}
+        <Collapsible className="mt-3 w-full rounded-lg border-2 border-amber-300 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/40">
+          <CollapsibleTrigger className="flex w-full items-center gap-3 p-4">
+            <OctagonX className="h-5 w-5 text-amber-700 dark:text-amber-300" />
+            <span className="font-medium text-amber-900 dark:text-amber-100">
+              Channel connections are not configurable.
+            </span>
+          </CollapsibleTrigger>
+          <CollapsibleContent className="border-t-2 border-amber-300 px-4 py-3 text-sm text-amber-800 dark:border-amber-800 dark:text-amber-200">
+            Please contact the administrator to configure the channels. The
+            administrator can set up the necessary credentials and permissions
+            for each channel, ensuring a smooth integration process.
+          </CollapsibleContent>
+        </Collapsible>
 
         {/* Channels list */}
         <ul className="faded-bottom no-scrollbar grid gap-4 overflow-auto pt-4 pb-16 md:grid-cols-2 lg:grid-cols-3">
