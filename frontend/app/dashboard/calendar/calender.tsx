@@ -149,7 +149,6 @@ const Calendar = () => {
 }
 
 function renderEventContent(eventInfo: EventDisplayInfo) {
-  console.log("eventInfo", eventInfo)
   return (
     <>
       <b>{eventInfo.timeText}</b>

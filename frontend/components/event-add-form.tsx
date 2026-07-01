@@ -8,9 +8,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
@@ -23,7 +21,6 @@ import { Input } from "@/components/ui/input"
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { enUS } from "date-fns/locale"
-import { PlusIcon } from "lucide-react"
 import React, { useEffect } from "react"
 import { HexColorPicker } from "react-colorful"
 import { useForm } from "react-hook-form"
