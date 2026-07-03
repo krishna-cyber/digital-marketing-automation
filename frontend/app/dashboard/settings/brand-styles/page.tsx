@@ -1,4 +1,5 @@
 import { Main } from "@/components/layout/main"
+import BrandForm from "./brand-form"
 export default function page() {
   console.log("Brand Styles page loaded")
   return (
@@ -13,11 +14,10 @@ export default function page() {
               Customize your brand styles to match your company&apos;s identity.
             </p>
           </span>
-
-          {/* <div className="flex items-center space-x-2">
-            <Button variant={"ghost"}>Mark all as read</Button>
-          </div> */}
         </div>
+        <section className={"py-4"}>
+          <BrandForm />
+        </section>
       </Main>
     </>
   )
