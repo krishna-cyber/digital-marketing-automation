@@ -1,8 +1,5 @@
-import { Header } from "@/components/layout/header"
 import { Main } from "@/components/layout/main"
-import { TopNav } from "@/components/layout/top-nav"
-import { ProfileDropdown } from "@/components/profile-dropdown"
-import { Button } from "@/components/ui/button"
+import ScheduledToday from "@/components/scheduled-today"
 import {
   Card,
   CardContent,
@@ -85,18 +82,27 @@ const page = () => {
           </Card>
         </div>
         <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-7">
-          <Card className="col-span-1 lg:col-span-4">
+          {/* Weekly calendar view */}
+          <Card className="col-span-1 lg:col-span-3">
             <CardHeader>
-              <CardTitle>Overview</CardTitle>
+              <CardTitle>Weekly Schedule</CardTitle>
+              <CardDescription>
+                A quick overview of your scheduled posts for the week.
+              </CardDescription>
             </CardHeader>
             <CardContent className="ps-2">{/* <Overview /> */}</CardContent>
           </Card>
-          <Card className="col-span-1 lg:col-span-3">
+          {/* Scheduled today card */}
+          <Card className="col-span-1 lg:col-span-4">
             <CardHeader>
-              <CardTitle>Recent Sales</CardTitle>
-              <CardDescription>You made 265 sales this month.</CardDescription>
+              <CardTitle>Scheduled Today</CardTitle>
+              <CardDescription>
+                5 posts are scheduled for today.
+              </CardDescription>
             </CardHeader>
-            <CardContent>{/* <RecentSales /> */}</CardContent>
+            <CardContent>
+              <ScheduledToday />
+            </CardContent>
           </Card>
         </div>
       </Main>
