@@ -7,9 +7,10 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { authClient } from "@/lib/auth-client"
+import { CreditCard, LogOut, Plus, Settings, User } from "lucide-react"
 import Link from "next/link"
 
 export function ProfileDropdown() {
@@ -39,30 +40,29 @@ export function ProfileDropdown() {
           <DropdownMenuGroup>
             <DropdownMenuItem asChild>
               <Link href="/settings">
-                Profile
-                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                <User /> Profile
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href="/settings">
-                Billing
-                <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                <CreditCard /> Billing
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/settings">
-                Settings
-                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+              <Link href="/dashboard/settings/branding">
+                <Settings /> Settings
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>New Team</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Plus /> New Team
+            </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">
-            Sign out
-            <DropdownMenuShortcut className="text-current">
-              ⇧⌘Q
-            </DropdownMenuShortcut>
+          <DropdownMenuItem
+            variant="destructive"
+            onClick={async () => await authClient.signOut()}
+          >
+            <LogOut /> Sign out
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

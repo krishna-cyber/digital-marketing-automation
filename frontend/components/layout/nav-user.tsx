@@ -15,6 +15,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { authClient } from "@/lib/auth-client"
 // import useDialogState from "@/hooks/use-dialog-state"
 import {
   BadgeCheck,
@@ -108,7 +109,7 @@ export function NavUser({ user }: NavUserProps) {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 variant="destructive"
-                // onClick={() => setOpen(true)}
+                onClick={async () => await authClient.signOut()}
               >
                 <LogOut />
                 Sign out
