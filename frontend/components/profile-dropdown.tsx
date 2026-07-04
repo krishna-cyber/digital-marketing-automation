@@ -14,8 +14,6 @@ import { CreditCard, LogOut, Plus, Settings, User } from "lucide-react"
 import Link from "next/link"
 
 export function ProfileDropdown() {
-  // const [open, setOpen] = useState(false)
-
   return (
     <>
       <DropdownMenu modal={false}>
@@ -66,7 +64,6 @@ export function ProfileDropdown() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
       {/* <SignOutDialog open={!!open} onOpenChange={setOpen} /> */}
     </>
   )
