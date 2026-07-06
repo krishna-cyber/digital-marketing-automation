@@ -5,10 +5,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { cn } from "@/lib/utils"
-import { Menu, X } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-import { Button } from "../ui/button"
 
 export function AppTitle() {
   const { setOpenMobile, state, isMobile } = useSidebar()
@@ -42,11 +40,6 @@ export function AppTitle() {
                 )}
                 priority
               />
-              {!isCollapsed && (
-                <span className="truncate font-bold">
-                  PalmMind Technologies
-                </span>
-              )}
             </Link>
           </div>
         </SidebarMenuButton>

@@ -14,14 +14,10 @@ import {
   Rss,
   Settings,
   Sparkles,
+  User,
 } from "lucide-react"
 
 export const sidebarData = {
-  user: {
-    name: "satnaing",
-    email: "satnaingdev@gmail.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navGroups: [
     {
       title: "General",
@@ -81,6 +77,11 @@ export const sidebarData = {
           title: "Settings",
           icon: Settings,
           items: [
+            {
+              title: "Account",
+              url: "/dashboard/settings/account",
+              icon: User,
+            },
             {
               title: "Notifications",
               url: "/dashboard/settings/notifications",

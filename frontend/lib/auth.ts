@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth"
 import { prismaAdapter } from "better-auth/adapters/prisma"
 import { nextCookies } from "better-auth/next-js"
+import { twoFactor } from "better-auth/plugins/two-factor"
 import prisma from "./prisma"
 
 export const auth = betterAuth({
@@ -11,7 +12,7 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: false,
   },
-  plugins: [nextCookies()],
+  plugins: [twoFactor(), nextCookies()],
   session: {
     cookieCache: {
       enabled: true,

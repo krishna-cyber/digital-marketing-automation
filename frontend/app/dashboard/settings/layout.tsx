@@ -6,11 +6,17 @@ import {
   ClipboardClock,
   Palette,
   Rss,
+  User,
 } from "lucide-react"
 import React from "react"
 import { SidebarNav } from "./sidebar-nav"
 
 const sidebarNavItems = [
+  {
+    title: "Account",
+    href: "/dashboard/settings/account",
+    icon: <User size={18} />,
+  },
   {
     title: "Notifications",
     href: "/dashboard/settings/notifications",
