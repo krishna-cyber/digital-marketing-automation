@@ -80,7 +80,6 @@ export function NotificationCenter() {
         </div>
         <Separator />
 
-        <Separator />
         <ScrollArea className="h-[400px]">
           {mockNotifications.length === 0 ? (
             <EmptyNotifications />

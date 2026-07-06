@@ -7,12 +7,15 @@ import {
 } from "@/components/ui/sidebar"
 import { useLayout } from "@/context/layout-provider"
 // import { AppTitle } from './app-title'
+import { Session } from "@/lib/auth"
 import { AppTitle } from "./app-title"
 import { sidebarData } from "./data/sidebar-data"
 import { NavGroup } from "./nav-group"
 import { NavUser } from "./nav-user"
 
-export function AppSidebar() {
+export function AppSidebar({
+  user,
+}: Readonly<{ user: Session["user"] | undefined }>) {
   const { collapsible, variant } = useLayout()
   return (
     <Sidebar collapsible={collapsible} variant={variant}>
@@ -29,7 +32,7 @@ export function AppSidebar() {
         ))}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={sidebarData.user} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
