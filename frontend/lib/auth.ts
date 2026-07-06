@@ -5,6 +5,7 @@ import { twoFactor } from "better-auth/plugins/two-factor"
 import prisma from "./prisma"
 
 export const auth = betterAuth({
+  appName: "Digital Marketing Automation",
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
@@ -12,7 +13,12 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: false,
   },
-  plugins: [twoFactor(), nextCookies()],
+  plugins: [
+    twoFactor({
+      skipVerificationOnEnable: true,
+    }),
+    nextCookies(),
+  ],
   session: {
     cookieCache: {
       enabled: true,
