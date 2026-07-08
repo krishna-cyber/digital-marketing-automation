@@ -1,10 +1,4 @@
-import {
-  Calendar,
-  ExternalLink,
-  Heart,
-  MessageCircle,
-  Share2,
-} from "lucide-react"
+import { Calendar, ExternalLink } from "lucide-react"
 import React from "react"
 import { Card, CardContent } from "./card"
 
@@ -27,6 +21,7 @@ const highlightedPost = {
   content:
     "I'm thrilled to announce that my open-source project ReactiveDash has reached 1,000 stars on GitHub! 🎉 \n\nThank you to all contributors and users who've helped make this dashboard library even better. \n\nCheck it out if you're building React dashboards: github.com/alexmdev/reactive-dash",
   date: "June 15, 2023",
+  hashtags: ["#React", "#Dashboard", "#OpenSource"],
   image:
     "https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=1170&auto=format&fit=crop",
   metrics: {
@@ -218,6 +213,15 @@ const LinkedInPostCard = () => {
         <div className="p-4 sm:p-6">
           <p className="text-base whitespace-pre-line">
             {highlightedPost.content}
+            <br />
+            {highlightedPost.hashtags?.map((hashtag) => (
+              <span
+                key={hashtag}
+                className="mr-2 inline-block cursor-pointer bg-blue-100 text-blue-800 dark:bg-blue-800 dark:text-blue-200"
+              >
+                {hashtag}
+              </span>
+            ))}
           </p>
 
           {/* Image if available */}
@@ -241,11 +245,9 @@ const LinkedInPostCard = () => {
 
           {/* Metrics */}
           <div className="mt-6 flex items-center justify-between gap-6 border-t pt-4">
-            <div className="flex items-center gap-6">
-              {" "}
+            <div className="flex items-center gap-2 sm:gap-6">
               <div className="flex items-center gap-1.5">
                 <ThumbsUpFlippedIcon className={`h-5 w-5 text-blue-600`} />
-
                 <span className="text-sm font-medium">
                   {highlightedPost.metrics.likes}
                 </span>
@@ -258,7 +260,6 @@ const LinkedInPostCard = () => {
               </div>
               <div className="flex items-center gap-1.5">
                 <RepostIcon className="h-5 w-5" />
-
                 <span className="text-sm font-medium">
                   {highlightedPost.metrics.shares}
                 </span>
@@ -267,8 +268,7 @@ const LinkedInPostCard = () => {
                 <SendIcon className="h-5 w-5" />
               </div>
             </div>
-
-            <div className="flex -space-x-2">
+            <div className="flex -space-x-1.5">
               {linkedinReactions.map((avatar, index) => (
                 <Tooltip key={index}>
                   <TooltipTrigger>

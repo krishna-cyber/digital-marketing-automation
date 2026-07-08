@@ -6,6 +6,7 @@ import prisma from "./prisma"
 
 export const auth = betterAuth({
   appName: "Digital Marketing Automation",
+  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
@@ -14,15 +15,21 @@ export const auth = betterAuth({
     autoSignIn: false,
   },
   plugins: [
-    twoFactor({
-      skipVerificationOnEnable: true,
-    }),
+    // twoFactor({
+    //   skipVerificationOnEnable: true,
+    // }),
     nextCookies(),
   ],
   session: {
     cookieCache: {
       enabled: true,
     },
+  },
+  advanced: {
+    disableOriginCheck: true,
+  },
+  logger: {
+    level: "debug",
   },
   experimental: { joins: true },
 })

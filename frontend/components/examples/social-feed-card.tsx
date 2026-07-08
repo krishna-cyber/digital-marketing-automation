@@ -41,22 +41,22 @@ const highlightedPost = {
 
 const linkedinReactions = [
   {
-    src: "/linkedin-reactions/clap.png",
+    src: "/linkedin/clap.png",
     fallback: "",
     name: "Clap",
   },
   {
-    src: "/linkedin-reactions/thumbsup.png",
+    src: "/linkedin/thumbsup.png",
     fallback: "ML",
     name: "thumbs-up",
   },
   {
-    src: "/linkedin-reactions/support.png",
+    src: "/linkedin/support.png",
     fallback: "ER",
     name: "heart",
   },
   {
-    src: "/linkedin-reactions/funny.png",
+    src: "/linkedin/funny.png",
     fallback: "JW",
     name: "funny",
   },
