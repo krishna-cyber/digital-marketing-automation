@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog"
 import { Spinner } from "@/components/ui/spinner"
 import { cn, isImage } from "@/lib/utils"
+import { useFileUploadContext } from "@/store/file-upload-context"
 import {
   CircleAlertIcon,
   ImageIcon,
@@ -42,13 +43,14 @@ export function ImageUploadAndPreview({
   multiple = true,
   className,
   onFilesChange,
-}: GalleryUploadProps) {
+}: Readonly<GalleryUploadProps>) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [loadingImages, setLoadingImages] = useState<Record<string, boolean>>(
     {}
   )
   const [isPreviewLoading, setIsPreviewLoading] = useState(false)
 
+  const { uploadFiles, handleFilesChange } = useFileUploadContext()
   // Create default images using FileMetadata type
   const defaultImages: FileMetadata[] = [
     {
@@ -91,8 +93,8 @@ export function ImageUploadAndPreview({
     maxSize,
     accept,
     multiple,
-    initialFiles: defaultImages,
-    onFilesChange,
+    initialFiles: [],
+    onFilesChange: handleFilesChange, // Use the context's handleFilesChange function
   })
 
   return (

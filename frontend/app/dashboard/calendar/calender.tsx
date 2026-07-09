@@ -15,6 +15,7 @@ import { ExtendedEventInput, INITIAL_EVENTS } from "./data"
 
 //Css of calender
 import { EventAddForm, EventAddFormValues } from "@/components/event-add-form"
+import { api } from "@/lib/api"
 import "@fullcalendar/react/skeleton.css"
 import "@fullcalendar/react/themes/classic/palette.css"
 import "@fullcalendar/react/themes/classic/theme.css"
@@ -50,16 +51,8 @@ const Calendar = () => {
   const { data, isLoading } = useQuery({
     queryKey: ["calendar-events"],
     queryFn: async () => {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/calendar/`,
-        {
-          method: "GET",
-        }
-      )
-      if (!response.ok) {
-        throw new Error(`Undici Fetch Error: ${response.statusText}`)
-      }
-      return response.json() as Promise<ExtendedEventInput[]>
+      const response = await api.get("/api/v1/calendar")
+      return response.data as ExtendedEventInput[]
     },
   })
 

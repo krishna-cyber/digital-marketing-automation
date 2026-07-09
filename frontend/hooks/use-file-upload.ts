@@ -83,6 +83,8 @@ export const useFileUpload = (
     errors: [],
   })
 
+  console.log("useFileUpload state:", state.files) // Debugging log
+
   const inputRef = useRef<HTMLInputElement>(null)
 
   const validateFile = useCallback(
