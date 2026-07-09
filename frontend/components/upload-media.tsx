@@ -21,7 +21,7 @@ import {
 import { useMutation } from "@tanstack/react-query"
 import { ImagePlus } from "lucide-react"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { toast } from "sonner"
 interface GalleryUploadProps {
   maxFiles?: number
@@ -47,6 +47,13 @@ const UploadMediaContent = ({
   setDialogOpen: (open: boolean) => void
 }) => {
   const { uploadFiles, handleFilesChange } = useFileUploadContext()
+
+  useEffect(() => {
+    if (!dialogOpen) {
+      handleFilesChange([])
+    }
+  }, [dialogOpen, handleFilesChange])
+
   const { mutate, isPending } = useMutation({
     mutationFn: async (formData: FormData) => {
       const response = await strapiRequest.post("/api/upload", formData, {
