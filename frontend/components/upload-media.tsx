@@ -46,6 +46,7 @@ const UploadMediaContent = ({
   dialogOpen: boolean
   setDialogOpen: (open: boolean) => void
 }) => {
+  const { uploadFiles, handleFilesChange } = useFileUploadContext()
   const { mutate, isPending } = useMutation({
     mutationFn: async (formData: FormData) => {
       const response = await strapiRequest.post("/api/upload", formData, {
@@ -57,16 +58,16 @@ const UploadMediaContent = ({
     },
     onSuccess: (data) => {
       toast.success("Media uploaded successfully!")
+      handleFilesChange([]) // Clear the uploaded files from the context
       setDialogOpen(false)
     },
     onError: (error) => {
       console.error("Upload error:", error)
+      handleFilesChange([]) // Clear the uploaded files from the context
       setDialogOpen(false)
       toast.error("Failed to upload media.")
     },
   })
-
-  const { uploadFiles } = useFileUploadContext()
 
   const handleUpload = async () => {
     const rawFiles = uploadFiles

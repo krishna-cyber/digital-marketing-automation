@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import LinkedInPostCard from "@/components/ui/linkedin-post-card"
-import { Download, Printer } from "lucide-react"
+import { Download } from "lucide-react"
 import React from "react"
 import { useVisibleCenterPosition } from "./use-visible-center-position"
 
@@ -29,10 +29,6 @@ const PostPreview = () => {
       <div className="flex items-center justify-between border-b px-4 py-4">
         <h2 className="text-lg font-medium">Post Preview</h2>
         <div className="flex items-center gap-2">
-          <Button type="button" variant="outline" onClick={handlePrint}>
-            <Printer className="mr-2 h-4 w-4" />
-            Print
-          </Button>
           <Button type="button" variant="outline">
             <Download className="mr-2 h-4 w-4" />
             Download Image

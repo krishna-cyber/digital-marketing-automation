@@ -22,7 +22,7 @@ const page = () => {
       </section>
 
       {/* Image preview */}
-      <ImageUploadAndPreview />
+      {/* <ImageUploadAndPreview /> */}
       <div>
         Image preview only
         <ImagePreview />
