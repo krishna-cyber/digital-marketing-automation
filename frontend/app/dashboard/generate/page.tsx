@@ -1,5 +1,4 @@
 import ImagePreview from "@/components/examples/image-preview"
-import { ImageUploadAndPreview } from "@/components/examples/image-upload-preview"
 import { Main } from "@/components/layout/main"
 import React from "react"
 import GeneratePreviewForm from "./generate-preview-form"
