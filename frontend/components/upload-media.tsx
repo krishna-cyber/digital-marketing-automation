@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Spinner } from "@/components/ui/spinner"
-import { FileWithPreview, useFileUpload } from "@/hooks/use-file-upload"
+import { FileWithPreview } from "@/hooks/use-file-upload"
 import { strapiRequest } from "@/lib/api"
 import {
   FileUploadProvider,
@@ -42,9 +42,11 @@ const CONFIGURATION: GalleryUploadProps = {
 const UploadMediaContent = ({
   dialogOpen,
   setDialogOpen,
+  title = "Upload Media",
 }: {
   dialogOpen: boolean
   setDialogOpen: (open: boolean) => void
+  title?: string
 }) => {
   const { uploadFiles, handleFilesChange } = useFileUploadContext()
 
@@ -98,7 +100,7 @@ const UploadMediaContent = ({
   return (
     <DialogContent className="!max-w-2xl">
       <DialogHeader>
-        <DialogTitle>Upload Media</DialogTitle>
+        <DialogTitle>{title}</DialogTitle>
         <DialogDescription>
           Upload your media files here. Click save when you&apos;re done.
         </DialogDescription>
@@ -124,7 +126,7 @@ const UploadMediaContent = ({
   )
 }
 
-export default function UploadMedia() {
+export default function UploadMedia({ title = "Upload Media" }) {
   const [open, setOpen] = useState(false)
   return (
     <FileUploadProvider>
@@ -133,7 +135,7 @@ export default function UploadMedia() {
           <DialogTrigger asChild>
             <Button variant="outline">
               <ImagePlus />
-              Upload Media
+              {title}
             </Button>
           </DialogTrigger>
           <UploadMediaContent dialogOpen={open} setDialogOpen={setOpen} />

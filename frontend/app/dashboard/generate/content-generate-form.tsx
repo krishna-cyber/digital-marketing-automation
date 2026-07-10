@@ -2,6 +2,7 @@
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import React from "react"
+import CoverImageForm from "./form/cover-image-form"
 import LinkedinPostForm from "./linkedin-post-form"
 
 const ContentGenerateForm = () => {
@@ -15,7 +16,7 @@ const ContentGenerateForm = () => {
         </TabsList>
 
         <TabsContent value="cover-image">
-          <p>COver image generate form</p>
+          <CoverImageForm />
         </TabsContent>
 
         <TabsContent value="social-post">

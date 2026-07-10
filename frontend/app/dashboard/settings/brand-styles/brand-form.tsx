@@ -1,5 +1,6 @@
 "use client"
 
+import { FontSelect } from "@/components/examples/font-select"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -9,8 +10,16 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Separator } from "@/components/ui/separator"
 import { Textarea } from "@/components/ui/textarea"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { HelpCircleIcon } from "lucide-react"
 import Image from "next/image"
 import { useFieldArray, useForm, useWatch } from "react-hook-form"
 import z from "zod"
@@ -161,6 +170,31 @@ const BrandForm = () => {
             Add visual references that represent your preferred brand direction.
           </FormDescription>
         </FormItem>
+        <Separator />
+
+        <FormItem>
+          <div className="flex items-center justify-between gap-4">
+            <FormLabel>
+              Content Generation Font
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger className="text-muted-foreground">
+                    <HelpCircleIcon aria-hidden="true" className="size-3.5" />
+                  </TooltipTrigger>
+                  <TooltipContent side="right">
+                    Selected font is used to generate content and is not applied
+                    to the dashboard UI.
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </FormLabel>
+          </div>
+
+          <div className="space-y-3">
+            <FontSelect />{" "}
+          </div>
+        </FormItem>
+        <Separator />
 
         <FormItem>
           <div className="flex items-center justify-between gap-4">
@@ -236,7 +270,7 @@ const BrandForm = () => {
             Define your core palette using hex values.
           </FormDescription>
         </FormItem>
-
+        <Separator />
         <FormItem>
           <FormLabel>Style Description</FormLabel>
           <Textarea
