@@ -1,6 +1,6 @@
 "use client"
 
-import { Placeholder } from "@tiptap/extensions"
+import { Placeholder, Selection } from "@tiptap/extensions"
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 import { useEffect, useRef, useState } from "react"
 // --- Tiptap Core Extensions ---
@@ -11,7 +11,6 @@ import { Subscript } from "@tiptap/extension-subscript"
 import { Superscript } from "@tiptap/extension-superscript"
 import { TextAlign } from "@tiptap/extension-text-align"
 import { Typography } from "@tiptap/extension-typography"
-import { Selection } from "@tiptap/extensions"
 import { StarterKit } from "@tiptap/starter-kit"
 
 // --- UI Primitives ---
@@ -74,6 +73,9 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
 import "@/components/tiptap-templates/simple/simple-editor.scss"
 
 import content from "@/components/tiptap-templates/simple/data/content.json"
+import { AITextBubbleMenu } from "@/components/tiptap-ui/ai-text-bubble-menu"
+// import { AITextBubbleMenu } from "@/components/tiptap-ui/ai-text-bubble-menu"
+// import { AIGhostOverlay } from "../ai-ghost-overlay"
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -284,6 +286,7 @@ export function SimpleEditor() {
           position={ghostPosition}
           isDark={false}
         /> */}
+        {editor && <AITextBubbleMenu editor={editor} />}
       </EditorContext.Provider>
     </div>
   )
