@@ -10,7 +10,7 @@ Icon
 .Trashes
 ._*
 
-
+/data
 ############################
 # Linux
 ############################
@@ -129,3 +129,5 @@ dist
 build
 .strapi-updater.json
 .strapi-cloud.json
+database/migrations
+types/generated
