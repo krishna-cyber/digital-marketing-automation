@@ -1,39 +1,35 @@
 "use client"
 
-// --- UI Primitives ---
-import { Button } from "@/components/tiptap-ui-primitive/button"
-
-// --- Icons ---
 import { MoonStarIcon } from "@/components/tiptap-icons/moon-star-icon"
 import { SunIcon } from "@/components/tiptap-icons/sun-icon"
+import { Button } from "@/components/tiptap-ui-primitive/button"
 import { useEffect, useState } from "react"
 
+const THEME_KEY = "tiptap-theme"
+
 export function ThemeToggle() {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false)
+  const [isDarkMode, setIsDarkMode] = useState(false)
 
+  // Initialize theme
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
-    const handleChange = () => setIsDarkMode(mediaQuery.matches)
-    mediaQuery.addEventListener("change", handleChange)
-    return () => mediaQuery.removeEventListener("change", handleChange)
+    const savedTheme = localStorage.getItem(THEME_KEY)
+
+    // Default to light if no preference has been saved
+    const dark = savedTheme === "dark"
+
+    setIsDarkMode(dark)
+    document.documentElement.classList.toggle("dark", dark)
   }, [])
 
-  useEffect(() => {
-    const initialDarkMode =
-      !!document.querySelector('meta[name="color-scheme"][content="dark"]') ||
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-    setIsDarkMode(initialDarkMode)
-  }, [])
-
+  // Apply theme and persist preference
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDarkMode)
+    localStorage.setItem(THEME_KEY, isDarkMode ? "dark" : "light")
   }, [isDarkMode])
-
-  const toggleDarkMode = () => setIsDarkMode((isDark) => !isDark)
 
   return (
     <Button
-      onClick={toggleDarkMode}
+      onClick={() => setIsDarkMode((prev) => !prev)}
       aria-label={`Switch to ${isDarkMode ? "light" : "dark"} mode`}
       variant="ghost"
     >
