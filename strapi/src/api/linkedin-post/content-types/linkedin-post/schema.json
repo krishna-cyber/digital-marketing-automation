@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "linkedin_posts",
+  "info": {
+    "singularName": "linkedin-post",
+    "pluralName": "linkedin-posts",
+    "displayName": "Linkedin-post"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "textContent": {
+      "type": "text",
+      "required": true
+    },
+    "supportImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}
