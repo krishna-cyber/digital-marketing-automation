@@ -613,7 +613,8 @@ export interface ApiLinkedinPostLinkedinPost
   extends Struct.CollectionTypeSchema {
   collectionName: 'linkedin_posts';
   info: {
-    displayName: 'Linkedin-post';
+    description: 'Manage LinkedIn posts for social media scheduling and publishing';
+    displayName: 'LinkedIn Post';
     pluralName: 'linkedin-posts';
     singularName: 'linkedin-post';
   };
@@ -621,21 +622,78 @@ export interface ApiLinkedinPostLinkedinPost
     draftAndPublish: true;
   };
   attributes: {
+    audienceSegments: Schema.Attribute.JSON;
+    autoRetry: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    companyPageId: Schema.Attribute.String;
+    content: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 3000;
+      }>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    customMetadata: Schema.Attribute.JSON;
+    engagementMetrics: Schema.Attribute.JSON;
+    errorLog: Schema.Attribute.Text;
+    hashtags: Schema.Attribute.Text;
+    linkedInPostId: Schema.Attribute.String & Schema.Attribute.Unique;
+    linkedInPostUrl: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::linkedin-post.linkedin-post'
     > &
       Schema.Attribute.Private;
+    mediaFiles: Schema.Attribute.Media<'images' | 'files' | 'videos', true> &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 9;
+        },
+        number
+      >;
+    mediaType: Schema.Attribute.Enumeration<
+      ['text_only', 'image', 'video', 'document', 'multi_image']
+    > &
+      Schema.Attribute.DefaultTo<'text_only'>;
+    mediaUrls: Schema.Attribute.JSON;
+    mentions: Schema.Attribute.Text;
+    postStatus: Schema.Attribute.Enumeration<
+      ['draft', 'scheduled', 'published', 'failed']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'draft'>;
+    postType: Schema.Attribute.Enumeration<
+      ['organic', 'promoted', 'sponsored']
+    > &
+      Schema.Attribute.DefaultTo<'organic'>;
+    promotionDetails: Schema.Attribute.JSON;
     publishedAt: Schema.Attribute.DateTime;
-    supportImage: Schema.Attribute.Media<'images'>;
-    textContent: Schema.Attribute.Text & Schema.Attribute.Required;
+    publishedDate: Schema.Attribute.DateTime;
+    retryCount: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 10;
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
+    scheduledDate: Schema.Attribute.DateTime;
+    thumbnail: Schema.Attribute.Media<'images'>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique &
+      Schema.Attribute.SetMinMaxLength<{
+        maxLength: 200;
+      }>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    visibility: Schema.Attribute.Enumeration<
+      ['public', 'connections_only', 'specific_audience']
+    > &
+      Schema.Attribute.DefaultTo<'public'>;
   };
 }
 
