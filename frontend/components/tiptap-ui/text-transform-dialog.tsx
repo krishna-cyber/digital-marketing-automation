@@ -58,6 +58,12 @@ export function TextTransformDialog({
     setIsStreaming(true)
 
     try {
+      console.log(
+        "Starting streaming with action:",
+        action,
+        "and model:",
+        model
+      )
       const response = await fetch("/api/openrouter/text-transform", {
         method: "POST",
         headers: {
@@ -83,29 +89,34 @@ export function TextTransformDialog({
         throw new Error("No response body")
       }
 
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) break
+      setStreamedText("basic demo how streaming works and text is catched here")
+      setIsStreaming(false)
 
-        const chunk = decoder.decode(value, { stream: true })
-        const lines = chunk.split("\n")
+      //TODO: HANDLE STREAM RECEIVED FROM OPENROUTER API, CURRENTLY IT IS JUST A DEMO, NEED TO IMPLEMENT STREAMING LOGIC
+      // while (true) {
+      //   const { done, value } = await reader.read()
+      //   if (done) break
 
-        for (const line of lines) {
-          if (line.startsWith("data: ")) {
-            try {
-              const data = JSON.parse(line.slice(6))
+      //   const chunk = decoder.decode(value, { stream: true })
+      //   const lines = chunk.split("\n")
 
-              if (data.type === "content" && data.content) {
-                setStreamedText((prev) => prev + data.content)
-              } else if (data.type === "done") {
-                setIsStreaming(false)
-              }
-            } catch (e) {
-              // Skip malformed JSON
-            }
-          }
-        }
-      }
+      //   for (const line of lines) {
+      //     if (line.startsWith("data: ")) {
+      //       try {
+      //         const data = JSON.parse(line.slice(6))
+
+      //         if (data.type === "content" && data.content) {
+      //           setStreamedText((prev) => prev + data.content)
+      //         } else if (data.type === "done") {
+      //           setIsStreaming(false)
+      //         }
+      //       } catch (e) {
+      //         console.log("Failed to parse JSON line:", line, e)
+      //         // Skip malformed JSON
+      //       }
+      //     }
+      //   }
+      // }
     } catch (error) {
       console.error("Streaming error:", error)
       setError("Failed to transform text. Please try again.")
