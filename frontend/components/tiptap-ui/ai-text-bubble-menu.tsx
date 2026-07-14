@@ -69,6 +69,7 @@ const textActions: TextTransformAction[] = [
 export const AITextBubbleMenu: React.FC<AITextBubbleMenuProps> = ({
   editor,
 }) => {
+  console.log("AITextBubbleMenu rendered")
   const [isLoading, setIsLoading] = React.useState(false)
   const [loadingAction, setLoadingAction] = React.useState<string | null>(null)
   const [selectedText, setSelectedText] = React.useState("")
@@ -221,14 +222,14 @@ export const AITextBubbleMenu: React.FC<AITextBubbleMenuProps> = ({
         )}
 
       {/* Streaming Dialog */}
-      {/* <TextTransformDialog
+      <TextTransformDialog
         isOpen={dialogOpen}
         onClose={handleDialogClose}
         onAccept={handleAcceptTransform}
         onReject={handleRejectTransform}
         originalText={selectedText}
         action={currentAction}
-      /> */}
+      />
     </>
   )
 }

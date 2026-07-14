@@ -72,8 +72,11 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss"
 
+import { AIAutocomplete } from "@/components/tiptap-extension/ai-autocompletion/ai-autocomplete-extension"
+import { useAIAutocomplete } from "@/components/tiptap-extension/ai-autocompletion/use-ai-autocomplete"
 import content from "@/components/tiptap-templates/simple/data/content.json"
 import { AITextBubbleMenu } from "@/components/tiptap-ui/ai-text-bubble-menu"
+import { AIGhostOverlay } from "../ai-ghost-overlay"
 // import { AITextBubbleMenu } from "@/components/tiptap-ui/ai-text-bubble-menu"
 // import { AIGhostOverlay } from "../ai-ghost-overlay"
 
@@ -216,6 +219,16 @@ export function SimpleEditor() {
         placeholder:
           "Start typing... Press Tab to autocomplete to the next sentence.",
       }),
+      AIAutocomplete.configure({
+        enabled: true,
+        model: "openrouter/auto",
+        maxTokens: 60,
+        temperature: 0.7,
+        promptTemplate: (text: string) =>
+          text.trim().length > 0
+            ? `Continue this text naturally: "${text}"\n\nContinuation:`
+            : "Write an engaging opening sentence.",
+      }),
       HorizontalRule,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       TaskList,
@@ -247,6 +260,34 @@ export function SimpleEditor() {
       setMobileView("main")
     }
   }, [isMobile, mobileView])
+
+  // AI Autocomplete logic
+  const [completion, setCompletion] = useState<string>("")
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const complete = async (text: string) => {
+    setIsLoading(true)
+    try {
+      // Simulate an API call to get AI completion
+      const response = await fetch("/api/ai-complete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
+      })
+      const data = await response.json()
+      setCompletion(data.completion)
+    } catch (error) {
+      console.error("Error fetching AI completion:", error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+  // AI autocomplete hook
+  const { pendingCompletion, ghostPosition, registerHandlers } =
+    useAIAutocomplete({
+      editor: editor,
+      completionProvider: { complete, completion, isLoading },
+      options: { enabled: true },
+    })
 
   return (
     <div className="simple-editor-wrapper relative">
@@ -281,11 +322,11 @@ export function SimpleEditor() {
           className="simple-editor-content prose min-h-50 max-w-none"
         />
         {/* Ghost text overlay */}
-        {/* <AIGhostOverlay
+        <AIGhostOverlay
           text={pendingCompletion}
           position={ghostPosition}
           isDark={false}
-        /> */}
+        />
         {editor && <AITextBubbleMenu editor={editor} />}
       </EditorContext.Provider>
     </div>
