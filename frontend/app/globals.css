@@ -1,3 +1,6 @@
+@import "../styles/_variables.css";
+@import "../styles/_keyframe-animations.css";
+
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -61,13 +64,13 @@
     --color-success: var(--success);
     --color-destructive-foreground: var(--destructive-foreground);
   @keyframes rainbow {
-  0% {
-    background-position: 0%;
-        }
-  100% {
-    background-position: 200%;
-        }
+    0% {
+      background-position: 0%;
     }
+    100% {
+      background-position: 200%;
+    }
+  }
 }
 
 :root {
@@ -170,14 +173,15 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    }
+  }
   body {
     @apply bg-background text-foreground;
-    }
-  button:not(:disabled), [role="button"]:not(:disabled) {
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
     cursor: pointer;
-    }
+  }
   html {
     @apply font-sans;
-    }
+  }
 }

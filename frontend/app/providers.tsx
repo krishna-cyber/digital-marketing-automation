@@ -4,8 +4,10 @@
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { aiDevtoolsPlugin } from "@tanstack/react-ai-devtools"
+import { TanStackDevtools } from "@tanstack/react-devtools"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools"
 import { useState } from "react"
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -27,7 +29,20 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         <ThemeProvider>{children}</ThemeProvider>
       </TooltipProvider>
       {/* Devtools will only appear in development environments */}
-      <ReactQueryDevtools initialIsOpen={false} />
+      <TanStackDevtools
+        plugins={[
+          // ... other plugins
+          aiDevtoolsPlugin(),
+          {
+            name: "React Query Devtools",
+            render: <ReactQueryDevtoolsPanel />,
+          },
+        ]}
+        // this config is important to connect to the server event bus
+        eventBusConfig={{
+          connectToServerBus: true,
+        }}
+      />
     </QueryClientProvider>
   )
 }
