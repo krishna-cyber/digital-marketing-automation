@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2, LogIn } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { redirect } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -52,10 +53,11 @@ export function UserAuthForm({
     const signIn = await authClient.signIn.email({
       email: data.email,
       password: data.password,
-      callbackURL: `${window.location.origin}/dashboard`,
+      // callbackURL: `${window.location.origin}/dashboard`,
       fetchOptions: {
         onSuccess() {
           toast.success("Signed in successfully.")
+          redirect("/dashboard")
         },
         onError(context) {
           toast.error(context.error?.message || "Failed to sign in.")

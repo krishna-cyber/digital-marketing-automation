@@ -11,14 +11,18 @@ import interactionPlugin from "@fullcalendar/react/interaction"
 import themePlugin from "@fullcalendar/react/themes/classic"
 import timeGridPlugin from "@fullcalendar/react/timegrid"
 import React, { useState } from "react"
-import { INITIAL_EVENTS } from "./data"
+import { ExtendedEventInput, INITIAL_EVENTS } from "./data"
 
 //Css of calender
 import { EventAddForm, EventAddFormValues } from "@/components/event-add-form"
+import { api } from "@/lib/api"
 import "@fullcalendar/react/skeleton.css"
 import "@fullcalendar/react/themes/classic/palette.css"
 import "@fullcalendar/react/themes/classic/theme.css"
+import { useQuery } from "@tanstack/react-query"
 import { toast } from "sonner"
+
+console.log("initial events", INITIAL_EVENTS)
 
 interface DateSelectInfor {
   isOpen: boolean
@@ -44,6 +48,16 @@ function handleDateSelect(selectInfo: DateSelectInfo) {
 }
 
 const Calendar = () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["calendar-events"],
+    queryFn: async () => {
+      const response = await api.get("/api/v1/calendar")
+      return response.data as ExtendedEventInput[]
+    },
+  })
+
+  console.log("Calendar Fetched events:", data)
+
   const [weekendsVisible, setWeekendsVisible] = useState(true)
   const [currentEvents, setCurrentEvents] = useState<EventApi[]>([])
   const [eventAddOpen, setEventAddOpen] = useState<DateSelectInfor | boolean>(
@@ -120,7 +134,8 @@ const Calendar = () => {
         buttonDisplay="auto"
         dayMaxEvents={true}
         weekends={weekendsVisible}
-        initialEvents={INITIAL_EVENTS} // alternatively, use the `events` setting to fetch from a feed
+        // events={data ?? []} // alternatively, use the `events` setting to fetch from a feed
+        initialEvents={INITIAL_EVENTS}
         select={handleDateSelect} // called when a date is selected
         eventContent={renderEventContent} // custom render function
         eventClick={(eventInfo) => handleEventClick(eventInfo)}

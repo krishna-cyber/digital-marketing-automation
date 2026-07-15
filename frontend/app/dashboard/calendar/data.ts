@@ -26,7 +26,7 @@ export const INITIAL_EVENTS: ExtendedEventInput[] = [
     id: "1",
     title: "Campaign kickoff workshop",
     start: todayStr,
-    end: tomorrowStr,
+    end: "2026-07-10",
     color: "#7c3aed",
     allDay: true,
     url: "https://www.google.com",
