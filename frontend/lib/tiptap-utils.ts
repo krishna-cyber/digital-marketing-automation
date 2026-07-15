@@ -1,6 +1,5 @@
 import type { Node as PMNode } from "@tiptap/pm/model"
 import type { Transaction } from "@tiptap/pm/state"
-import { clsx, type ClassValue } from "clsx"
 import {
   AllSelection,
   NodeSelection,
@@ -13,6 +12,7 @@ import {
   type Editor,
   type NodeWithPos,
 } from "@tiptap/react"
+import { clsx, type ClassValue } from "clsx"
 
 export const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
@@ -388,6 +388,29 @@ export const handleImageUpload = async (
 
   // For demo/testing: Simulate upload progress. In production, replace the following code
   // with your own upload implementation.
+
+  const formData = new FormData()
+  formData.append("files", file)
+
+  //Get strapi URL from environment variable
+  const strapiUrl =
+    process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
+  const uploadUrl = `${strapiUrl}/api/upload/files`
+
+  try {
+    for (let progress = 0; progress <= 100; progress += 10) {
+      if (abortSignal?.aborted) {
+        throw new Error("Upload cancelled")
+      }
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      onProgress?.({ progress })
+    }
+  } catch (error) {
+    console.log("Error during image upload:", error)
+    throw new Error(
+      error instanceof Error ? error.message : "An error occurred during upload"
+    )
+  }
   for (let progress = 0; progress <= 100; progress += 10) {
     if (abortSignal?.aborted) {
       throw new Error("Upload cancelled")

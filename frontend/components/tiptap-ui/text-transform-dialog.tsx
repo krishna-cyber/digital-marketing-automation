@@ -3,6 +3,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
+import { fetchServerSentEvents, useChat } from "@tanstack/ai-react"
 import { Check, Loader2, RefreshCw, X } from "lucide-react"
 import React, { useEffect, useState } from "react"
 import {
@@ -51,6 +52,20 @@ export function TextTransformDialog({
     setError(null)
   }
 
+  const { messages, sendMessage, isLoading } = useChat({
+    connection: fetchServerSentEvents("/api/openrouter/text-transform"),
+    onFinish: (message) => {
+      console.log("Received final message from OpenRouter API:", message)
+      //only set the latest conversation message to the streamedText state
+      if (message.role === "assistant" && message.parts[0].type === "text") {
+        setStreamedText(message.parts[0].content)
+      }
+    },
+  })
+
+  console.log("streamed text use state", streamedText)
+  console.log("Is chat loading:", isLoading)
+
   const startStreaming = async () => {
     if (!isOpen || !originalText || !action) return
 
@@ -64,32 +79,40 @@ export function TextTransformDialog({
         "and model:",
         model
       )
-      const response = await fetch("/api/openrouter/text-transform", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          text: originalText,
-          action,
-          model,
-          max_tokens: 200,
-          temperature: 0.7,
-        }),
+
+      // const response = await fetch("/api/openrouter/text-transform", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     text: originalText,
+      //     action,
+      //     model,
+      //     max_tokens: 200,
+      //     temperature: 0.7,
+      //   }),
+      // })
+
+      // if (!response.ok) {
+      //   throw new Error("Failed to transform text")
+      // }
+
+      // const reader = response.body?.getReader()
+      // const decoder = new TextDecoder()
+
+      // if (!reader) {
+      //   throw new Error("No response body")
+      // }
+
+      // const result = await response.json()
+
+      // console.log("Received response from OpenRouter API:", result)
+      // setStreamedText(result.text)
+
+      sendMessage({
+        content: `Transform the following text with action: ${action}. Original text: ${originalText}`,
       })
-
-      if (!response.ok) {
-        throw new Error("Failed to transform text")
-      }
-
-      const reader = response.body?.getReader()
-      const decoder = new TextDecoder()
-
-      if (!reader) {
-        throw new Error("No response body")
-      }
-
-      setStreamedText("basic demo how streaming works and text is catched here")
       setIsStreaming(false)
 
       //TODO: HANDLE STREAM RECEIVED FROM OPENROUTER API, CURRENTLY IT IS JUST A DEMO, NEED TO IMPLEMENT STREAMING LOGIC

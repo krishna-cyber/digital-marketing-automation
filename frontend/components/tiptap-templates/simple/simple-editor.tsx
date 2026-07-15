@@ -76,6 +76,7 @@ import { AIAutocomplete } from "@/components/tiptap-extension/ai-autocompletion/
 import { useAIAutocomplete } from "@/components/tiptap-extension/ai-autocompletion/use-ai-autocomplete"
 import content from "@/components/tiptap-templates/simple/data/content.json"
 import { AITextBubbleMenu } from "@/components/tiptap-ui/ai-text-bubble-menu"
+import { Markdown } from "@tiptap/markdown"
 import { AIGhostOverlay } from "../ai-ghost-overlay"
 // import { AITextBubbleMenu } from "@/components/tiptap-ui/ai-text-bubble-menu"
 // import { AIGhostOverlay } from "../ai-ghost-overlay"
@@ -246,9 +247,13 @@ export function SimpleEditor() {
         upload: handleImageUpload,
         onError: (error) => console.error("Upload failed:", error),
       }),
+      Markdown,
     ],
     content,
+    contentType: "markdown",
   })
+
+  console.log("Editor instance:", editor?.markdown)
 
   const rect = useCursorVisibility({
     editor,
