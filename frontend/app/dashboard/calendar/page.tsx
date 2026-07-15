@@ -1,9 +1,24 @@
 import { Main } from "@/components/layout/main"
-import { Button } from "@/components/ui/button"
+
 import React from "react"
 import Calendar from "./calender"
+import { ExtendedEventInput } from "./data"
 
-const page = () => {
+const page = async () => {
+  //Fetch events and pass to the calender component for initial events
+  // const response = await fetch(`${process.env.BACKEND_URL}/api/v1/calendar`, {
+  //   method: "GET",
+  // })
+
+  // if (!response.ok) {
+  //   throw new Error("Failed to fetch events")
+  // }
+
+  // const data = (await response.json()) as ExtendedEventInput[]
+  // Log the fetched events for debugging
+
+  // console.log("Calendar Fetched events:", data)
+
   return (
     <Main>
       <div className="mb-2 flex items-center justify-between space-y-2">
@@ -14,10 +29,6 @@ const page = () => {
             View and manage all your calendar events.
           </p>
         </span>
-
-        <div className="flex items-center space-x-2">
-          <Button variant={"ghost"}>Mark all as read</Button>
-        </div>
       </div>
       <Calendar />
     </Main>
