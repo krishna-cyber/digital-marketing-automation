@@ -1,0 +1,166 @@
+{
+  "kind": "collectionType",
+  "collectionName": "linkedin_posts",
+  "info": {
+    "singularName": "linkedin-post",
+    "pluralName": "linkedin-posts",
+    "displayName": "LinkedIn Post",
+    "description": "Manage LinkedIn posts for social media scheduling and publishing"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "maxLength": 200,
+      "pluginOptions": {}
+    },
+    "content": {
+      "type": "text",
+      "required": true,
+      "maxLength": 3000,
+      "pluginOptions": {}
+    },
+    "postStatus": {
+      "type": "enumeration",
+      "enum": ["draft", "scheduled", "published", "failed"],
+      "default": "draft",
+      "required": true
+    },
+    "scheduledDate": {
+      "type": "datetime",
+      "required": false
+    },
+    "publishedDate": {
+      "type": "datetime",
+      "required": false
+    },
+    "mediaType": {
+      "type": "enumeration",
+      "enum": ["text_only", "image", "video", "document", "multi_image"],
+      "default": "text_only"
+    },
+    "mediaFiles": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": ["images", "files", "videos"],
+      "max": 9
+    },
+    "mediaUrls": {
+      "type": "json",
+      "required": false,
+      "description": "External URLs for media files (for cloud storage)"
+    },
+    "thumbnail": {
+      "type": "media",
+      "allowedTypes": ["images"],
+      "multiple": false
+    },
+    "linkedInPostId": {
+      "type": "string",
+      "required": false,
+      "unique": true,
+      "description": "The ID returned from LinkedIn API after publishing"
+    },
+    "linkedInPostUrl": {
+      "type": "string",
+      "required": false,
+      "description": "The URL of the published LinkedIn post"
+    },
+    "hashtags": {
+      "type": "text",
+      "required": false,
+      "description": "Comma-separated list of hashtags"
+    },
+    "mentions": {
+      "type": "text",
+      "required": false,
+      "description": "Comma-separated list of LinkedIn profiles or companies to mention"
+    },
+    "visibility": {
+      "type": "enumeration",
+      "enum": ["public", "connections_only", "specific_audience"],
+      "default": "public"
+    },
+    "audienceSegments": {
+      "type": "json",
+      "required": false,
+      "description": "Specific audience segments for targeting"
+    },
+    "companyPageId": {
+      "type": "string",
+      "required": false,
+      "description": "LinkedIn Company Page ID if posting as organization"
+    },
+    "postType": {
+      "type": "enumeration",
+      "enum": ["organic", "promoted", "sponsored"],
+      "default": "organic"
+    },
+    "promotionDetails": {
+      "type": "json",
+      "required": false,
+      "description": "Details about sponsored/promoted posts"
+    },
+    "engagementMetrics": {
+      "type": "json",
+      "required": false,
+      "description": "Engagement metrics from LinkedIn API (likes, comments, shares, etc.)"
+    },
+    "errorLog": {
+      "type": "text",
+      "required": false,
+      "description": "Error messages from failed publishing attempts"
+    },
+    "retryCount": {
+      "type": "integer",
+      "default": 0,
+      "min": 0,
+      "max": 10
+    },
+    "autoRetry": {
+      "type": "boolean",
+      "default": true
+    },
+    "categories": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::category.category",
+      "inversedBy": "linkedinPosts"
+    },
+    "tags": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tag.tag",
+      "inversedBy": "linkedinPosts"
+    },
+    "author": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::author.author",
+      "inversedBy": "linkedinPosts"
+    },
+    "campaign": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::campaign.campaign",
+      "inversedBy": "linkedinPosts"
+    },
+    "relatedPosts": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::linkedin-post.linkedin-post",
+      "inversedBy": "relatedPosts",
+      "description": "Related LinkedIn posts for cross-promotion"
+    },
+    "customMetadata": {
+      "type": "json",
+      "required": false,
+      "description": "Custom metadata for advanced use cases"
+    }
+  }
+}

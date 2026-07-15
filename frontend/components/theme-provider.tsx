@@ -5,12 +5,13 @@ import * as React from "react"
 function ThemeProvider({
   children,
   ...props
-}: React.ComponentProps<typeof NextThemesProvider>) {
+}: Readonly<React.ComponentProps<typeof NextThemesProvider>>) {
   return (
     <NextThemesProvider
       attribute="class"
       defaultTheme="light"
-      enableSystem
+      enableSystem={false}
+      forcedTheme="light"
       disableTransitionOnChange
       {...props}
     >

@@ -35,7 +35,7 @@ import {
   type NavLink,
 } from "./types"
 
-export function NavGroup({ title, items }: NavGroupProps) {
+export function NavGroup({ title, items }: Readonly<NavGroupProps>) {
   const { state, isMobile } = useSidebar()
   const href = usePathname()
   return (
@@ -60,11 +60,14 @@ export function NavGroup({ title, items }: NavGroupProps) {
   )
 }
 
-function NavBadge({ children }: { children: ReactNode }) {
+function NavBadge({ children }: Readonly<{ children: ReactNode }>) {
   return <Badge className="rounded-full px-1 py-0 text-xs">{children}</Badge>
 }
 
-function SidebarMenuLink({ item, href }: { item: NavLink; href: string }) {
+function SidebarMenuLink({
+  item,
+  href,
+}: Readonly<{ item: NavLink; href: string }>) {
   const { setOpenMobile } = useSidebar()
   return (
     <SidebarMenuItem>
@@ -86,10 +89,10 @@ function SidebarMenuLink({ item, href }: { item: NavLink; href: string }) {
 function SidebarMenuCollapsible({
   item,
   href,
-}: {
+}: Readonly<{
   item: NavCollapsible
   href: string
-}) {
+}>) {
   const { setOpenMobile } = useSidebar()
   return (
     <Collapsible
@@ -132,10 +135,10 @@ function SidebarMenuCollapsible({
 function SidebarMenuCollapsedDropdown({
   item,
   href,
-}: {
+}: Readonly<{
   item: NavCollapsible
   href: string
-}) {
+}>) {
   return (
     <SidebarMenuItem>
       <DropdownMenu>
