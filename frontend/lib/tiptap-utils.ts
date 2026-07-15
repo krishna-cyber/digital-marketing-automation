@@ -379,7 +379,7 @@ export const handleImageUpload = async (
   if (!file) {
     throw new Error("No file provided")
   }
-
+  console.log("Uploading file:", file.name, "Size:", file.size, "bytes")
   if (file.size > MAX_FILE_SIZE) {
     throw new Error(
       `File size exceeds maximum allowed (${MAX_FILE_SIZE / (1024 * 1024)}MB)`
@@ -392,18 +392,39 @@ export const handleImageUpload = async (
   const formData = new FormData()
   formData.append("files", file)
 
-  //Get strapi URL from environment variable
-  const strapiUrl =
-    process.env.NEXT_PUBLIC_STRAPI_URL || "http://localhost:1337"
-  const uploadUrl = `${strapiUrl}/api/upload/files`
-
   try {
-    for (let progress = 0; progress <= 100; progress += 10) {
-      if (abortSignal?.aborted) {
-        throw new Error("Upload cancelled")
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/upload`,
+      {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_STRAPI_KEY}`,
+        },
       }
-      await new Promise((resolve) => setTimeout(resolve, 500))
-      onProgress?.({ progress })
+    )
+
+    if (!response.ok) {
+      throw new Error(`Upload failed with status ${response.status}`)
+    }
+
+    const data = await response.json()
+
+    if (Array.isArray(data) && data.length > 0) {
+      const uploadedFile = data[0]
+      // Return the URL of the uploaded image
+      const imageUrl = uploadedFile.url.startsWith("http")
+        ? uploadedFile.url
+        : `${process.env.NEXT_PUBLIC_STRAPI_URL}${uploadedFile.url}`
+
+      // Simulate progress completion
+      onProgress?.({ progress: 100 })
+
+      console.log("Image uploaded successfully:", imageUrl)
+
+      return imageUrl
+    } else {
+      throw new Error("Invalid response from server")
     }
   } catch (error) {
     console.log("Error during image upload:", error)
@@ -411,15 +432,6 @@ export const handleImageUpload = async (
       error instanceof Error ? error.message : "An error occurred during upload"
     )
   }
-  for (let progress = 0; progress <= 100; progress += 10) {
-    if (abortSignal?.aborted) {
-      throw new Error("Upload cancelled")
-    }
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    onProgress?.({ progress })
-  }
-
-  return "/images/tiptap-ui-placeholder-image.jpg"
 }
 
 type ProtocolOptions = {
