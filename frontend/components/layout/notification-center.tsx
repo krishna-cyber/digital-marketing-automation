@@ -10,6 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { Bell, ChevronRight } from "lucide-react"
 import Link from "next/link"
+import { EmptyNotifications } from "../examples/empty-notifications"
 import { NotificationCard } from "../notification-card"
 // import { useNotificationStore } from "../utils/store"
 
@@ -78,14 +79,10 @@ export function NotificationCenter() {
           </div>
         </div>
         <Separator />
+
         <ScrollArea className="h-[400px]">
           {mockNotifications.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12">
-              <Bell className="mb-2 h-8 w-8 text-muted-foreground/40" />
-              <p className="text-sm text-muted-foreground">
-                No notifications yet
-              </p>
-            </div>
+            <EmptyNotifications />
           ) : (
             <div className="flex flex-col gap-1 p-2">
               {visibleNotifications.map((notification) => (

@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
 import "./globals.css"
+import Providers from "./providers"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -29,9 +30,7 @@ export default function RootLayout({
       )}
     >
       <body>
-        <TooltipProvider>
-          <ThemeProvider>{children}</ThemeProvider>
-        </TooltipProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )

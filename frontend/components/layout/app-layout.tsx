@@ -1,5 +1,7 @@
 "use client"
 import { LayoutProvider } from "@/context/layout-provider"
+import { Session } from "@/lib/auth"
+
 import { getCookie } from "@/lib/cookies"
 import { cn } from "@/lib/utils"
 import React from "react"
@@ -13,15 +15,17 @@ import { TopNav } from "./top-nav"
 
 type AuthenticatedLayoutProps = {
   children?: React.ReactNode
+  session?: Session | null
 }
 
-const AppLayout = ({ children }: AuthenticatedLayoutProps) => {
+const AppLayout = ({ children, session }: AuthenticatedLayoutProps) => {
   const defaultOpen = getCookie("sidebar_state") !== "false"
+
   return (
     <LayoutProvider>
       <SidebarProvider defaultOpen={defaultOpen}>
         <SkipToMain />
-        <AppSidebar />
+        <AppSidebar user={session?.user} />
         <SidebarInset
           className={cn(
             // Set content container, so we can use container queries
@@ -43,7 +47,7 @@ const AppLayout = ({ children }: AuthenticatedLayoutProps) => {
             {/* <ThemeSwitch /> */}
             {/* <ConfigDrawer /> */}
             <NotificationCenter />
-            <ProfileDropdown />
+            <ProfileDropdown user={session?.user} />
           </Header>
           {children}
         </SidebarInset>

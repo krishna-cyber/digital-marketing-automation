@@ -1,12 +1,17 @@
 import {
+  Bell,
   BookOpen,
   Calendar,
+  ChartColumnStacked,
+  ClipboardClock,
   FileText,
   HelpCircle,
   LayoutDashboard,
   MessageSquareText,
   Newspaper,
+  Palette,
   PenSquare,
+  Rss,
   Settings,
   Sparkles,
 } from "lucide-react"
@@ -74,8 +79,34 @@ export const sidebarData = {
       items: [
         {
           title: "Settings",
-          url: "/dashboard/settings",
           icon: Settings,
+          items: [
+            {
+              title: "Notifications",
+              url: "/dashboard/settings/notifications",
+              icon: Bell,
+            },
+            {
+              title: "Branding",
+              url: "/dashboard/settings/brand-styles",
+              icon: Palette,
+            },
+            {
+              title: "Scheduling",
+              url: "/dashboard/settings/scheduling-rules",
+              icon: ClipboardClock,
+            },
+            {
+              title: "Channels",
+              url: "/dashboard/settings/channel-connections",
+              icon: Rss,
+            },
+            {
+              title: "Pillar Management",
+              url: "/dashboard/settings/pillar-management",
+              icon: ChartColumnStacked,
+            },
+          ],
         },
         {
           title: "Help",

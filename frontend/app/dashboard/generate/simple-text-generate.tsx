@@ -1,0 +1,80 @@
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Loader2, Sparkles } from "lucide-react"
+import { useState } from "react"
+// import { generateText } from "webllm"
+
+const DEFAULT_PROMPT = "Tell me a short joke about programming"
+
+export interface TextGenerationDemoProps {
+  /** Initial prompt value */
+  defaultPrompt?: string
+  /** Placeholder for input */
+  placeholder?: string
+  /** Temperature for generation (0-1) */
+  temperature?: number
+  /** Max tokens for generation */
+  maxTokens?: number
+}
+
+export function TextGenerationDemo({
+  defaultPrompt = DEFAULT_PROMPT,
+  placeholder = "Enter your prompt...",
+  temperature = 0.7,
+  maxTokens = 150,
+}: TextGenerationDemoProps = {}) {
+  const [prompt, setPrompt] = useState(defaultPrompt)
+  const [response, setResponse] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleGenerate = async () => {
+    if (!prompt.trim()) return
+    setIsLoading(true)
+    setResponse("")
+    try {
+      const result = await generateText({
+        prompt: prompt.trim(),
+        temperature,
+        maxTokens,
+      })
+
+      setResponse(result.text)
+    } catch (error) {
+      setResponse(
+        `Error: ${error instanceof Error ? error.message : "Unknown error"}`
+      )
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <div className="mx-auto w-full max-w-xl space-y-4">
+      <div className="flex gap-2">
+        <Input
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+          placeholder={placeholder}
+          //   onKeyDown={(e) => e.key === "Enter" && handleGenerate()}
+        />
+
+        <Button onClick={handleGenerate} disabled={isLoading || !prompt.trim()}>
+          {isLoading ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Sparkles className="h-4 w-4" />
+          )}
+        </Button>
+      </div>
+      {/* {response && (
+        <Card>
+          <CardContent className="p-4">
+            <p className="text-sm whitespace-pre-wrap">{response}</p>
+          </CardContent>
+        </Card>
+      )} */}
+    </div>
+  )
+}
