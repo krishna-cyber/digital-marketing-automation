@@ -1,5 +1,5 @@
-import { betterAuth } from "better-auth"
 import { prismaAdapter } from "better-auth/adapters/prisma"
+import { betterAuth } from "better-auth/minimal"
 import { nextCookies } from "better-auth/next-js"
 import { twoFactor } from "better-auth/plugins/two-factor"
 import prisma from "./prisma"
