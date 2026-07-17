@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2026-07-15T08:40:16.181Z"
+    "x-generation-date": "2026-07-16T04:41:12.648Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -24,7 +24,7 @@
   },
   "servers": [
     {
-      "url": "https://scorpion-follicle-stilt.ngrok-free.dev/api",
+      "url": "http://localhost:1337/api",
       "description": "Development server"
     }
   ],

@@ -134,7 +134,7 @@ const Calendar = () => {
         buttonDisplay="auto"
         dayMaxEvents={true}
         weekends={weekendsVisible}
-        // events={data ?? []} // alternatively, use the `events` setting to fetch from a feed
+        events={data ?? []} // alternatively, use the `events` setting to fetch from a feed
         initialEvents={INITIAL_EVENTS}
         select={handleDateSelect} // called when a date is selected
         eventContent={renderEventContent} // custom render function
