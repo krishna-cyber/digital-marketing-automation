@@ -41,21 +41,10 @@ export function Enable2faSwitch({ user }: Readonly<{ user: User }>) {
     setEnable2faDialogOpen(false)
   }
 
-  const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log("Form submitted with data:", data)
-    if (data.twoFactor && form.formState.isDirty) {
-      setEnable2faDialogOpen(true)
-    }
-    if (!data.twoFactor && form.formState.isDirty) {
-      setDisable2faDialogOpen(true)
-    }
-  }
-
   return (
     <>
       <form
         id="enable-2fa-form"
-        onChange={form.handleSubmit(onSubmit)}
         className="justify-first flex flex-col items-start"
       >
         <Controller
@@ -80,7 +69,14 @@ export function Enable2faSwitch({ user }: Readonly<{ user: User }>) {
               <Switch
                 name={field.name}
                 checked={field.value}
-                onCheckedChange={(value) => field.onChange(value)}
+                onCheckedChange={(value) => {
+                  field.onChange(value)
+                  if (value) {
+                    setEnable2faDialogOpen(true)
+                  } else {
+                    setDisable2faDialogOpen(true)
+                  }
+                }}
                 aria-invalid={fieldState.invalid}
                 id="sw-tooltip"
               />

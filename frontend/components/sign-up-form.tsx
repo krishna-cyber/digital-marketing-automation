@@ -63,6 +63,7 @@ export function SignUpForm({
       callbackURL: `${window.location.origin}/sign-in`,
       fetchOptions: {
         onSuccess(context) {
+          window.location.href = context.data?.redirectTo || "/sign-in"
           toast.success(
             context.data?.message || "Account created successfully."
           )

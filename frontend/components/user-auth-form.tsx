@@ -60,8 +60,12 @@ export function UserAuthForm({
         onSuccess: (context) => {
           if (context.data.twoFactorRedirect) {
             const methods = context.data.twoFactorMethods
-            if (methods?.includes("otp")) {
-              router.push("/verify-otp")
+            console.log(
+              "Two-factor authentication is enabled. Available methods:",
+              methods
+            )
+            if (methods?.includes("totp")) {
+              router.push(`/verify-otp?type=totp`)
             } else {
               toast.error(
                 "Two-factor authentication is enabled, but no supported methods are available."

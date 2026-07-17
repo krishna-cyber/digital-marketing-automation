@@ -14,11 +14,14 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
+import { authClient } from "@/lib/auth-client"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "next/navigation"
 
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import { z } from "zod"
 
 export const otpFormSchema = z.object({
@@ -30,7 +33,8 @@ export const otpFormSchema = z.object({
 
 type OtpFormProps = React.HTMLAttributes<HTMLFormElement>
 
-export function OtpForm({ className, ...props }: OtpFormProps) {
+export function OtpForm({ className, ...props }: Readonly<OtpFormProps>) {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
   const form = useForm<z.infer<typeof otpFormSchema>>({
@@ -41,9 +45,23 @@ export function OtpForm({ className, ...props }: OtpFormProps) {
   // eslint-disable-next-line react-hooks/incompatible-library
   const otp = form.watch("otp")
 
-  function onSubmit(data: z.infer<typeof otpFormSchema>) {
+  async function onSubmit(data: z.infer<typeof otpFormSchema>) {
     setIsLoading(true)
-    console.log(data)
+    await authClient.twoFactor.verifyTotp({
+      code: data.otp, // required
+      trustDevice: true,
+      fetchOptions: {
+        onSuccess() {
+          setIsLoading(false)
+          toast.success("Successfully authenticated!")
+          router.push("/dashboard")
+        },
+        onError({ error }) {
+          setIsLoading(false)
+          toast.error(error.message || "Failed to verify OTP.")
+        },
+      },
+    })
   }
 
   return (

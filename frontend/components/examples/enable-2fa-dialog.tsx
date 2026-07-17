@@ -79,7 +79,6 @@ export function Enable2faDialog({
   }
 
   const verifyOtpSubmit = async (otp: z.infer<typeof otpFormSchema>) => {
-    console.log("Verifying OTP with data:", otp) // Log the OTP data for debugging
     await authClient.twoFactor.verifyTotp({
       code: otp.otp,
       trustDevice: true,
@@ -88,10 +87,10 @@ export function Enable2faDialog({
           toast.success(
             "Two-factor authentication enabled and verified successfully."
           )
-          setOpen(false)
-          settotpURI(null)
+          window.location.reload()
         },
         onError({ error }) {
+          window.location.reload()
           toast.error(
             error.message || "Failed to verify two-factor authentication."
           )

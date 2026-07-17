@@ -18,6 +18,13 @@ export const auth = betterAuth({
     twoFactor({
       skipVerificationOnEnable: true,
       trustDeviceMaxAge: 30 * 24 * 60 * 60, // 30 days in seconds
+      otpOptions: {
+        async sendOTP({ user, otp }, ctx) {
+          console.log("generated otp", otp)
+          console.log("user for otp", user)
+          // send otp to user
+        },
+      },
     }),
     nextCookies(),
   ],
@@ -30,7 +37,7 @@ export const auth = betterAuth({
     disableOriginCheck: true,
   },
   logger: {
-    level: "debug",
+    level: "info",
   },
   experimental: { joins: true },
 })
