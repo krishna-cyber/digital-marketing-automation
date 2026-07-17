@@ -21,7 +21,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-const formSchema = z.object({
+export const otpFormSchema = z.object({
   otp: z
     .string()
     .min(6, "Please enter the 6-digit code.")
@@ -33,15 +33,15 @@ type OtpFormProps = React.HTMLAttributes<HTMLFormElement>
 export function OtpForm({ className, ...props }: OtpFormProps) {
   const [isLoading, setIsLoading] = useState(false)
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof otpFormSchema>>({
+    resolver: zodResolver(otpFormSchema),
     defaultValues: { otp: "" },
   })
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const otp = form.watch("otp")
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  function onSubmit(data: z.infer<typeof otpFormSchema>) {
     setIsLoading(true)
     console.log(data)
   }

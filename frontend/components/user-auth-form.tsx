@@ -57,12 +57,23 @@ export function UserAuthForm({
       password: data.password,
       // callbackURL: `${window.location.origin}/dashboard`,
       fetchOptions: {
-        onSuccess() {
-          toast.success("Signed in successfully.")
-          router.push("/dashboard")
+        onSuccess: (context) => {
+          if (context.data.twoFactorRedirect) {
+            const methods = context.data.twoFactorMethods
+            if (methods?.includes("otp")) {
+              router.push("/verify-otp")
+            } else {
+              toast.error(
+                "Two-factor authentication is enabled, but no supported methods are available."
+              )
+            }
+          } else {
+            toast.success("Signed in successfully.")
+            router.push("/dashboard")
+          }
         },
-        onError(context) {
-          toast.error(context.error?.message || "Failed to sign in.")
+        onError: ({ error }) => {
+          toast.error(error.message || "Failed to sign in.")
         },
       },
     })
@@ -137,16 +148,6 @@ export function UserAuthForm({
           <Image src="/google.svg" alt="Google" width={16} height={16} />
           Google
         </Button>
-        {/* <div className="grid grid-cols-2 gap-2"> */}
-        {/* <Button variant="outline" type="button" disabled={isLoading}> */}
-        {/* <Button variant="outline" type="button"> */}
-        {/* <Google className="h-4 w-4" /> GitHub */}
-        {/* </Button> */}
-        {/* <Button variant="outline" type="button" disabled={isLoading}> */}
-        {/* <Button variant="outline" type="button"> */}
-        {/* <IconFacebook className="h-4 w-4" /> Facebook */}
-        {/* </Button> */}
-        {/* </div> */}
       </form>
     </Form>
   )

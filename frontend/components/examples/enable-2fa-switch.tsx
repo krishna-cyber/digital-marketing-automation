@@ -7,42 +7,46 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { authClient } from "@/lib/auth-client"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { HelpCircleIcon } from "lucide-react"
 
+import { User } from "@/lib/auth"
+import { HelpCircleIcon } from "lucide-react"
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-import { toast } from "sonner"
 import z from "zod"
-import { Dialog } from "../ui/dialog"
 import { Disable2faDialog } from "./confirm-disable-2fa"
-import { Enable2faDialog } from "./enable-2fa"
-
+import { Enable2faDialog } from "./enable-2fa-dialog"
 const formSchema = z.object({
   twoFactor: z.boolean().optional(),
 })
 
-export function Enable2faSwitch() {
+export function Enable2faSwitch({ user }: Readonly<{ user: User }>) {
   const [disable2faDialogOpen, setDisable2faDialogOpen] = useState(false)
   const [enable2faDialogOpen, setEnable2faDialogOpen] = useState(false)
-  const { data } = authClient.useSession()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      twoFactor: data?.user.twoFactorEnabled ?? false,
+      twoFactor: user?.twoFactorEnabled || false,
     },
   })
 
   const handleDisable2faDialogClose = () => {
-    form.resetDefaultValues({ twoFactor: data?.user.twoFactorEnabled ?? false })
+    form.reset()
     setDisable2faDialogOpen(false)
   }
 
+  const handleEnable2faDialogClose = () => {
+    form.reset()
+    setEnable2faDialogOpen(false)
+  }
+
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    if (data.twoFactor) {
+    console.log("Form submitted with data:", data)
+    if (data.twoFactor && form.formState.isDirty) {
       setEnable2faDialogOpen(true)
-    } else {
+    }
+    if (!data.twoFactor && form.formState.isDirty) {
       setDisable2faDialogOpen(true)
     }
   }
@@ -76,7 +80,7 @@ export function Enable2faSwitch() {
               <Switch
                 name={field.name}
                 checked={field.value}
-                onCheckedChange={field.onChange}
+                onCheckedChange={(value) => field.onChange(value)}
                 aria-invalid={fieldState.invalid}
                 id="sw-tooltip"
               />
@@ -91,7 +95,7 @@ export function Enable2faSwitch() {
       />
       <Enable2faDialog
         open={enable2faDialogOpen}
-        setOpen={setEnable2faDialogOpen}
+        setOpen={handleEnable2faDialogClose}
       />
     </>
   )

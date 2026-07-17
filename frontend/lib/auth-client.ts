@@ -8,5 +8,5 @@ export const authClient = createAuthClient({
       "content-type": "application/json",
     },
   },
-  // plugins: [twoFactorClient(), nextCookies()],
+  plugins: [twoFactorClient(), nextCookies()],
 })

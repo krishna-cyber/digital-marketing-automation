@@ -15,9 +15,10 @@ export const auth = betterAuth({
     autoSignIn: false,
   },
   plugins: [
-    // twoFactor({
-    //   skipVerificationOnEnable: true,
-    // }),
+    twoFactor({
+      skipVerificationOnEnable: true,
+      trustDeviceMaxAge: 30 * 24 * 60 * 60, // 30 days in seconds
+    }),
     nextCookies(),
   ],
   session: {
@@ -35,3 +36,5 @@ export const auth = betterAuth({
 })
 
 export type Session = typeof auth.$Infer.Session
+
+export type User = (typeof auth.$Infer.Session)["user"]

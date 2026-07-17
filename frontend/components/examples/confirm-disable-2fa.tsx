@@ -8,9 +8,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { authClient } from "@/lib/auth-client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { AlertTriangleIcon } from "lucide-react"
 import { Controller, useForm } from "react-hook-form"
+import { toast } from "sonner"
 import z from "zod"
 import { PasswordInput } from "../password-input"
 import { Field, FieldError, FieldLabel } from "../ui/field"
@@ -30,12 +32,22 @@ export function Disable2faDialog({
       password: "",
     },
   })
-  const handleSubmit = async () => {
-    // Call the API to disable 2FA here
-    // For example:
-    // await authClient.twoFactor.disable();
-
-    // Close the dialog after disabling 2FA
+  const handleSubmit = async (data: z.infer<typeof Disable2faSchema>) => {
+    await authClient.twoFactor.disable({
+      password: data.password,
+      fetchOptions: {
+        onSuccess: () => {
+          toast.success("Two-factor authentication disabled successfully.")
+          window.location.reload()
+        },
+        onError: ({ error }) => {
+          toast.error(
+            error.message || "Failed to disable two-factor authentication."
+          )
+          window.location.reload()
+        },
+      },
+    })
     setOpen(false)
   }
   return (
