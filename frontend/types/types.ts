@@ -94,3 +94,63 @@ export interface AIAutocompleteState {
   ghostPosition: GhostTextPosition | null
   isEnabled: boolean
 }
+
+export type PillarCategory =
+  "thought_leadership" | "social" | "blog" | "linkedin_article"
+
+export type PillarContent =
+  | "Education"
+  | "Case Studies"
+  | "Behind the Build"
+  | "AI Adoption"
+  | "Founder's Journey & Vision"
+  | "Thought Leadership"
+  | "AI Receptionist"
+  | "Customer Service Automation"
+  | "AI Staff Augmentation"
+  | "Palm Concierge"
+  | "Custom AI Solutions"
+
+export const PILLARS: Record<PillarCategory, PillarContent[]> = {
+  thought_leadership: [
+    "Education",
+    "Case Studies",
+    "Behind the Build",
+    "AI Adoption",
+    "Founder's Journey & Vision",
+    "Thought Leadership",
+  ],
+  social: [
+    "AI Receptionist",
+    "Customer Service Automation",
+    "AI Staff Augmentation",
+    "Palm Concierge",
+    "Custom AI Solutions",
+  ],
+  blog: [
+    "AI Receptionist",
+    "Customer Service Automation",
+    "AI Staff Augmentation",
+    "Palm Concierge",
+    "Custom AI Solutions",
+  ],
+  linkedin_article: [
+    "AI Receptionist",
+    "Customer Service Automation",
+    "AI Staff Augmentation",
+    "Palm Concierge",
+    "Custom AI Solutions",
+  ],
+}
+
+export type CalendarEventStatus =
+  | "draft"
+  | "generating"
+  | "ready"
+  | "review"
+  | "approved"
+  | "scheduled"
+  | "publishing"
+  | "published"
+  | "failed"
+  | "rejected"

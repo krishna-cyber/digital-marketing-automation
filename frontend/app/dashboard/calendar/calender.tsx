@@ -24,6 +24,87 @@ import { toast } from "sonner"
 
 console.log("initial events", INITIAL_EVENTS)
 
+export const renderBadgeEventStatus = (status: string) => {
+  switch (status) {
+    case "draft":
+      return (
+        <span className="rounded bg-gray-500 px-1 py-0.5 text-[10px] font-semibold tracking-wide text-white">
+          {status}
+        </span>
+      )
+
+    case "generating":
+      return (
+        <span className="rounded bg-blue-600 px-1 py-0.5 text-[10px] font-semibold tracking-wide text-white">
+          {status}
+        </span>
+      )
+
+    case "ready":
+      return (
+        <span className="rounded bg-cyan-600 px-1 py-0.5 text-[10px] font-semibold tracking-wide text-white">
+          {status}
+        </span>
+      )
+
+    case "review":
+      return (
+        <span className="rounded bg-purple-600 px-1 py-0.5 text-[10px] font-semibold tracking-wide text-white">
+          {status}
+        </span>
+      )
+
+    case "approved":
+      return (
+        <span className="rounded bg-emerald-600 px-1 py-0.5 text-[10px] font-semibold tracking-wide text-white">
+          {status}
+        </span>
+      )
+
+    case "scheduled":
+      return (
+        <span className="rounded bg-indigo-600 px-1 py-0.5 text-[10px] font-semibold tracking-wide text-white">
+          {status}
+        </span>
+      )
+
+    case "publishing":
+      return (
+        <span className="rounded bg-yellow-600 px-1 py-0.5 text-[10px] font-semibold tracking-wide text-white">
+          {status}
+        </span>
+      )
+
+    case "published":
+      return (
+        <span className="rounded bg-green-700 px-1 py-0.5 text-[10px] font-semibold tracking-wide text-white">
+          {status}
+        </span>
+      )
+
+    case "failed":
+      return (
+        <span className="rounded bg-red-600 px-1 py-0.5 text-[10px] font-semibold tracking-wide text-white">
+          {status}
+        </span>
+      )
+
+    case "rejected":
+      return (
+        <span className="rounded bg-rose-700 px-1 py-0.5 text-[10px] font-semibold tracking-wide text-white">
+          {status}
+        </span>
+      )
+
+    default:
+      return (
+        <span className="rounded bg-gray-500 px-1 py-0.5 text-[10px] font-semibold tracking-wide text-white">
+          {status}
+        </span>
+      )
+  }
+}
+
 interface DateSelectInfor {
   isOpen: boolean
   allday: boolean
@@ -49,7 +130,7 @@ function handleDateSelect(selectInfo: DateSelectInfo) {
 
 const Calendar = () => {
   const { data, isLoading } = useQuery({
-    queryKey: ["calendar-events"],
+    queryKey: ["calendar", "events"],
     queryFn: async () => {
       const response = await api.get("/api/v1/calendar")
       return response.data as ExtendedEventInput[]
@@ -164,11 +245,28 @@ const Calendar = () => {
 }
 
 function renderEventContent(eventInfo: EventDisplayInfo) {
+  const { topic, channel, pillar, status, subtopics, keywords } = eventInfo
+    .event.extendedProps as ExtendedEventInput
+  console.log("eventInfo", eventInfo)
+
+  // console.log("eventInfo", eventInfo.event.extendedProps)
   return (
-    <>
-      <b>{eventInfo.timeText}</b>
-      <i>{eventInfo.event.title}</i>
-    </>
+    <div className="flex flex-col gap-0.5 overflow-hidden px-1 py-0.5">
+      <b className="text-xs">{eventInfo.timeText}</b>
+      <p className="truncate text-xs font-medium">{topic}</p>
+      <div className="flex items-center gap-1 text-[10px]">
+        <span
+          className="rounded px-1 py-0.5 font-medium"
+          style={{ backgroundColor: eventInfo.event.color }}
+        >
+          {pillar}
+        </span>
+        <span className="opacity-70">{channel.replace(/_/g, " ")}</span>
+      </div>
+      <div className="flex items-center gap-1">
+        {renderBadgeEventStatus(status)}
+      </div>
+    </div>
   )
 }
 export default Calendar

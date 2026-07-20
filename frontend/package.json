@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "email:dev": "email dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -60,6 +61,7 @@
     "react-colorful": "^5.7.0",
     "react-day-picker": "^10.0.1",
     "react-dom": "19.2.4",
+    "react-email": "^6.9.0",
     "react-hook-form": "^7.80.0",
     "react-hotkeys-hook": "^5.3.3",
     "react-qr-code": "^2.2.0",
@@ -74,6 +76,7 @@
   },
   "devDependencies": {
     "@base-ui/react": "^1.6.0",
+    "@react-email/ui": "6.9.0",
     "@tailwindcss/postcss": "^4",
     "@tanstack/eslint-plugin-query": "^5.101.2",
     "@tanstack/react-ai-devtools": "^0.2.65",

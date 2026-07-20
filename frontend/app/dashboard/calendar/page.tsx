@@ -2,7 +2,6 @@ import { Main } from "@/components/layout/main"
 
 import React from "react"
 import Calendar from "./calender"
-import { ExtendedEventInput } from "./data"
 
 const page = async () => {
   //Fetch events and pass to the calender component for initial events
