@@ -4,7 +4,6 @@ import FullCalendar, {
   EventApi,
   EventClickInfo,
   EventDisplayInfo,
-  formatDate,
 } from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/react/daygrid"
 import interactionPlugin from "@fullcalendar/react/interaction"

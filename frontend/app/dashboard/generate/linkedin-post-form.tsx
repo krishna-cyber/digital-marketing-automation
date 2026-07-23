@@ -16,6 +16,43 @@ const formSchema = z.object({
   prompt: z.string().min(1, "Prompt is required"),
 })
 
+export const linkedInPostSchema = z.object({
+  title: z.string().min(1, "Title is required").max(200),
+  content: z.string().min(1, "Content is required").max(3000),
+  postStatus: z
+    .enum(["draft", "scheduled", "published", "failed"])
+    .default("draft"),
+  scheduledDate: z.string().datetime().optional().nullable(),
+  publishedDate: z.string().datetime().optional().nullable(),
+  mediaType: z
+    .enum(["text_only", "image", "video", "document", "multi_image"])
+    .default("text_only"),
+  mediaFiles: z.array(z.string()).max(9).optional(),
+  mediaUrls: z.array(z.string().url()).optional().nullable(),
+  thumbnail: z.string().optional().nullable(),
+  linkedInPostId: z.string().optional().nullable(),
+  linkedInPostUrl: z.string().url().optional().nullable(),
+  hashtags: z.string().optional().nullable(),
+  mentions: z.string().optional().nullable(),
+  visibility: z
+    .enum(["public", "connections_only", "specific_audience"])
+    .default("public"),
+  companyPageId: z.string().optional().nullable(),
+  postType: z.enum(["organic", "promoted", "sponsored"]).default("organic"),
+  engagementMetrics: z
+    .object({
+      likes: z.number().optional(),
+      comments: z.number().optional(),
+      shares: z.number().optional(),
+      impressions: z.number().optional(),
+    })
+    .optional()
+    .nullable(),
+  errorLog: z.string().optional().nullable(),
+  retryCount: z.number().int().min(0).max(10).default(0),
+  autoRetry: z.boolean().default(true),
+})
+
 const LinkedinPostForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
