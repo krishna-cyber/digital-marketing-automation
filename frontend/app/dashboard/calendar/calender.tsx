@@ -20,6 +20,7 @@ import "@fullcalendar/react/themes/classic/palette.css"
 import "@fullcalendar/react/themes/classic/theme.css"
 import { useQuery } from "@tanstack/react-query"
 import { toast } from "sonner"
+import EventDetailsDrawer from "./event-details-drawer"
 
 console.log("initial events", INITIAL_EVENTS)
 
@@ -143,7 +144,8 @@ const Calendar = () => {
   const [eventAddOpen, setEventAddOpen] = useState<DateSelectInfor | boolean>(
     false
   )
-
+  const [eventDetailsOpen, setEventDetailsOpen] = useState(false)
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null)
   function handleWeekendsToggle() {
     setWeekendsVisible(!weekendsVisible)
   }
@@ -181,11 +183,15 @@ const Calendar = () => {
   }
   function handleEventClick(clickInfo: EventClickInfo) {
     if (
-      confirm(
-        `Are you sure you want to delete the event '${clickInfo.event.title}'`
-      )
+      true
+      // confirm(
+      //   `Are you sure you want to delete the event '${clickInfo.event.title}'`
+      // )
     ) {
-      clickInfo.event.remove()
+      console.log("Event clicked:", clickInfo.event.id)
+      setSelectedEventId(clickInfo.event.id)
+      setEventDetailsOpen(true)
+      // clickInfo.event.remove()
     }
   }
 
@@ -238,6 +244,11 @@ const Calendar = () => {
         }
         setEventAddOpen={setEventAddOpen}
         handleSubmit={onSubmit}
+      />
+      <EventDetailsDrawer
+        open={eventDetailsOpen}
+        eventId={selectedEventId}
+        setOpen={setEventDetailsOpen}
       />
     </>
   )

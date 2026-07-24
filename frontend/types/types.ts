@@ -20,6 +20,51 @@ export type Notification = {
 export interface CalendarEvent {
   id: string
   title: string
+  description: string
+  topic: string
+  channel: string
+  pillar: string
+  status: CalendarEventStatus
+  subtopics: string[]
+  keywords: string[]
+  research_insight: string
+  strapi_entry_id?: number | null
+  live_url?: string | null
+  color: string
+  start: Date
+  end: Date
+}
+
+export interface ExtendedEventInput {
+  id: string
+  title: string
+  topic: string
+  channel: string
+  pillar: string
+  status: CalendarEventStatus
+  subtopics: string[]
+  keywords: string[]
+  research_insight: string
+  strapi_entry_id?: number | null
+  live_url?: string | null
+  color: string
+  start: Date
+  end: Date
+}
+
+export interface EventDisplayInfo {
+  id: string
+  title: string
+  topic: string
+  channel: string
+  pillar: string
+  status: CalendarEventStatus
+  subtopics: string[]
+  keywords: string[]
+  research_insight: string
+  strapi_entry_id?: string | null
+  live_url?: string | null
+  color: string
   start: Date
   end: Date
   backgroundColor?: string
@@ -147,10 +192,61 @@ export type CalendarEventStatus =
   | "draft"
   | "generating"
   | "ready"
-  | "review"
-  | "approved"
-  | "scheduled"
-  | "publishing"
-  | "published"
+  | "review" //strapi ready
+  | "approved" //strapi ready
+  | "scheduled" //strapi ready
+  | "publishing" //strapi ready
+  | "published" //strapi ready
   | "failed"
   | "rejected"
+
+// Required fields only
+export interface MediaFile {
+  id: number
+  documentId: string
+  name: string
+  alternativeText: string | null
+  caption: string | null
+  focalPoint: { x: number; y: number } | null
+
+  formats: {
+    [key: string]: {
+      url: string
+      ext: string
+      hash: string
+      mime: string
+      name: string
+      path: string | null
+      size: number
+      width: number
+      height: number
+      sizeInBytes: number
+    }
+  }
+  width: number
+  height: number
+  hash: string
+  ext: string
+  mime: string
+  size: number
+  url: string
+  previewUrl: string | null
+  provider: string
+  provider_metadata: unknown
+  createdAt: string
+  publishedAt: string
+  updatedAt: string
+  isUrlSigned: boolean
+}
+
+export type MediaApiResponse = {
+  data: MediaFile[]
+  meta: {
+    pagination: {
+      page: number
+      pageCount: number
+      pageSize: number
+      total: number
+    }
+  }
+}

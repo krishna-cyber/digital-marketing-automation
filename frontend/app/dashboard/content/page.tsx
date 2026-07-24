@@ -1,6 +1,5 @@
 import { Main } from "@/components/layout/main"
-import UploadMedia from "@/components/upload-media"
-import React from "react"
+
 import TabsRender from "./tabs-render"
 
 const page = () => {
@@ -16,7 +15,6 @@ const page = () => {
         </span>
       </div>
       <TabsRender />
-      <UploadMedia />
     </Main>
   )
 }

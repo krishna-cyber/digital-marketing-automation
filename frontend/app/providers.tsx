@@ -8,6 +8,7 @@ import { aiDevtoolsPlugin } from "@tanstack/react-ai-devtools"
 import { TanStackDevtools } from "@tanstack/react-devtools"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools"
+import { NuqsAdapter } from "nuqs/adapters/next/app"
 import { useState } from "react"
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -26,7 +27,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <Toaster />
       <TooltipProvider>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <NuqsAdapter>{children}</NuqsAdapter>
+        </ThemeProvider>
       </TooltipProvider>
       {/* Devtools will only appear in development environments */}
       <TanStackDevtools
