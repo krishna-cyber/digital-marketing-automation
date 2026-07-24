@@ -58,7 +58,7 @@ export const defaultColumns = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Size (KB)" />
     ),
-    cell: (props) => <p>{(props.getValue() / 1024).toFixed(2)}</p>,
+    cell: (props) => <p>{props.getValue().toFixed()}</p>,
     enableSorting: false,
   }),
   columnHelper.accessor("createdAt", {

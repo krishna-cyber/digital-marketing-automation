@@ -33,7 +33,8 @@ const DeleteMediaAlert = () => {
       queryClient.invalidateQueries({ queryKey: ["medias"] })
     },
     onError: (error) => {
-      toast.error("Error deleting media asset: " + error)
+      console.error("Error deleting media asset:", error)
+      toast.error("Error deleting media asset.")
       setOpen(null)
     },
   })
