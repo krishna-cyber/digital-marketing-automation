@@ -2,11 +2,11 @@
 import { MediaFile } from "@/types/types"
 import React, { useState } from "react"
 
-type UsersDialogType = "invite" | "add" | "edit" | "delete"
+type MediaDialogType = "edit" | "delete"
 
 type MediaContextType = {
-  open: UsersDialogType | null
-  setOpen: (str: UsersDialogType | null) => void
+  open: MediaDialogType | null
+  setOpen: (str: MediaDialogType | null) => void
   currentRow: MediaFile | null
   setCurrentRow: React.Dispatch<React.SetStateAction<MediaFile | null>>
 }
@@ -14,7 +14,7 @@ type MediaContextType = {
 const MediaContext = React.createContext<MediaContextType | null>(null)
 
 export function MediaProvider({ children }: { children: React.ReactNode }) {
-  const [open, setOpen] = useState<UsersDialogType | null>(null)
+  const [open, setOpen] = useState<MediaDialogType | null>(null)
   const [currentRow, setCurrentRow] = useState<MediaFile | null>(null)
 
   return (

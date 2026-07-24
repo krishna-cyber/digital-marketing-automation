@@ -29,7 +29,9 @@ import {
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs"
 import { useState } from "react"
 import { defaultMediaData } from "../data/data"
+import DeleteMediaAlert from "./delete-media-alert"
 import { defaultColumns as columns } from "./media-columns"
+import MediaEditDialog from "./media-edit-dialog"
 
 const searchParams = {
   searchQuery: parseAsString.withDefault(""),
@@ -190,6 +192,8 @@ export function MediaTable({
       )}
 
       <DataTablePagination table={table} className="mt-auto" />
+      <MediaEditDialog />
+      <DeleteMediaAlert />
     </div>
   )
 }
