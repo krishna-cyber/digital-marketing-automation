@@ -34,15 +34,11 @@ const TabsRender = () => {
         </TabsContent>
         <TabsContent value="media-assets">
           <div className="mb-2.5 flex flex-wrap items-end justify-between gap-2">
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight">
-                Media Assets
-              </h2>
-              <p className="text-muted-foreground">
-                Manage your media assets here. You can upload, view, and
-                organize them.
-              </p>
-            </div>
+            <p className="text-muted-foreground">
+              Manage your media assets here. You can upload, view, download and
+              organize them.
+            </p>
+
             <UploadMedia title="Upload Media" />
           </div>
           <MediaProvider>
