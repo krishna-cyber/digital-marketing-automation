@@ -4,8 +4,7 @@
   "info": {
     "singularName": "linkedin-post",
     "pluralName": "linkedin-posts",
-    "displayName": "LinkedIn Post",
-    "description": "Manage LinkedIn posts for social media scheduling and publishing"
+    "displayName": "linkedin_article"
   },
   "options": {
     "draftAndPublish": true
@@ -13,123 +12,53 @@
   "pluginOptions": {},
   "attributes": {
     "title": {
-      "type": "string",
-      "required": true,
-      "unique": true,
-      "maxLength": 200,
-      "pluginOptions": {}
+      "type": "string"
     },
     "content": {
-      "type": "text",
-      "required": true,
-      "maxLength": 3000,
-      "pluginOptions": {}
+      "type": "richtext"
     },
-    "postStatus": {
-      "type": "enumeration",
-      "enum": ["draft", "scheduled", "published", "failed"],
-      "default": "draft",
-      "required": true
+    "linkedin_post_id": {
+      "type": "string"
     },
-    "scheduledDate": {
-      "type": "datetime",
-      "required": false
+    "linkedin_post_url": {
+      "type": "string"
     },
-    "publishedDate": {
-      "type": "datetime",
-      "required": false
+    "post_status": {
+      "type": "string"
     },
-    "mediaType": {
-      "type": "enumeration",
-      "enum": ["text_only", "image", "video", "document", "multi_image"],
-      "default": "text_only"
-    },
-    "mediaFiles": {
+    "media_files": {
       "type": "media",
       "multiple": true,
-      "allowedTypes": ["images", "files", "videos"],
-      "max": 9
-    },
-    "mediaUrls": {
-      "type": "json",
-      "required": false,
-      "description": "External URLs for media files (for cloud storage)"
+      "allowedTypes": ["images", "files", "videos", "audios"]
     },
     "thumbnail": {
       "type": "media",
-      "allowedTypes": ["images"],
-      "multiple": false
+      "multiple": false,
+      "allowedTypes": ["images", "files", "videos", "audios"]
     },
-    "linkedInPostId": {
-      "type": "string",
-      "required": false,
-      "unique": true,
-      "description": "The ID returned from LinkedIn API after publishing"
-    },
-    "linkedInPostUrl": {
-      "type": "string",
-      "required": false,
-      "description": "The URL of the published LinkedIn post"
-    },
-    "hashtags": {
-      "type": "text",
-      "required": false,
-      "description": "Comma-separated list of hashtags"
-    },
-    "mentions": {
-      "type": "text",
-      "required": false,
-      "description": "Comma-separated list of LinkedIn profiles or companies to mention"
+    "media_type": {
+      "type": "string"
     },
     "visibility": {
-      "type": "enumeration",
-      "enum": ["public", "connections_only", "specific_audience"],
-      "default": "public"
+      "type": "string"
     },
-    "audienceSegments": {
-      "type": "json",
-      "required": false,
-      "description": "Specific audience segments for targeting"
+    "post_type": {
+      "type": "string"
     },
-    "companyPageId": {
-      "type": "string",
-      "required": false,
-      "description": "LinkedIn Company Page ID if posting as organization"
+    "event_id": {
+      "type": "uid"
     },
-    "postType": {
-      "type": "enumeration",
-      "enum": ["organic", "promoted", "sponsored"],
-      "default": "organic"
+    "image_alt_text": {
+      "type": "text"
     },
-    "promotionDetails": {
-      "type": "json",
-      "required": false,
-      "description": "Details about sponsored/promoted posts"
+    "image_prompt": {
+      "type": "text"
     },
-    "engagementMetrics": {
-      "type": "json",
-      "required": false,
-      "description": "Engagement metrics from LinkedIn API (likes, comments, shares, etc.)"
+    "start_date": {
+      "type": "datetime"
     },
-    "errorLog": {
-      "type": "text",
-      "required": false,
-      "description": "Error messages from failed publishing attempts"
-    },
-    "retryCount": {
-      "type": "integer",
-      "default": 0,
-      "min": 0,
-      "max": 10
-    },
-    "autoRetry": {
-      "type": "boolean",
-      "default": true
-    },
-    "customMetadata": {
-      "type": "json",
-      "required": false,
-      "description": "Custom metadata for advanced use cases"
+    "end_date": {
+      "type": "datetime"
     }
   }
 }

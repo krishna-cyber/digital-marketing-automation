@@ -1,5 +1,4 @@
 "use client"
-
 import { DataTablePagination } from "@/components/data-table-pagination"
 import { DataTableToolbar } from "@/components/data-table-toolbar"
 import { DataTableSkeleton } from "@/components/examples/data-table-skleton"
@@ -20,7 +19,7 @@ import {
 } from "@/components/ui/table"
 import { strapiRequest } from "@/lib/api"
 import { cn } from "@/lib/utils"
-import { MediaApiResponse } from "@/types/types"
+import { LinkedInPostsResponse } from "@/types/types"
 import { useQuery } from "@tanstack/react-query"
 import {
   type SortingState,
@@ -69,15 +68,17 @@ export function PostsTable({
     queryFn: async () => {
       const response = await strapiRequest.get(
         // Strapi's pagination[page] is 1-indexed — convert here, keep table 0-indexed internally
-        `/api/upload/files/page?pagination[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
+        // `/api/linkedin-posts/page?pagination[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
+        `api/socials?populate=*`
       )
       setLinkedinPostsCount(response.data.meta.pagination.total ?? 0)
-      return response.data as MediaApiResponse
+      return response.data as LinkedInPostsResponse
     },
     placeholderData: (previousData) => previousData,
   })
+  console.log("postsData", postsData)
 
-  // const rows = postsData?.data ?? linkedinPosts
+  // const rows = postsData?.data ?? []
   const rows = linkedinPosts
   const pageCount = postsData?.meta?.pagination?.pageCount ?? -1
 

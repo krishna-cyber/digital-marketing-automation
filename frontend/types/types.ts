@@ -286,7 +286,7 @@ export interface LinkedInPost {
 }
 
 // API Response types
-export interface LinkedInPostResponse {
+export interface LinkedInPostsResponse {
   data: LinkedInPost[]
   meta?: {
     pagination?: {
