@@ -236,7 +236,7 @@ export interface MediaFile {
   createdAt: string
   publishedAt: string
   updatedAt: string
-  isUrlSigned: boolean
+  isUrlSigned?: boolean
   duration?: number //only for video files
 }
 
@@ -265,24 +265,26 @@ export type MediaType = "text" | "image" | "document"
 // Main LinkedIn Post type based on your actual schema
 export interface LinkedInPost {
   id: number
+  documentId: string
   title: string | null
-  content: string | null // richtext field
-  linkedin_post_id: string | null
-  linkedin_post_url: string | null
+  content: string | null // Rich text
+  linkedin_post_id?: string | null
+  linkedin_post_url?: string | null
   post_status: CalendarEventStatus
   media_files: MediaFile[] | null
   thumbnail: MediaFile | null
   media_type: MediaType
+  hashtags?: string | null
   visibility: string | null
   post_type: string | null
-  event_id: string | null // uid field
-  image_alt_text: string | null
-  image_prompt: string | null
-  start_date: string | null // datetime ISO string
-  end_date: string | null // datetime ISO string
+  event_id: string | null
+  image_alt_text?: string | null
+  image_prompt?: string | null
+  start_date: string | null // ISO Date String
+  end_date: string | null // ISO Date String
   createdAt: string
   updatedAt: string
-  publishedAt?: string | null // Added by draftAndPublish option
+  publishedAt?: string | null
 }
 
 // API Response types

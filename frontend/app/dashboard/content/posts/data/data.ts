@@ -1,30 +1,4 @@
-import { LinkedInPost, MediaFile } from "@/types/types"
-
-const now = "2026-01-10T09:00:00.000Z"
-
-const baseMedia = (
-  overrides: Partial<MediaFile> &
-    Pick<MediaFile, "id" | "name" | "size" | "url">
-): MediaFile => ({
-  documentId: "doc-media",
-  alternativeText: null,
-  caption: null,
-  focalPoint: null,
-  formats: {},
-  width: 1920,
-  height: 1080,
-  hash: "hash-placeholder",
-  ext: ".jpg",
-  mime: "image/jpeg",
-  provider: "aws-s3",
-  provider_metadata: null,
-  previewUrl: null,
-  createdAt: now,
-  publishedAt: now,
-  updatedAt: now,
-  isUrlSigned: false,
-  ...overrides,
-})
+import { LinkedInPost } from "@/types/types"
 
 export const linkedinPosts: LinkedInPost[] = [
   {
