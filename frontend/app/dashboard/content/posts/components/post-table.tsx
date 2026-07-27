@@ -3,7 +3,13 @@
 import { DataTablePagination } from "@/components/data-table-pagination"
 import { DataTableToolbar } from "@/components/data-table-toolbar"
 import { DataTableSkeleton } from "@/components/examples/data-table-skleton"
-import EmptyMediaContent from "@/components/examples/empty-media"
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty"
 import {
   Table,
   TableBody,
@@ -27,11 +33,13 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
+import { Rss } from "lucide-react"
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs"
 import { useState } from "react"
-import DeleteMediaAlert from "./delete-media-alert"
-import { defaultColumns as columns } from "./media-columns"
-import MediaEditDialog from "./media-edit-dialog"
+import { linkedinPosts } from "../data/data"
+import DeletePostAlert from "./delete-post-alert"
+import { defaultColumns as columns } from "./post-columns"
+import PostsEditDialog from "./post-edit-dialog"
 
 const searchParams = {
   searchQuery: parseAsString.withDefault(""),
@@ -39,10 +47,10 @@ const searchParams = {
   pageSize: parseAsInteger.withDefault(10),
 }
 
-export function MediaTable({
-  setMediaAssetsCount,
+export function PostsTable({
+  setLinkedinPostsCount,
 }: Readonly<{
-  setMediaAssetsCount: React.Dispatch<React.SetStateAction<number>>
+  setLinkedinPostsCount: React.Dispatch<React.SetStateAction<number>>
 }>) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
@@ -53,24 +61,25 @@ export function MediaTable({
   const [{ pageIndex, pageSize }, setSearch] = useQueryStates(searchParams)
 
   const {
-    data: mediaData,
+    data: postsData,
     isFetching,
     isLoading,
   } = useQuery({
-    queryKey: ["medias", pageIndex, pageSize, sorting],
+    queryKey: ["posts", pageIndex, pageSize, sorting],
     queryFn: async () => {
       const response = await strapiRequest.get(
         // Strapi's pagination[page] is 1-indexed — convert here, keep table 0-indexed internally
         `/api/upload/files/page?pagination[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
       )
-      setMediaAssetsCount(response.data.meta.pagination.total ?? 0)
+      setLinkedinPostsCount(response.data.meta.pagination.total ?? 0)
       return response.data as MediaApiResponse
     },
     placeholderData: (previousData) => previousData,
   })
 
-  const rows = mediaData?.data ?? []
-  const pageCount = mediaData?.meta?.pagination?.pageCount ?? -1
+  // const rows = postsData?.data ?? linkedinPosts
+  const rows = linkedinPosts
+  const pageCount = postsData?.meta?.pagination?.pageCount ?? -1
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
@@ -116,8 +125,35 @@ export function MediaTable({
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder="Filter images..."
-        searchKey="name"
+        searchPlaceholder="Filter posts..."
+        filters={[
+          {
+            columnId: "media_type",
+            title: "Media Type",
+            options: [
+              { label: "Text", value: "text" },
+              { label: "Image", value: "image" },
+              { label: "Document", value: "document" },
+            ],
+          },
+          {
+            columnId: "post_status",
+            title: "Post Status",
+            options: [
+              { label: "Draft", value: "draft" },
+              { label: "Generating", value: "generating" },
+              { label: "Ready", value: "ready" },
+              { label: "Review", value: "review" },
+              { label: "Approved", value: "approved" },
+              { label: "Scheduled", value: "scheduled" },
+              { label: "Publishing", value: "publishing" },
+              { label: "Published", value: "published" },
+              { label: "Failed", value: "failed" },
+              { label: "Rejected", value: "rejected" },
+            ],
+          },
+        ]}
+        searchKey="title"
       />
 
       {isLoading ? (
@@ -182,7 +218,19 @@ export function MediaTable({
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    <EmptyMediaContent />
+                    <div className="flex items-center justify-center p-4">
+                      <Empty className="py-16">
+                        <EmptyHeader>
+                          <EmptyMedia variant="icon">
+                            <Rss />
+                          </EmptyMedia>
+                          <EmptyTitle>Linkedin Posts</EmptyTitle>
+                          <EmptyDescription>
+                            You&apos;re all caught up. No posts to show here.
+                          </EmptyDescription>
+                        </EmptyHeader>
+                      </Empty>
+                    </div>
                   </TableCell>
                 </TableRow>
               )}
@@ -192,8 +240,8 @@ export function MediaTable({
       )}
 
       <DataTablePagination table={table} className="mt-auto" />
-      <MediaEditDialog />
-      <DeleteMediaAlert />
+      <PostsEditDialog />
+      <DeletePostAlert />
     </div>
   )
 }

@@ -237,6 +237,7 @@ export interface MediaFile {
   publishedAt: string
   updatedAt: string
   isUrlSigned: boolean
+  duration?: number //only for video files
 }
 
 export type MediaApiResponse = {
@@ -249,4 +250,54 @@ export type MediaApiResponse = {
       total: number
     }
   }
+}
+
+// Engagement metrics type
+interface EngagementMetrics {
+  likes: number
+  comments: number
+  shares: number
+  impressions: number
+  clickRate: number
+  updatedAt: string // ISO date string
+}
+export type MediaType = "text" | "image" | "document"
+// Main LinkedIn Post type based on your actual schema
+export interface LinkedInPost {
+  id: number
+  title: string | null
+  content: string | null // richtext field
+  linkedin_post_id: string | null
+  linkedin_post_url: string | null
+  post_status: CalendarEventStatus
+  media_files: MediaFile[] | null
+  thumbnail: MediaFile | null
+  media_type: MediaType
+  visibility: string | null
+  post_type: string | null
+  event_id: string | null // uid field
+  image_alt_text: string | null
+  image_prompt: string | null
+  start_date: string | null // datetime ISO string
+  end_date: string | null // datetime ISO string
+  createdAt: string
+  updatedAt: string
+  publishedAt?: string | null // Added by draftAndPublish option
+}
+
+// API Response types
+export interface LinkedInPostResponse {
+  data: LinkedInPost[]
+  meta?: {
+    pagination?: {
+      page: number
+      pageSize: number
+      total: number
+      pageCount: number
+    }
+  }
+}
+
+export interface SingleLinkedInPostResponse {
+  data: LinkedInPost
 }

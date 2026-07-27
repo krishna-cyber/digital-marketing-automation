@@ -2,7 +2,7 @@
 import { FileMetadata } from "@/hooks/use-file-upload"
 import { cn, isImage } from "@/lib/utils"
 import { ImageIcon, ZoomInIcon } from "lucide-react"
-import React, { useState } from "react"
+import { useState } from "react"
 import { Button } from "../ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog"
 import { Spinner } from "../ui/spinner"

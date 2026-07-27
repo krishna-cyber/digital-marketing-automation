@@ -11,15 +11,15 @@ import {
 } from "@/components/ui/alert-dialog"
 import { strapiRequest } from "@/lib/api"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { ImageOff } from "lucide-react"
+import { FileX } from "lucide-react"
 import { toast } from "sonner"
-import { useMedia } from "./media-provider"
+import { usePosts } from "./posts-provider"
 
-const DeleteMediaAlert = () => {
-  const { currentRow, open, setOpen } = useMedia()
+const DeletePostAlert = () => {
+  const { currentRow, open, setOpen } = usePosts()
   const queryClient = useQueryClient()
   const handleDelete = useMutation({
-    mutationKey: ["deleteMedia", currentRow?.id],
+    mutationKey: ["deletePost", currentRow?.id],
     mutationFn: async () => {
       const response = await strapiRequest.delete(
         `/api/upload/files/${currentRow?.id}`
@@ -27,13 +27,13 @@ const DeleteMediaAlert = () => {
       return response.data
     },
     onSuccess: () => {
-      toast.success("Media asset deleted successfully.")
+      toast.success("Post deleted successfully.")
       setOpen(null)
-      queryClient.invalidateQueries({ queryKey: ["medias"] })
+      queryClient.invalidateQueries({ queryKey: ["posts"] })
     },
     onError: (error) => {
-      console.error("Error deleting media asset:", error)
-      toast.error("Error deleting media asset.")
+      console.error("Error deleting post:", error)
+      toast.error("Error deleting post.")
       setOpen(null)
     },
   })
@@ -42,11 +42,11 @@ const DeleteMediaAlert = () => {
       <AlertDialogContent size="sm">
         <AlertDialogHeader>
           <AlertDialogMedia className="bg-destructive/10 text-destructive dark:bg-destructive/20 dark:text-destructive">
-            <ImageOff />
+            <FileX />
           </AlertDialogMedia>
-          <AlertDialogTitle>Delete Asset</AlertDialogTitle>
+          <AlertDialogTitle>Delete Post</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete this asset? This action cannot be
+            Are you sure you want to delete this post? This action cannot be
             undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -66,4 +66,4 @@ const DeleteMediaAlert = () => {
   )
 }
 
-export default DeleteMediaAlert
+export default DeletePostAlert

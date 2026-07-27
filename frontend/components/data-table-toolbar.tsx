@@ -3,8 +3,8 @@ import { Input } from "@/components/ui/input"
 
 import { type Table } from "@tanstack/react-table"
 import { X } from "lucide-react"
+import { DataTableFacetedFilter } from "./data-table-faceted-filter"
 import { DataTableViewOptions } from "./data-table-view-options"
-import UploadMedia from "./upload-media"
 
 // import { DataTableFacetedFilter } from "./faceted-filter"
 
@@ -56,7 +56,7 @@ export function DataTableToolbar<TData>({
             className="h-8 w-37.5 lg:w-62.5"
           />
         )}
-        {/* <div className="flex gap-x-2">
+        <div className="flex gap-x-2">
           {filters.map((filter) => {
             const column = table.getColumn(filter.columnId)
             if (!column) return null
@@ -69,7 +69,7 @@ export function DataTableToolbar<TData>({
               />
             )
           })}
-        </div> */}
+        </div>
         <div className="flex items-center space-x-2">
           {isFiltered && (
             <Button

@@ -1,11 +1,12 @@
 "use client"
 import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import UploadMedia from "@/components/upload-media"
 import React from "react"
 import { MediaProvider } from "./media/components/media-provider"
 import { MediaTable } from "./media/components/media-table"
+import { PostsTable } from "./posts/components/post-table"
+import { PostsProvider } from "./posts/components/posts-provider"
 
 const TabsRender = () => {
   const [linkedinPostsCount, setLinkedinPostsCount] = React.useState(12)
@@ -28,9 +29,16 @@ const TabsRender = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent className="w-full" value="linkedin-posts">
-          <Card>
-            <CardContent>12 unread messages in your inbox.</CardContent>
-          </Card>
+          <div className="mb-2.5 flex flex-wrap items-end justify-between gap-2">
+            <p className="text-muted-foreground">
+              Manage your linkedin posts here. You can create, edit, and delete
+              them.
+            </p>
+            {/* <UploadMedia title="Upload Media" /> */}
+          </div>
+          <PostsProvider>
+            <PostsTable setLinkedinPostsCount={setLinkedinPostsCount} />
+          </PostsProvider>
         </TabsContent>
         <TabsContent value="media-assets">
           <div className="mb-2.5 flex flex-wrap items-end justify-between gap-2">
