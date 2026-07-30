@@ -1,5 +1,5 @@
-import { tasks } from "./_components/data"
-import { Tasks } from "./_components/tasks"
+// import { tasks } from "./_components/data"
+// import { Tasks } from "./_components/tasks"
 
 export default function Page() {
   return (
@@ -10,7 +10,7 @@ export default function Page() {
           Here&apos;s a list of your tasks for this month!
         </p>
       </div>
-      <Tasks data={tasks} />
+      {/* <Tasks data={tasks} /> */}
     </div>
   )
 }

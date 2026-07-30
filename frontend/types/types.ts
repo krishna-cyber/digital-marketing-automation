@@ -303,3 +303,54 @@ export interface LinkedInPostsResponse {
 export interface SingleLinkedInPostResponse {
   data: LinkedInPost
 }
+
+export interface BlogsAndArticles {
+  id: number
+  documentId: string
+  title: string | null
+  description: string | null
+  slug: string | null
+  cover: MediaFile | null
+  author: ArticleAuthor | null
+  category: ArticleCategory | null
+  markdown: string | null
+  createdAt: string
+  updatedAt: string
+  publishedAt?: string | null
+}
+
+export interface ArticleAuthor {
+  id: number
+  documentId: string
+  name: string | null
+  avatar: MediaFile | null
+  email: string | null
+  createdAt: string
+  updatedAt: string
+}
+
+export interface ArticleCategory {
+  id: number
+  documentId: string
+  name: string | null
+  slug: string | null
+  description: string | null
+  createdAt: string
+  updatedAt: string
+}
+
+export interface BlogsAandArticlesResponse {
+  data: BlogsAndArticles[]
+  meta?: {
+    pagination?: {
+      page: number
+      pageSize: number
+      total: number
+      pageCount: number
+    }
+  }
+}
+
+export interface SingleArticleResponse {
+  data: BlogsAndArticles
+}

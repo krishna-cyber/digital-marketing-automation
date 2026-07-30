@@ -18,68 +18,58 @@ import {
 } from "@/components/ui/table"
 import { strapiRequest } from "@/lib/api"
 import { cn } from "@/lib/utils"
-import { LinkedInPostsResponse } from "@/types/types"
+import { BlogsAandArticlesResponse } from "@/types/types"
 import { useQuery } from "@tanstack/react-query"
 import {
-  type SortingState,
-  type VisibilityState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
   getSortedRowModel,
+  SortingState,
   useReactTable,
+  VisibilityState,
 } from "@tanstack/react-table"
 import { Rss } from "lucide-react"
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs"
-import { useState } from "react"
-import { linkedinPosts } from "../data/data"
-import DeletePostAlert from "./delete-post-alert"
-import { defaultColumns as columns } from "./post-columns"
-import PostsEditDialog from "./post-edit-dialog"
+import React, { useState } from "react"
+import { blogData } from "../data/data"
+import { defaultColumns as columns } from "./blog-columns"
+import DeleteBlogArticleAlert from "./delete-blog-article-alert"
 
-export const searchParams = {
+const searchParams = {
   searchQuery: parseAsString.withDefault(""),
   pageIndex: parseAsInteger.withDefault(0), // 0-indexed, table-internal
   pageSize: parseAsInteger.withDefault(10),
 }
-
-export function PostsTable({
-  setLinkedinPostsCount,
-}: Readonly<{
-  setLinkedinPostsCount: React.Dispatch<React.SetStateAction<number>>
-}>) {
+const BlogsAndArticlesTable = () => {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     documentId: false,
+    slug: false,
+    updatedAt: false,
+    publishedAt: false,
   })
   const [sorting, setSorting] = useState<SortingState>([])
 
   const [{ pageIndex, pageSize }, setSearch] = useQueryStates(searchParams)
 
-  const {
-    data: postsData,
-    isFetching,
-    isLoading,
-  } = useQuery({
-    queryKey: ["posts", pageIndex, pageSize, sorting],
+  const { data: blogsAndArticlesData, isFetching } = useQuery({
+    queryKey: ["blogs-and-articles", pageIndex, pageSize, sorting],
     queryFn: async () => {
       const response = await strapiRequest.get(
         // Strapi's pagination[page] is 1-indexed — convert here, keep table 0-indexed internally
         // `/api/linkedin-posts/page?pagination[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
-        `api/socials?populate=*`
+        `api/articles?populate=*`
       )
-      setLinkedinPostsCount(response.data.meta.pagination.total ?? 0)
-      return response.data as LinkedInPostsResponse
+      return response.data as BlogsAandArticlesResponse
     },
     placeholderData: (previousData) => previousData,
   })
+  const pageCount = blogsAndArticlesData?.meta?.pagination?.pageCount ?? -1
 
-  // const rows = postsData?.data ?? []
-  const rows = linkedinPosts
-  const pageCount = postsData?.meta?.pagination?.pageCount ?? -1
-
+  const rows = blogsAndArticlesData?.data ?? blogData
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: rows,
@@ -114,7 +104,6 @@ export function PostsTable({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
-
   return (
     <div
       className={cn(
@@ -124,34 +113,8 @@ export function PostsTable({
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder="Filter posts..."
-        filters={[
-          {
-            columnId: "media_type",
-            title: "Media Type",
-            options: [
-              { label: "Text", value: "text" },
-              { label: "Image", value: "image" },
-              { label: "Document", value: "document" },
-            ],
-          },
-          {
-            columnId: "post_status",
-            title: "Post Status",
-            options: [
-              { label: "Draft", value: "draft" },
-              { label: "Generating", value: "generating" },
-              { label: "Ready", value: "ready" },
-              { label: "Review", value: "review" },
-              { label: "Approved", value: "approved" },
-              { label: "Scheduled", value: "scheduled" },
-              { label: "Publishing", value: "publishing" },
-              { label: "Published", value: "published" },
-              { label: "Failed", value: "failed" },
-              { label: "Rejected", value: "rejected" },
-            ],
-          },
-        ]}
+        searchPlaceholder="Filter blogs/articles..."
+        filters={[]}
         searchKey="title"
       />
 
@@ -235,8 +198,10 @@ export function PostsTable({
       </div>
 
       <DataTablePagination table={table} className="mt-auto" />
-      <PostsEditDialog />
-      <DeletePostAlert />
+      {/* <PostsEditDialog /> */}
+      <DeleteBlogArticleAlert />
     </div>
   )
 }
+
+export default BlogsAndArticlesTable

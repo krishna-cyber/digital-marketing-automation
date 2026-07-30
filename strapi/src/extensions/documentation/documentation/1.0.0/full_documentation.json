@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2026-07-16T04:41:12.648Z"
+    "x-generation-date": "2026-07-30T08:16:01.446Z"
   },
   "x-strapi-config": {
     "plugins": [
@@ -7319,34 +7319,16 @@
                     "content": {
                       "type": "string"
                     },
-                    "postStatus": {
-                      "type": "string",
-                      "enum": [
-                        "draft",
-                        "scheduled",
-                        "published",
-                        "failed"
-                      ]
+                    "linkedin_post_id": {
+                      "type": "string"
                     },
-                    "scheduledDate": {
-                      "type": "string",
-                      "format": "date-time"
+                    "linkedin_post_url": {
+                      "type": "string"
                     },
-                    "publishedDate": {
-                      "type": "string",
-                      "format": "date-time"
+                    "post_status": {
+                      "type": "string"
                     },
-                    "mediaType": {
-                      "type": "string",
-                      "enum": [
-                        "text_only",
-                        "image",
-                        "video",
-                        "document",
-                        "multi_image"
-                      ]
-                    },
-                    "mediaFiles": {
+                    "media_files": {
                       "type": "array",
                       "items": {
                         "type": "object",
@@ -7521,7 +7503,6 @@
                         }
                       }
                     },
-                    "mediaUrls": {},
                     "thumbnail": {
                       "type": "object",
                       "properties": {
@@ -7694,50 +7675,32 @@
                         }
                       }
                     },
-                    "linkedInPostId": {
-                      "type": "string"
-                    },
-                    "linkedInPostUrl": {
-                      "type": "string"
-                    },
-                    "hashtags": {
-                      "type": "string"
-                    },
-                    "mentions": {
+                    "media_type": {
                       "type": "string"
                     },
                     "visibility": {
-                      "type": "string",
-                      "enum": [
-                        "public",
-                        "connections_only",
-                        "specific_audience"
-                      ]
-                    },
-                    "audienceSegments": {},
-                    "companyPageId": {
                       "type": "string"
                     },
-                    "postType": {
-                      "type": "string",
-                      "enum": [
-                        "organic",
-                        "promoted",
-                        "sponsored"
-                      ]
-                    },
-                    "promotionDetails": {},
-                    "engagementMetrics": {},
-                    "errorLog": {
+                    "post_type": {
                       "type": "string"
                     },
-                    "retryCount": {
-                      "type": "integer"
+                    "event_id": {
+                      "type": "string"
                     },
-                    "autoRetry": {
-                      "type": "boolean"
+                    "image_alt_text": {
+                      "type": "string"
                     },
-                    "customMetadata": {},
+                    "image_prompt": {
+                      "type": "string"
+                    },
+                    "start_date": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "end_date": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
                     "createdAt": {
                       "type": "string",
                       "format": "date-time"
@@ -9677,34 +9640,16 @@
                           "content": {
                             "type": "string"
                           },
-                          "postStatus": {
-                            "type": "string",
-                            "enum": [
-                              "draft",
-                              "scheduled",
-                              "published",
-                              "failed"
-                            ]
+                          "linkedin_post_id": {
+                            "type": "string"
                           },
-                          "scheduledDate": {
-                            "type": "string",
-                            "format": "date-time"
+                          "linkedin_post_url": {
+                            "type": "string"
                           },
-                          "publishedDate": {
-                            "type": "string",
-                            "format": "date-time"
+                          "post_status": {
+                            "type": "string"
                           },
-                          "mediaType": {
-                            "type": "string",
-                            "enum": [
-                              "text_only",
-                              "image",
-                              "video",
-                              "document",
-                              "multi_image"
-                            ]
-                          },
-                          "mediaFiles": {
+                          "media_files": {
                             "type": "array",
                             "items": {
                               "type": "object",
@@ -9879,7 +9824,6 @@
                               }
                             }
                           },
-                          "mediaUrls": {},
                           "thumbnail": {
                             "type": "object",
                             "properties": {
@@ -10052,50 +9996,32 @@
                               }
                             }
                           },
-                          "linkedInPostId": {
-                            "type": "string"
-                          },
-                          "linkedInPostUrl": {
-                            "type": "string"
-                          },
-                          "hashtags": {
-                            "type": "string"
-                          },
-                          "mentions": {
+                          "media_type": {
                             "type": "string"
                           },
                           "visibility": {
-                            "type": "string",
-                            "enum": [
-                              "public",
-                              "connections_only",
-                              "specific_audience"
-                            ]
-                          },
-                          "audienceSegments": {},
-                          "companyPageId": {
                             "type": "string"
                           },
-                          "postType": {
-                            "type": "string",
-                            "enum": [
-                              "organic",
-                              "promoted",
-                              "sponsored"
-                            ]
-                          },
-                          "promotionDetails": {},
-                          "engagementMetrics": {},
-                          "errorLog": {
+                          "post_type": {
                             "type": "string"
                           },
-                          "retryCount": {
-                            "type": "integer"
+                          "event_id": {
+                            "type": "string"
                           },
-                          "autoRetry": {
-                            "type": "boolean"
+                          "image_alt_text": {
+                            "type": "string"
                           },
-                          "customMetadata": {},
+                          "image_prompt": {
+                            "type": "string"
+                          },
+                          "start_date": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "end_date": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
                           "createdAt": {
                             "type": "string",
                             "format": "date-time"
@@ -12039,34 +11965,16 @@
                           "content": {
                             "type": "string"
                           },
-                          "postStatus": {
-                            "type": "string",
-                            "enum": [
-                              "draft",
-                              "scheduled",
-                              "published",
-                              "failed"
-                            ]
+                          "linkedin_post_id": {
+                            "type": "string"
                           },
-                          "scheduledDate": {
-                            "type": "string",
-                            "format": "date-time"
+                          "linkedin_post_url": {
+                            "type": "string"
                           },
-                          "publishedDate": {
-                            "type": "string",
-                            "format": "date-time"
+                          "post_status": {
+                            "type": "string"
                           },
-                          "mediaType": {
-                            "type": "string",
-                            "enum": [
-                              "text_only",
-                              "image",
-                              "video",
-                              "document",
-                              "multi_image"
-                            ]
-                          },
-                          "mediaFiles": {
+                          "media_files": {
                             "type": "array",
                             "items": {
                               "type": "object",
@@ -12241,7 +12149,6 @@
                               }
                             }
                           },
-                          "mediaUrls": {},
                           "thumbnail": {
                             "type": "object",
                             "properties": {
@@ -12414,50 +12321,32 @@
                               }
                             }
                           },
-                          "linkedInPostId": {
-                            "type": "string"
-                          },
-                          "linkedInPostUrl": {
-                            "type": "string"
-                          },
-                          "hashtags": {
-                            "type": "string"
-                          },
-                          "mentions": {
+                          "media_type": {
                             "type": "string"
                           },
                           "visibility": {
-                            "type": "string",
-                            "enum": [
-                              "public",
-                              "connections_only",
-                              "specific_audience"
-                            ]
-                          },
-                          "audienceSegments": {},
-                          "companyPageId": {
                             "type": "string"
                           },
-                          "postType": {
-                            "type": "string",
-                            "enum": [
-                              "organic",
-                              "promoted",
-                              "sponsored"
-                            ]
-                          },
-                          "promotionDetails": {},
-                          "engagementMetrics": {},
-                          "errorLog": {
+                          "post_type": {
                             "type": "string"
                           },
-                          "retryCount": {
-                            "type": "integer"
+                          "event_id": {
+                            "type": "string"
                           },
-                          "autoRetry": {
-                            "type": "boolean"
+                          "image_alt_text": {
+                            "type": "string"
                           },
-                          "customMetadata": {},
+                          "image_prompt": {
+                            "type": "string"
+                          },
+                          "start_date": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "end_date": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
                           "createdAt": {
                             "type": "string",
                             "format": "date-time"
@@ -14663,11 +14552,6 @@
         ],
         "properties": {
           "data": {
-            "required": [
-              "title",
-              "content",
-              "postStatus"
-            ],
             "type": "object",
             "properties": {
               "title": {
@@ -14676,34 +14560,16 @@
               "content": {
                 "type": "string"
               },
-              "postStatus": {
-                "type": "string",
-                "enum": [
-                  "draft",
-                  "scheduled",
-                  "published",
-                  "failed"
-                ]
+              "linkedin_post_id": {
+                "type": "string"
               },
-              "scheduledDate": {
-                "type": "string",
-                "format": "date-time"
+              "linkedin_post_url": {
+                "type": "string"
               },
-              "publishedDate": {
-                "type": "string",
-                "format": "date-time"
+              "post_status": {
+                "type": "string"
               },
-              "mediaType": {
-                "type": "string",
-                "enum": [
-                  "text_only",
-                  "image",
-                  "video",
-                  "document",
-                  "multi_image"
-                ]
-              },
-              "mediaFiles": {
+              "media_files": {
                 "type": "array",
                 "items": {
                   "oneOf": [
@@ -14717,7 +14583,6 @@
                   "example": "string or id"
                 }
               },
-              "mediaUrls": {},
               "thumbnail": {
                 "oneOf": [
                   {
@@ -14729,50 +14594,32 @@
                 ],
                 "example": "string or id"
               },
-              "linkedInPostId": {
-                "type": "string"
-              },
-              "linkedInPostUrl": {
-                "type": "string"
-              },
-              "hashtags": {
-                "type": "string"
-              },
-              "mentions": {
+              "media_type": {
                 "type": "string"
               },
               "visibility": {
-                "type": "string",
-                "enum": [
-                  "public",
-                  "connections_only",
-                  "specific_audience"
-                ]
-              },
-              "audienceSegments": {},
-              "companyPageId": {
                 "type": "string"
               },
-              "postType": {
-                "type": "string",
-                "enum": [
-                  "organic",
-                  "promoted",
-                  "sponsored"
-                ]
-              },
-              "promotionDetails": {},
-              "engagementMetrics": {},
-              "errorLog": {
+              "post_type": {
                 "type": "string"
               },
-              "retryCount": {
-                "type": "integer"
+              "event_id": {
+                "type": "string"
               },
-              "autoRetry": {
-                "type": "boolean"
+              "image_alt_text": {
+                "type": "string"
               },
-              "customMetadata": {},
+              "image_prompt": {
+                "type": "string"
+              },
+              "start_date": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "end_date": {
+                "type": "string",
+                "format": "date-time"
+              },
               "locale": {
                 "type": "string"
               },
@@ -14831,11 +14678,6 @@
       },
       "LinkedinPost": {
         "type": "object",
-        "required": [
-          "title",
-          "content",
-          "postStatus"
-        ],
         "properties": {
           "id": {
             "oneOf": [
@@ -14856,34 +14698,16 @@
           "content": {
             "type": "string"
           },
-          "postStatus": {
-            "type": "string",
-            "enum": [
-              "draft",
-              "scheduled",
-              "published",
-              "failed"
-            ]
+          "linkedin_post_id": {
+            "type": "string"
           },
-          "scheduledDate": {
-            "type": "string",
-            "format": "date-time"
+          "linkedin_post_url": {
+            "type": "string"
           },
-          "publishedDate": {
-            "type": "string",
-            "format": "date-time"
+          "post_status": {
+            "type": "string"
           },
-          "mediaType": {
-            "type": "string",
-            "enum": [
-              "text_only",
-              "image",
-              "video",
-              "document",
-              "multi_image"
-            ]
-          },
-          "mediaFiles": {
+          "media_files": {
             "type": "array",
             "items": {
               "type": "object",
@@ -16000,7 +15824,6 @@
               }
             }
           },
-          "mediaUrls": {},
           "thumbnail": {
             "type": "object",
             "properties": {
@@ -16173,50 +15996,32 @@
               }
             }
           },
-          "linkedInPostId": {
-            "type": "string"
-          },
-          "linkedInPostUrl": {
-            "type": "string"
-          },
-          "hashtags": {
-            "type": "string"
-          },
-          "mentions": {
+          "media_type": {
             "type": "string"
           },
           "visibility": {
-            "type": "string",
-            "enum": [
-              "public",
-              "connections_only",
-              "specific_audience"
-            ]
-          },
-          "audienceSegments": {},
-          "companyPageId": {
             "type": "string"
           },
-          "postType": {
-            "type": "string",
-            "enum": [
-              "organic",
-              "promoted",
-              "sponsored"
-            ]
-          },
-          "promotionDetails": {},
-          "engagementMetrics": {},
-          "errorLog": {
+          "post_type": {
             "type": "string"
           },
-          "retryCount": {
-            "type": "integer"
+          "event_id": {
+            "type": "string"
           },
-          "autoRetry": {
-            "type": "boolean"
+          "image_alt_text": {
+            "type": "string"
           },
-          "customMetadata": {},
+          "image_prompt": {
+            "type": "string"
+          },
+          "start_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date-time"
+          },
           "createdAt": {
             "type": "string",
             "format": "date-time"
@@ -16292,34 +16097,16 @@
                 "content": {
                   "type": "string"
                 },
-                "postStatus": {
-                  "type": "string",
-                  "enum": [
-                    "draft",
-                    "scheduled",
-                    "published",
-                    "failed"
-                  ]
+                "linkedin_post_id": {
+                  "type": "string"
                 },
-                "scheduledDate": {
-                  "type": "string",
-                  "format": "date-time"
+                "linkedin_post_url": {
+                  "type": "string"
                 },
-                "publishedDate": {
-                  "type": "string",
-                  "format": "date-time"
+                "post_status": {
+                  "type": "string"
                 },
-                "mediaType": {
-                  "type": "string",
-                  "enum": [
-                    "text_only",
-                    "image",
-                    "video",
-                    "document",
-                    "multi_image"
-                  ]
-                },
-                "mediaFiles": {
+                "media_files": {
                   "type": "array",
                   "items": {
                     "type": "object",
@@ -16494,7 +16281,6 @@
                     }
                   }
                 },
-                "mediaUrls": {},
                 "thumbnail": {
                   "type": "object",
                   "properties": {
@@ -16667,50 +16453,32 @@
                     }
                   }
                 },
-                "linkedInPostId": {
-                  "type": "string"
-                },
-                "linkedInPostUrl": {
-                  "type": "string"
-                },
-                "hashtags": {
-                  "type": "string"
-                },
-                "mentions": {
+                "media_type": {
                   "type": "string"
                 },
                 "visibility": {
-                  "type": "string",
-                  "enum": [
-                    "public",
-                    "connections_only",
-                    "specific_audience"
-                  ]
-                },
-                "audienceSegments": {},
-                "companyPageId": {
                   "type": "string"
                 },
-                "postType": {
-                  "type": "string",
-                  "enum": [
-                    "organic",
-                    "promoted",
-                    "sponsored"
-                  ]
-                },
-                "promotionDetails": {},
-                "engagementMetrics": {},
-                "errorLog": {
+                "post_type": {
                   "type": "string"
                 },
-                "retryCount": {
-                  "type": "integer"
+                "event_id": {
+                  "type": "string"
                 },
-                "autoRetry": {
-                  "type": "boolean"
+                "image_alt_text": {
+                  "type": "string"
                 },
-                "customMetadata": {},
+                "image_prompt": {
+                  "type": "string"
+                },
+                "start_date": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "end_date": {
+                  "type": "string",
+                  "format": "date-time"
+                },
                 "createdAt": {
                   "type": "string",
                   "format": "date-time"

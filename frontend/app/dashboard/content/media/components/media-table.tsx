@@ -1,8 +1,6 @@
 "use client"
-
 import { DataTablePagination } from "@/components/data-table-pagination"
 import { DataTableToolbar } from "@/components/data-table-toolbar"
-import { DataTableSkeleton } from "@/components/examples/data-table-skleton"
 import EmptyMediaContent from "@/components/examples/empty-media"
 import {
   Table,
@@ -52,11 +50,7 @@ export function MediaTable({
 
   const [{ pageIndex, pageSize }, setSearch] = useQueryStates(searchParams)
 
-  const {
-    data: mediaData,
-    isFetching,
-    isLoading,
-  } = useQuery({
+  const { data: mediaData, isFetching } = useQuery({
     queryKey: ["medias", pageIndex, pageSize, sorting],
     queryFn: async () => {
       const response = await strapiRequest.get(
@@ -120,76 +114,72 @@ export function MediaTable({
         searchKey="name"
       />
 
-      {isLoading ? (
-        <DataTableSkeleton />
-      ) : (
-        <div className="overflow-hidden rounded-md border">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id} className="group/row">
-                  {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      colSpan={header.colSpan}
+      <div className="overflow-hidden rounded-md border">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id} className="group/row">
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    className={cn(
+                      "bg-background group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
+                      header.column.columnDef.meta?.className,
+                      header.column.columnDef.meta?.thClassName
+                    )}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody
+            className={cn(isFetching && "opacity-60 transition-opacity")}
+          >
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="group/row"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
                       className={cn(
                         "bg-background group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
-                        header.column.columnDef.meta?.className,
-                        header.column.columnDef.meta?.thClassName
+                        cell.column.columnDef.meta?.className,
+                        cell.column.columnDef.meta?.tdClassName
                       )}
                     >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
                   ))}
                 </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody
-              className={cn(isFetching && "opacity-60 transition-opacity")}
-            >
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    className="group/row"
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell
-                        key={cell.id}
-                        className={cn(
-                          "bg-background group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
-                          cell.column.columnDef.meta?.className,
-                          cell.column.columnDef.meta?.tdClassName
-                        )}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    <EmptyMediaContent />
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-      )}
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  <EmptyMediaContent />
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
 
       <DataTablePagination table={table} className="mt-auto" />
       <MediaEditDialog />

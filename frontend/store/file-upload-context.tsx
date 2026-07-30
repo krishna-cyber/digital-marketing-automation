@@ -15,9 +15,9 @@ const FileUploadContext = createContext<FileUploadContextType | undefined>(
 
 export function FileUploadProvider({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   const [uploadFiles, setUploadFiles] = useState<FileWithPreview[]>([])
 
   const handleFilesChange = useCallback((files: FileWithPreview[]) => {
