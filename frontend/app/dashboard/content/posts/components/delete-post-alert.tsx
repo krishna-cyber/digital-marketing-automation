@@ -59,6 +59,9 @@ const DeletePostAlert = () => {
             }}
           >
             Delete
+            {handleDelete.isPending && (
+              <span className="ml-2 inline-block animate-spin">⏳</span>
+            )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -61,7 +61,7 @@ const BlogsAndArticlesTable = () => {
       const response = await strapiRequest.get(
         // Strapi's pagination[page] is 1-indexed — convert here, keep table 0-indexed internally
         // `/api/linkedin-posts/page?pagination[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
-        `api/articles?populate=*`
+        `api/articles?populate=*&pagination[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
       )
       return response.data as BlogsAandArticlesResponse
     },

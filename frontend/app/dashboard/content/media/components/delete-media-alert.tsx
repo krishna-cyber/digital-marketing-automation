@@ -54,11 +54,15 @@ const DeleteMediaAlert = () => {
           <AlertDialogCancel variant="outline">Cancel</AlertDialogCancel>
           <AlertDialogAction
             variant="destructive"
+            disabled={handleDelete.isPending}
             onClick={() => {
               handleDelete.mutate()
             }}
           >
             Delete
+            {handleDelete.isPending && (
+              <span className="ml-2 inline-block animate-spin">⏳</span>
+            )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

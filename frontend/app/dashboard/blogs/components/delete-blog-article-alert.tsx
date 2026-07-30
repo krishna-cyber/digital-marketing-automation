@@ -9,12 +9,36 @@ import {
   AlertDialogMedia,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import { strapiRequest } from "@/lib/api"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Newspaper } from "lucide-react"
 import React from "react"
+import { toast } from "sonner"
 import { useBlogsAndArticles } from "./blogs-articles-provider"
 
 const DeleteBlogArticleAlert = () => {
   const { currentRow, open, setOpen } = useBlogsAndArticles()
+  const queryClient = useQueryClient()
+  const handleDelete = useMutation({
+    mutationKey: ["delete-blog-article", currentRow?.id],
+    mutationFn: async () => {
+      const response = await strapiRequest.delete(
+        `/api/articles/${currentRow?.id}`
+      )
+      return response.data
+    },
+    onSuccess: () => {
+      toast.success("Blog or article deleted successfully.")
+      setOpen(null)
+      queryClient.invalidateQueries({ queryKey: ["blogs-and-articles"] })
+    },
+    onError: (error) => {
+      console.error("Error deleting blog or article:", error)
+      toast.error("Error deleting blog or article.")
+      setOpen(null)
+    },
+  })
+
   return (
     <AlertDialog open={open === "delete"} onOpenChange={() => setOpen(null)}>
       <AlertDialogContent size="sm">
@@ -32,11 +56,15 @@ const DeleteBlogArticleAlert = () => {
           <AlertDialogCancel variant="outline">Cancel</AlertDialogCancel>
           <AlertDialogAction
             variant="destructive"
+            disabled={handleDelete.isPending}
             onClick={() => {
-              console.log("Delete clicked for row:", currentRow)
+              handleDelete.mutate()
             }}
           >
             Delete
+            {handleDelete.isPending && (
+              <span className="ml-2 inline-block animate-spin">⏳</span>
+            )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

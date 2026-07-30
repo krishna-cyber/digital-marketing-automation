@@ -2,7 +2,7 @@
 import { FileMetadata } from "@/hooks/use-file-upload"
 import { cn, isImage } from "@/lib/utils"
 import { ImageIcon, ZoomInIcon } from "lucide-react"
-import { useState } from "react"
+import { memo, useCallback, useState } from "react"
 import { Button } from "../ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog"
 import { Spinner } from "../ui/spinner"
@@ -108,57 +108,50 @@ const ImagePreview = () => {
 
 export default ImagePreview
 
-export const SingleImagePreview = ({ imageUrl }: { imageUrl: string }) => {
+export const SingleImagePreview = memo(({ imageUrl }: { imageUrl: string }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
-  const singleImage = {
-    id: "default-1",
-    name: "avatar-1.png",
-    size: 44608,
-    type: "image/png",
-    url: "https://picsum.photos/1000/800?random=1",
-  }
+
+  const handleOpen = useCallback(() => {
+    setSelectedImage(imageUrl)
+  }, [imageUrl])
+
+  const handleOpenChange = useCallback((open: boolean) => {
+    if (!open) setSelectedImage(null)
+  }, [])
+
   return (
     <>
-      <div className="group/item relative aspect-square">
+      <div className="group/item relative aspect-square w-full overflow-hidden rounded-lg border">
         <img
-          src={imageUrl ?? singleImage.url}
+          src={imageUrl}
           alt="Preview"
-          className="h-full w-auto rounded-lg object-contain opacity-100 transition-opacity duration-300"
+          className="h-full w-full object-cover transition-opacity duration-300"
         />
         <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition-opacity group-hover/item:opacity-100">
-          {/* View Button */}
           {imageUrl && (
             <Button
-              onClick={() => {
-                setSelectedImage(imageUrl!)
-              }}
+              onClick={handleOpen}
               variant="secondary"
               size="icon"
               className="size-7"
+              type="button"
             >
-              <ZoomInIcon className="opacity-100/80" />
+              <ZoomInIcon className="h-4 w-4" />
             </Button>
           )}
         </div>
       </div>
-      <Dialog
-        open={!!selectedImage}
-        onOpenChange={(open) => !open && setSelectedImage(null)}
-      >
-        <DialogContent className="w-full border-none bg-transparent p-0 shadow-none **:data-[slot=dialog-close]:-inset-e-7 **:data-[slot=dialog-close]:-top-7 **:data-[slot=dialog-close]:size-7 **:data-[slot=dialog-close]:rounded-full **:data-[slot=dialog-close]:bg-background **:data-[slot=dialog-close]:text-muted-foreground **:data-[slot=dialog-close]:hover:text-foreground sm:max-w-xl">
+      <Dialog open={!!selectedImage} onOpenChange={handleOpenChange}>
+        <DialogContent className="w-full max-w-4xl border-none bg-transparent p-0 shadow-none **:data-[slot=dialog-close]:-inset-e-7 **:data-[slot=dialog-close]:-top-7 **:data-[slot=dialog-close]:size-7 **:data-[slot=dialog-close]:rounded-full **:data-[slot=dialog-close]:bg-background **:data-[slot=dialog-close]:text-muted-foreground **:data-[slot=dialog-close]:hover:text-foreground">
           <DialogHeader className="sr-only">
             <DialogTitle>Image Preview</DialogTitle>
           </DialogHeader>
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center p-4">
             {selectedImage && (
               <img
                 src={selectedImage}
                 alt="Preview"
-
-                className={cn(
-                  "h-full w-auto rounded-lg object-contain transition-opacity duration-300",
-                  "opacity-100"
-                )}
+                className="max-h-[85vh] max-w-full rounded-lg object-contain"
               />
             )}
           </div>
@@ -166,4 +159,6 @@ export const SingleImagePreview = ({ imageUrl }: { imageUrl: string }) => {
       </Dialog>
     </>
   )
-}
+})
+
+SingleImagePreview.displayName = "SingleImagePreview"
