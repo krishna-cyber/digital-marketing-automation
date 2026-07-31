@@ -304,7 +304,7 @@ export interface SingleLinkedInPostResponse {
   data: LinkedInPost
 }
 
-export interface BlogsAndArticles {
+export interface LinkedInArticle {
   id: number
   documentId: string
   title: string
@@ -327,8 +327,8 @@ export interface BlogsAndArticles {
   publishedAt?: string | null
 }
 
-export interface BlogsAandArticlesResponse {
-  data: BlogsAndArticles[]
+export interface LinkedInArticlesResponse {
+  data: LinkedInArticle[]
   meta?: {
     pagination?: {
       page: number
@@ -339,6 +339,6 @@ export interface BlogsAandArticlesResponse {
   }
 }
 
-export interface SingleArticleResponse {
-  data: BlogsAndArticles
+export interface SingleLinkedInArticleResponse {
+  data: LinkedInArticle
 }

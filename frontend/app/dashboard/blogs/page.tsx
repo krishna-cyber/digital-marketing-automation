@@ -1,7 +1,5 @@
-// import BlogCard from "@/components/blog-card"
 import { Main } from "@/components/layout/main"
-import { BlogsAndArticlesProvider } from "./components/blogs-articles-provider"
-import BlogsAndArticlesTable from "./components/blogs-table"
+import TabsRender from "./tabs-render"
 
 const page = () => {
   return (
@@ -17,21 +15,7 @@ const page = () => {
           </p>
         </span>
       </div>
-      <section className={"py-16"}>
-        <div className="container mx-auto flex flex-col items-center gap-8">
-          {/* <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-            <BlogCard />
-            <BlogCard />
-            <BlogCard />
-            <BlogCard />
-            <BlogCard />
-            <BlogCard />
-          </div> */}
-        </div>
-        <BlogsAndArticlesProvider>
-          <BlogsAndArticlesTable />
-        </BlogsAndArticlesProvider>
-      </section>
+      <TabsRender />
     </Main>
   )
 }

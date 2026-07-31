@@ -1,6 +1,6 @@
-import { BlogsAndArticles } from "@/types/types"
+import { LinkedInArticle } from "@/types/types"
 
-export const blogData: BlogsAndArticles[] = [
+export const blogData: LinkedInArticle[] = [
   {
     id: 40,
     documentId: "o927fnl6rwzy4qxcu8850jib",

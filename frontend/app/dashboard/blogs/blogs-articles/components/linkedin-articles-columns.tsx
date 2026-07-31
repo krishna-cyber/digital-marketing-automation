@@ -1,15 +1,15 @@
+import { BadgeColors } from "@/app/dashboard/content/posts/components/post-columns"
 import { DataTableColumnHeader } from "@/components/data-table-column-header"
 import { SingleImagePreview } from "@/components/examples/image-preview"
 import { LongText } from "@/components/long-text"
 import { Badge } from "@/components/ui/badge"
 import { getStrapiMediaUrl } from "@/lib/media"
-import { BlogsAndArticles } from "@/types/types"
+import { LinkedInArticle } from "@/types/types"
 import { createColumnHelper } from "@tanstack/react-table"
 import { ExternalLink } from "lucide-react"
-import { BadgeColors } from "../../content/posts/components/post-columns"
-import BlogTableRowActions from "./blog-table-row-actions"
+import BlogTableRowActions from "./linkedin-article-table-row-actions"
 
-const columnHelper = createColumnHelper<BlogsAndArticles>()
+const columnHelper = createColumnHelper<LinkedInArticle>()
 
 export const defaultColumns = [
   columnHelper.accessor("title", {

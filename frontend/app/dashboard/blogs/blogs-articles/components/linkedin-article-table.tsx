@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table"
 import { strapiRequest } from "@/lib/api"
 import { cn } from "@/lib/utils"
-import { BlogsAandArticlesResponse } from "@/types/types"
+import { LinkedInArticlesResponse } from "@/types/types"
 import { useQuery } from "@tanstack/react-query"
 import {
   flexRender,
@@ -34,16 +34,15 @@ import {
 import { Rss } from "lucide-react"
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs"
 import React, { useState } from "react"
-import { blogData } from "../data/data"
-import { defaultColumns as columns } from "./blog-columns"
-import DeleteBlogArticleAlert from "./delete-blog-article-alert"
+import DeleteBlogArticleAlert from "./delete-linkedin-article-alert"
+import { defaultColumns as columns } from "./linkedin-articles-columns"
 
 const searchParams = {
   searchQuery: parseAsString.withDefault(""),
   pageIndex: parseAsInteger.withDefault(0), // 0-indexed, table-internal
   pageSize: parseAsInteger.withDefault(10),
 }
-const BlogsAndArticlesTable = () => {
+const LinkedInArticlesTable = () => {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     documentId: false,
@@ -63,7 +62,7 @@ const BlogsAndArticlesTable = () => {
         // `/api/linkedin-posts/page?pagination[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
         `api/linkedin-posts?populate=*&pagination[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
       )
-      return response.data as BlogsAandArticlesResponse
+      return response.data as LinkedInArticlesResponse
     },
     placeholderData: (previousData) => previousData,
   })
@@ -204,4 +203,4 @@ const BlogsAndArticlesTable = () => {
   )
 }
 
-export default BlogsAndArticlesTable
+export default LinkedInArticlesTable

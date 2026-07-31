@@ -7,7 +7,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { BlogsAndArticles } from "@/types/types"
+import { LinkedInArticle } from "@/types/types"
 import { Row } from "@tanstack/react-table"
 import {
   Check,
@@ -18,15 +18,15 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import React from "react"
-import { useBlogsAndArticles } from "./blogs-articles-provider"
+import { useLinkedInArticles } from "./linkedin-articles-provider"
 
 type DataTableRowActionsProps = {
-  row: Row<BlogsAndArticles>
+  row: Row<LinkedInArticle>
 }
 
-const BlogTableRowActions = ({ row }: DataTableRowActionsProps) => {
+const LinkedinArticleTableRowActions = ({ row }: DataTableRowActionsProps) => {
   const router = useRouter()
-  const { setOpen, setCurrentRow } = useBlogsAndArticles()
+  const { setOpen, setCurrentRow } = useLinkedInArticles()
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -89,4 +89,4 @@ const BlogTableRowActions = ({ row }: DataTableRowActionsProps) => {
   )
 }
 
-export default BlogTableRowActions
+export default LinkedinArticleTableRowActions
