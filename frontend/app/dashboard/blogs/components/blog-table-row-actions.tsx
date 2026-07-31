@@ -16,6 +16,7 @@ import {
   Trash2,
   UserPen,
 } from "lucide-react"
+import { useRouter } from "next/navigation"
 import React from "react"
 import { useBlogsAndArticles } from "./blogs-articles-provider"
 
@@ -24,6 +25,7 @@ type DataTableRowActionsProps = {
 }
 
 const BlogTableRowActions = ({ row }: DataTableRowActionsProps) => {
+  const router = useRouter()
   const { setOpen, setCurrentRow } = useBlogsAndArticles()
   return (
     <DropdownMenu modal={false}>
@@ -39,8 +41,9 @@ const BlogTableRowActions = ({ row }: DataTableRowActionsProps) => {
       <DropdownMenuContent align="end" className="w-40">
         <DropdownMenuItem
           onClick={() => {
-            setCurrentRow(row.original)
-            setOpen("edit")
+            router.push(
+              `/dashboard/blogs/edit?documentId=${row.original.documentId}`
+            )
           }}
         >
           Edit

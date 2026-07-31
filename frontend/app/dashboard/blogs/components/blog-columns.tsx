@@ -2,8 +2,11 @@ import { DataTableColumnHeader } from "@/components/data-table-column-header"
 import { SingleImagePreview } from "@/components/examples/image-preview"
 import { LongText } from "@/components/long-text"
 import { Badge } from "@/components/ui/badge"
+import { getStrapiMediaUrl } from "@/lib/media"
 import { BlogsAndArticles } from "@/types/types"
 import { createColumnHelper } from "@tanstack/react-table"
+import { ExternalLink } from "lucide-react"
+import { BadgeColors } from "../../content/posts/components/post-columns"
 import BlogTableRowActions from "./blog-table-row-actions"
 
 const columnHelper = createColumnHelper<BlogsAndArticles>()
@@ -20,65 +23,92 @@ export const defaultColumns = [
     ),
   }),
   columnHelper.display({
-    id: "cover",
-    header: () => <span>Cover</span>,
+    id: "thumbnail",
+    header: () => <span>Media</span>,
     cell: ({ row }) => {
-      const cover = row.original.cover
-      return (
-        <div className="flex h-12 w-12 items-center gap-2">
-          {cover?.url ? (
+      if (row.original.media_type === "image") {
+        const mediaFile = row.original.media_files?.[0]
+
+        return (
+          <div className="flex h-12 w-12 items-center gap-2">
             <SingleImagePreview
-              imageUrl={`${process.env.NEXT_PUBLIC_STRAPI_URL}${cover.url}`}
+              imageUrl={getStrapiMediaUrl(mediaFile?.url) || ""}
             />
-          ) : (
-            <div className="flex h-12 w-12 items-center justify-center rounded-md bg-muted text-xs text-muted-foreground">
-              N/A
-            </div>
-          )}
-        </div>
+          </div>
+        )
+      } else {
+        return (
+          <div className="flex h-12 w-12 items-center justify-center rounded-md bg-muted text-xs text-muted-foreground">
+            N/A
+          </div>
+        )
+      }
+    },
+    enableSorting: false,
+  }),
+  columnHelper.accessor("post_status", {
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: (props) => {
+      const status = props.getValue()
+      const { css, icon } = BadgeColors({ status })
+      return (
+        <Badge className={css}>
+          {icon} {status}
+        </Badge>
       )
     },
     enableSorting: false,
   }),
-
-  columnHelper.accessor("slug", {
+  columnHelper.accessor("media_type", {
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Slug" />
+      <DataTableColumnHeader column={column} title="Media Type" />
     ),
-    cell: (props) => (
-      <LongText className="max-w-36 text-muted-foreground">
-        {props.getValue() ?? "-"}
-      </LongText>
+    cell: ({ row }) => {
+      return <p className="capitalize">{row.original.media_type ?? "-"}</p>
+    },
+    enableSorting: false,
+  }),
+  columnHelper.accessor("post_type", {
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Post Type" />
+    ),
+    cell: ({ row }) => (
+      <p className="capitalize">{row.original.post_type ?? "-"}</p>
     ),
     enableSorting: false,
   }),
-  columnHelper.accessor("description", {
+  columnHelper.accessor("visibility", {
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Description" />
+      <DataTableColumnHeader column={column} title="Visibility" />
     ),
-    cell: (props) => (
-      <LongText className="max-w-64">{props.getValue() ?? "-"}</LongText>
-    ),
+    cell: (props) => <p className="capitalize">{props.getValue() ?? "-"}</p>,
     enableSorting: false,
   }),
-  columnHelper.accessor((row) => row.author?.name ?? "-", {
-    id: "author",
+  columnHelper.accessor("start_date", {
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Author" />
+      <DataTableColumnHeader column={column} title="Publish Date" />
     ),
-    cell: (props) => <p>{props.getValue()}</p>,
-    enableSorting: false,
+    cell: (props) => {
+      const value = props.getValue()
+      return value ? <p>{new Date(value).toLocaleDateString()}</p> : <p>-</p>
+    },
   }),
-  columnHelper.accessor((row) => row.category?.name ?? "-", {
-    id: "category",
+  columnHelper.accessor("linkedin_post_url", {
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Category" />
+      <DataTableColumnHeader column={column} title="LinkedIn" />
     ),
-    cell: (props) => (
-      <Badge variant="outline" className="capitalize">
-        {props.getValue()}
-      </Badge>
-    ),
+    cell: (props) => {
+      const value = props.getValue()
+      return value ? (
+        <a href={value} target="_blank" rel="noreferrer">
+          <ExternalLink className="h-4 w-4" />
+        </a>
+      ) : (
+        <p className="text-muted-foreground">-</p>
+      )
+    },
     enableSorting: false,
   }),
   columnHelper.accessor("createdAt", {

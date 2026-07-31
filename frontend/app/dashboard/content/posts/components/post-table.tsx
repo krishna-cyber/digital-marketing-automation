@@ -34,7 +34,7 @@ import {
 import { Rss } from "lucide-react"
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs"
 import { useState } from "react"
-import { linkedinPosts } from "../data/data"
+// import { linkedinPosts } from "../data/data"
 import DeletePostAlert from "./delete-post-alert"
 import { defaultColumns as columns } from "./post-columns"
 import PostsEditDialog from "./post-edit-dialog"
@@ -58,11 +58,7 @@ export function PostsTable({
 
   const [{ pageIndex, pageSize }, setSearch] = useQueryStates(searchParams)
 
-  const {
-    data: postsData,
-    isFetching,
-    isLoading,
-  } = useQuery({
+  const { data: postsData, isFetching } = useQuery({
     queryKey: ["posts", pageIndex, pageSize, sorting],
     queryFn: async () => {
       const response = await strapiRequest.get(
@@ -76,8 +72,7 @@ export function PostsTable({
     placeholderData: (previousData) => previousData,
   })
 
-  // const rows = postsData?.data ?? []
-  const rows = linkedinPosts
+  const rows = postsData?.data ?? []
   const pageCount = postsData?.meta?.pagination?.pageCount ?? -1
 
   // eslint-disable-next-line react-hooks/incompatible-library

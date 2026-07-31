@@ -307,36 +307,24 @@ export interface SingleLinkedInPostResponse {
 export interface BlogsAndArticles {
   id: number
   documentId: string
-  title: string | null
-  description: string | null
-  slug: string | null
-  cover: MediaFile | null
-  author: ArticleAuthor | null
-  category: ArticleCategory | null
-  markdown: string | null
+  title: string
+  content: string | null // Rich text
+  linkedin_post_id?: string | null
+  linkedin_post_url?: string | null
+  post_status: CalendarEventStatus
+  media_files: MediaFile[] | null
+  thumbnail: MediaFile | null
+  media_type: MediaType
+  visibility: string | null
+  post_type: string | null
+  event_id: string | null
+  image_alt_text?: string | null
+  image_prompt?: string | null
+  start_date: string | null // ISO Date String
+  end_date: string | null // ISO Date String
   createdAt: string
   updatedAt: string
   publishedAt?: string | null
-}
-
-export interface ArticleAuthor {
-  id: number
-  documentId: string
-  name: string | null
-  avatar: MediaFile | null
-  email: string | null
-  createdAt: string
-  updatedAt: string
-}
-
-export interface ArticleCategory {
-  id: number
-  documentId: string
-  name: string | null
-  slug: string | null
-  description: string | null
-  createdAt: string
-  updatedAt: string
 }
 
 export interface BlogsAandArticlesResponse {

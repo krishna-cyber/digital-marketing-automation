@@ -2,13 +2,14 @@ import { DataTableColumnHeader } from "@/components/data-table-column-header"
 import { SingleImagePreview } from "@/components/examples/image-preview"
 import { LongText } from "@/components/long-text"
 import { Badge } from "@/components/ui/badge"
+import { getStrapiMediaUrl } from "@/lib/media"
 import { CalendarEventStatus, LinkedInPost } from "@/types/types"
 import { createColumnHelper } from "@tanstack/react-table"
 import { DataTableRowActions } from "./post-data-table-row-actions"
 
 const columnHelper = createColumnHelper<LinkedInPost>()
 
-const BadgeColors = ({ status }: { status: CalendarEventStatus }) => {
+export const BadgeColors = ({ status }: { status: CalendarEventStatus }) => {
   switch (status) {
     case "draft":
       return {
@@ -93,7 +94,9 @@ export const defaultColumns = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Media Type" />
     ),
-    cell: (props) => <p className="capitalize">{props.getValue()}</p>,
+    cell: ({ row }) => (
+      <p className="capitalize">{row.original.media_type ?? "-"}</p>
+    ),
   }),
 
   columnHelper.accessor("media_files", {
@@ -120,8 +123,8 @@ export const defaultColumns = [
                     className="flex h-12 w-12 items-center gap-2"
                   >
                     <SingleImagePreview
-                      // imageUrl={`${process.env.NEXT_PUBLIC_STRAPI_URL}${file.url}`}
-                      imageUrl="https://picsum.photos/1000/800?random=1"
+                      imageUrl={getStrapiMediaUrl(file.url)}
+                      // imageUrl="https://picsum.photos/1000/800?random=1"
                     />
                   </div>
                 ))}
@@ -189,7 +192,9 @@ export const defaultColumns = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Post Type" />
     ),
-    cell: (props) => <p className="capitalize">{props.getValue()}</p>,
+    cell: ({ row }) => (
+      <p className="capitalize">{row.original.post_type ?? "-"}</p>
+    ),
     enableSorting: false,
   }),
 
@@ -197,7 +202,9 @@ export const defaultColumns = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Visibility" />
     ),
-    cell: (props) => <p className="capitalize">{props.getValue()}</p>,
+    cell: ({ row }) => (
+      <p className="capitalize">{row.original.visibility ?? "-"}</p>
+    ),
     enableSorting: false,
   }),
   columnHelper.accessor("start_date", {

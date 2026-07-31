@@ -19,7 +19,7 @@ const page = async ({ searchParams }: { searchParams: SearchParams }) => {
 
   try {
     const response = await strapiRequest.get(
-      `/api/articles/${documentId}?populate=*`
+      `/api/linkedin-posts/${documentId}?populate=*`
     )
     const articleData = response.data?.data
     return (
@@ -35,9 +35,11 @@ const page = async ({ searchParams }: { searchParams: SearchParams }) => {
             <h1 className="text-2xl font-bold tracking-tight">
               {articleData?.title}
             </h1>
-            <p className="text-sm text-muted-foreground">
-              {articleData?.description}
-            </p>
+            {articleData?.image_alt_text && (
+              <p className="text-sm text-muted-foreground">
+                {articleData.image_alt_text}
+              </p>
+            )}
           </span>
         </div>
         <section className={"py-16"}>

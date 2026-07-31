@@ -19,12 +19,6 @@ export async function POST(req: NextRequest) {
 
   //GET ONLY LAST message from the array because the last one is the latest query from the client
 
-  console.log(
-    "Last query received from client:",
-    body.messages[body.messages.length - 1]
-  )
-  console.log("Received request body:", body)
-
   try {
     const stream = chat({
       adapter: openRouterText("openrouter/auto"),

@@ -2,7 +2,7 @@
 
 import { Placeholder, Selection } from "@tiptap/extensions"
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react"
 // --- Tiptap Core Extensions ---
 import { Highlight } from "@tiptap/extension-highlight"
 import { Image } from "@tiptap/extension-image"
@@ -74,12 +74,17 @@ import "@/components/tiptap-templates/simple/simple-editor.scss"
 
 import { AIAutocomplete } from "@/components/tiptap-extension/ai-autocompletion/ai-autocomplete-extension"
 import { useAIAutocomplete } from "@/components/tiptap-extension/ai-autocompletion/use-ai-autocomplete"
-import content from "@/components/tiptap-templates/simple/data/content.json"
+import { markDownContent } from "@/components/tiptap-templates/simple/data/content"
 import { AITextBubbleMenu } from "@/components/tiptap-ui/ai-text-bubble-menu"
 import { Markdown } from "@tiptap/markdown"
 import { AIGhostOverlay } from "../ai-ghost-overlay"
 // import { AITextBubbleMenu } from "@/components/tiptap-ui/ai-text-bubble-menu"
 // import { AIGhostOverlay } from "../ai-ghost-overlay"
+
+export type SimpleEditorHandle = {
+  getMarkdown: () => string
+  setMarkdown: (markdown: string) => void
+}
 
 const MainToolbarContent = ({
   onHighlighterClick,
@@ -189,7 +194,13 @@ const MobileToolbarContent = ({
   </>
 )
 
-export function SimpleEditor() {
+export function SimpleEditor({
+  ref,
+  content,
+}: {
+  ref?: Ref<SimpleEditorHandle>
+  content?: string
+}) {
   const isMobile = useIsBreakpoint()
   const { height } = useWindowSize()
   const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
@@ -199,6 +210,7 @@ export function SimpleEditor() {
 
   const editor = useEditor({
     immediatelyRender: false,
+    // injectCSS: false,
     editorProps: {
       attributes: {
         autocomplete: "off",
@@ -249,9 +261,20 @@ export function SimpleEditor() {
       }),
       Markdown,
     ],
-    content,
+    content: content ?? markDownContent ?? "",
     contentType: "markdown",
   })
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      getMarkdown: () => editor?.getMarkdown() ?? "",
+      setMarkdown: (markdown: string) => {
+        editor?.commands.setContent(markdown, { contentType: "markdown" })
+      },
+    }),
+    [editor]
+  )
 
   console.log("Editor instance:", editor?.markdown)
 

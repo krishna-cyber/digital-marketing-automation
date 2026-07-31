@@ -111,26 +111,18 @@ export default ImagePreview
 export const SingleImagePreview = memo(({ imageUrl }: { imageUrl: string }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
-  const handleOpen = useCallback(() => {
-    setSelectedImage(imageUrl)
-  }, [imageUrl])
-
-  const handleOpenChange = useCallback((open: boolean) => {
-    if (!open) setSelectedImage(null)
-  }, [])
-
   return (
     <>
       <div className="group/item relative aspect-square w-full overflow-hidden rounded-lg border">
         <img
-          src={imageUrl}
+          src={String(imageUrl)}
           alt="Preview"
           className="h-full w-full object-cover transition-opacity duration-300"
         />
         <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 transition-opacity group-hover/item:opacity-100">
           {imageUrl && (
             <Button
-              onClick={handleOpen}
+              onClick={() => setSelectedImage(String(imageUrl))}
               variant="secondary"
               size="icon"
               className="size-7"
@@ -141,7 +133,10 @@ export const SingleImagePreview = memo(({ imageUrl }: { imageUrl: string }) => {
           )}
         </div>
       </div>
-      <Dialog open={!!selectedImage} onOpenChange={handleOpenChange}>
+      <Dialog
+        open={!!selectedImage}
+        onOpenChange={(open) => !open && setSelectedImage(null)}
+      >
         <DialogContent className="w-full max-w-4xl border-none bg-transparent p-0 shadow-none **:data-[slot=dialog-close]:-inset-e-7 **:data-[slot=dialog-close]:-top-7 **:data-[slot=dialog-close]:size-7 **:data-[slot=dialog-close]:rounded-full **:data-[slot=dialog-close]:bg-background **:data-[slot=dialog-close]:text-muted-foreground **:data-[slot=dialog-close]:hover:text-foreground">
           <DialogHeader className="sr-only">
             <DialogTitle>Image Preview</DialogTitle>
