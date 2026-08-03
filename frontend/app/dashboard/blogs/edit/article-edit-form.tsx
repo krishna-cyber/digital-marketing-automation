@@ -1,43 +1,43 @@
 "use client"
-import { SingleImagePreview } from "@/components/examples/image-preview";
+import { SingleImagePreview } from "@/components/examples/image-preview"
 import {
-    SimpleEditor,
-    type SimpleEditorHandle,
-} from "@/components/tiptap-templates/simple/simple-editor";
-import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
+  SimpleEditor,
+  type SimpleEditorHandle,
+} from "@/components/tiptap-templates/simple/simple-editor"
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupTextarea } from "@/components/ui/input-group";
-import { strapiRequest } from "@/lib/api";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { InputGroup, InputGroupTextarea } from "@/components/ui/input-group"
+import { api, strapiRequest } from "@/lib/api"
 import {
-    BlogPost,
-    CalendarEventStatus,
-    LinkedInArticle,
-    MediaType,
-} from "@/types/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+  BlogPost,
+  CalendarEventStatus,
+  LinkedInArticle,
+  MediaType,
+} from "@/types/types"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import {
-    CircleX,
-    EllipsisVerticalIcon,
-    FileCheckCorner,
-    SaveCheck,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
-import React, { useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
+  CircleX,
+  EllipsisVerticalIcon,
+  FileCheckCorner,
+  SaveCheck,
+} from "lucide-react"
+import { useRouter } from "next/navigation"
+import React, { useRef } from "react"
+import { Controller, useForm } from "react-hook-form"
+import { toast } from "sonner"
+import { z } from "zod"
 
 export type ArticleContentType = "linkedin-posts" | "blogs"
 
@@ -246,11 +246,20 @@ const ArticleEditForm = ({
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuGroup>
                 <DropdownMenuItem
-                  onClick={(e) => {
+                  onClick={async (e) => {
                     e.preventDefault()
                     form.handleSubmit((data) =>
                       handleSubmit(data, "approved")
                     )()
+
+                    await api
+                      .post(`/api/v1/approval/${document.event_id}/approve`)
+                      .then(() => {
+                        console.log("Article approved successfully.")
+                      })
+                      .catch((error) => {
+                        console.error("Error approving the article:", error)
+                      })
                   }}
                 >
                   <FileCheckCorner aria-hidden="true" />
@@ -261,11 +270,15 @@ const ArticleEditForm = ({
               <DropdownMenuGroup>
                 <DropdownMenuItem
                   variant="destructive"
-                  onClick={(e) => {
+                  onClick={async (e) => {
                     e.preventDefault()
                     form.handleSubmit((data) =>
                       handleSubmit(data, "rejected")
                     )()
+
+                    await api.post(
+                      `/api/v1/approval/${document.event_id}/reject`
+                    )
                   }}
                 >
                   <CircleX aria-hidden="true" />
