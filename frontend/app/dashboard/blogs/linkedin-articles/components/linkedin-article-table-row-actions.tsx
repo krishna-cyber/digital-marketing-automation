@@ -42,7 +42,7 @@ const LinkedinArticleTableRowActions = ({ row }: DataTableRowActionsProps) => {
         <DropdownMenuItem
           onClick={() => {
             router.push(
-              `/dashboard/blogs/edit?documentId=${row.original.documentId}`
+              `/dashboard/blogs/edit?contentType=linkedin-posts&documentId=${row.original.documentId}`
             )
           }}
         >

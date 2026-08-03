@@ -4,12 +4,13 @@ import { SingleImagePreview } from "@/components/examples/image-preview"
 import { LongText } from "@/components/long-text"
 import { Badge } from "@/components/ui/badge"
 import { getStrapiMediaUrl } from "@/lib/media"
-import { LinkedInArticle } from "@/types/types"
+import { BlogPost } from "@/types/types"
 import { createColumnHelper } from "@tanstack/react-table"
 import { ExternalLink } from "lucide-react"
-import BlogTableRowActions from "./linkedin-article-table-row-actions"
+import Link from "next/link"
+import BlogTableRowActions from "./blogs-table-row-actions"
 
-const columnHelper = createColumnHelper<LinkedInArticle>()
+const columnHelper = createColumnHelper<BlogPost>()
 
 export const defaultColumns = [
   columnHelper.accessor("title", {
@@ -17,9 +18,13 @@ export const defaultColumns = [
       <DataTableColumnHeader column={column} title="Title" />
     ),
     cell: (props) => (
-      <LongText className="max-w-48 font-medium">
-        {props.getValue() ?? "-"}
-      </LongText>
+      <Link
+        href={`/dashboard/blogs/edit?contentType=blogs&documentId=${props.row.original.documentId}`}
+      >
+        <LongText className="max-w-48 font-medium">
+          {props.getValue() ?? "-"}
+        </LongText>
+      </Link>
     ),
   }),
   columnHelper.display({
@@ -70,15 +75,6 @@ export const defaultColumns = [
     },
     enableSorting: false,
   }),
-  columnHelper.accessor("post_type", {
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Post Type" />
-    ),
-    cell: ({ row }) => (
-      <p className="capitalize">{row.original.post_type ?? "-"}</p>
-    ),
-    enableSorting: false,
-  }),
   columnHelper.accessor("visibility", {
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Visibility" />
@@ -95,9 +91,9 @@ export const defaultColumns = [
       return value ? <p>{new Date(value).toLocaleDateString()}</p> : <p>-</p>
     },
   }),
-  columnHelper.accessor("linkedin_post_url", {
+  columnHelper.accessor("blog_post_url", {
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="LinkedIn" />
+      <DataTableColumnHeader column={column} title="Blog Post" />
     ),
     cell: (props) => {
       const value = props.getValue()

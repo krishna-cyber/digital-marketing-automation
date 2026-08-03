@@ -20,7 +20,7 @@ const DeleteLinkedinArticleAlert = () => {
   const { currentRow, open, setOpen } = useLinkedInArticles()
   const queryClient = useQueryClient()
   const handleDelete = useMutation({
-    mutationKey: ["delete-blog-article", currentRow?.id],
+    mutationKey: ["delete-linkedin-article", currentRow?.id],
     mutationFn: async () => {
       const response = await strapiRequest.delete(
         `/api/linkedin-posts/${currentRow?.id}`
@@ -28,13 +28,13 @@ const DeleteLinkedinArticleAlert = () => {
       return response.data
     },
     onSuccess: () => {
-      toast.success("Blog or article deleted successfully.")
+      toast.success("Linkedin article has been deleted successfully.")
       setOpen(null)
-      queryClient.invalidateQueries({ queryKey: ["blogs-and-articles"] })
+      queryClient.invalidateQueries({ queryKey: ["linkedin-posts"] })
     },
     onError: (error) => {
-      console.error("Error deleting blog or article:", error)
-      toast.error("Error deleting blog or article.")
+      console.error("Error deleting linkedin article:", error)
+      toast.error("Error deleting linkedin article.")
       setOpen(null)
     },
   })

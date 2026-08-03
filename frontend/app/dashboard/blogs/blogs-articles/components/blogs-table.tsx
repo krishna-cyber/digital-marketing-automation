@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table"
 import { strapiRequest } from "@/lib/api"
 import { cn } from "@/lib/utils"
-import { LinkedInArticlesResponse } from "@/types/types"
+import { BlogPostsResponse } from "@/types/types"
 import { useQuery } from "@tanstack/react-query"
 import {
   flexRender,
@@ -34,15 +34,19 @@ import {
 import { Rss } from "lucide-react"
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs"
 import React, { useState } from "react"
-import DeleteBlogArticleAlert from "./delete-linkedin-article-alert"
-import { defaultColumns as columns } from "./linkedin-articles-columns"
+import { defaultColumns as columns } from "./blogs-columns"
+import DeleteBlogArticleAlert from "./delete-blog-alert"
 
 const searchParams = {
   searchQuery: parseAsString.withDefault(""),
   pageIndex: parseAsInteger.withDefault(0), // 0-indexed, table-internal
   pageSize: parseAsInteger.withDefault(10),
 }
-const LinkedInArticlesTable = () => {
+const BlogsTable = ({
+  setBlogsCount,
+}: {
+  setBlogsCount: (count: number) => void
+}) => {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     documentId: false,
@@ -55,18 +59,18 @@ const LinkedInArticlesTable = () => {
   const [{ pageIndex, pageSize }, setSearch] = useQueryStates(searchParams)
 
   const { data: blogsAndArticlesData, isFetching } = useQuery({
-    queryKey: ["blogs-and-articles", pageIndex, pageSize, sorting],
+    queryKey: ["blogs", pageIndex, pageSize, sorting],
     queryFn: async () => {
       const response = await strapiRequest.get(
         // Strapi's pagination[page] is 1-indexed — convert here, keep table 0-indexed internally
-        // `/api/linkedin-posts/page?pagination[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
-        `api/linkedin-posts?populate=*&pagination[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
+        `api/blogs?populate=*&pagination[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
       )
-      return response.data as LinkedInArticlesResponse
+      return response.data as BlogPostsResponse
     },
     placeholderData: (previousData) => previousData,
   })
   const pageCount = blogsAndArticlesData?.meta?.pagination?.pageCount ?? -1
+  setBlogsCount(blogsAndArticlesData?.meta?.pagination?.total ?? 0)
 
   const rows = blogsAndArticlesData?.data ?? []
   // eslint-disable-next-line react-hooks/incompatible-library
@@ -182,9 +186,9 @@ const LinkedInArticlesTable = () => {
                         <EmptyMedia variant="icon">
                           <Rss />
                         </EmptyMedia>
-                        <EmptyTitle>Linkedin Posts</EmptyTitle>
+                        <EmptyTitle>Blog Posts</EmptyTitle>
                         <EmptyDescription>
-                          You&apos;re all caught up. No posts to show here.
+                          You&apos;re all caught up. No blog posts to show here.
                         </EmptyDescription>
                       </EmptyHeader>
                     </Empty>
@@ -203,4 +207,4 @@ const LinkedInArticlesTable = () => {
   )
 }
 
-export default LinkedInArticlesTable
+export default BlogsTable

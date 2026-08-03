@@ -3,12 +3,15 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import React from "react"
 
+import { BlogsProvider } from "./blogs-articles/components/blogs-provider"
+
+import BlogsTable from "./blogs-articles/components/blogs-table"
 import LinkedInArticlesTable from "./linkedin-articles/components/linkedin-article-table"
 import { LinkedInArticlesProvider } from "./linkedin-articles/components/linkedin-articles-provider"
 
 const TabsRender = () => {
-  const [linkedInArticlesCount, setlinkedInArticlesCount] = React.useState(5)
-  const [blogsCount, setBlogsCount] = React.useState(10)
+  const [linkedInArticlesCount, setlinkedInArticlesCount] = React.useState(0)
+  const [blogsCount, setBlogsCount] = React.useState(0)
   return (
     <div className="mt-4 flex w-full flex-col gap-6">
       <Tabs defaultValue="linkedin-articles">
@@ -29,13 +32,15 @@ const TabsRender = () => {
         <TabsContent className="w-full" value="linkedin-articles">
           <div className="mb-2.5 flex flex-wrap items-end justify-between gap-2">
             <p className="text-muted-foreground">
-              Manage your linkedin articles here. You can create, edit, and
-              delete
+              Manage your linkedin articles here. You can create, edit, approve
+              and delete.
             </p>
           </div>
           {/* Linkedin Articles tables */}
           <LinkedInArticlesProvider>
-            <LinkedInArticlesTable />
+            <LinkedInArticlesTable
+              setLinkedinArticlesCount={setlinkedInArticlesCount}
+            />
           </LinkedInArticlesProvider>
         </TabsContent>
         <TabsContent value="blog-posts">
@@ -44,10 +49,11 @@ const TabsRender = () => {
               Manage your blog posts here. You can create, edit, and delete
               them.
             </p>
-
-            {/* Todo: Add blog posts table and functionality */}
-            <p>Blogs related table and functionality should be added here</p>
           </div>
+          {/* Blog Posts tables */}
+          <BlogsProvider>
+            <BlogsTable setBlogsCount={setBlogsCount} />
+          </BlogsProvider>
         </TabsContent>
       </Tabs>
     </div>

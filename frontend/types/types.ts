@@ -1,3 +1,5 @@
+import type { RowData } from "@tanstack/react-table"
+
 export type ActionType = "redirect" | "api_call" | "workflow" | "modal"
 export type ActionStyle = "primary" | "danger" | "default"
 export interface NotificationAction {
@@ -341,4 +343,60 @@ export interface LinkedInArticlesResponse {
 
 export interface SingleLinkedInArticleResponse {
   data: LinkedInArticle
+}
+
+// Main Blog Post type
+export interface BlogPost {
+  id: number
+  documentId: string
+  start_date: string | null // ISO Date String
+  end_date: string | null // ISO Date String
+  title: string
+  content: string | null // Rich text
+  blog_post_id?: string | null
+  blog_post_url?: string | null
+  post_status: CalendarEventStatus
+  media_type: MediaType
+  visibility: string | null
+  image_alt_text?: string | null
+  image_prompt?: string | null
+  slug: string
+  seo_keywords: string | null
+  meta_description: string | null
+  open_graph_description: string | null
+  cta_profile: string | null
+  cta_top: string | null
+  cta_bottom: string | null
+  general_description: string | null
+  createdAt: string
+  updatedAt: string
+  publishedAt?: string | null
+  event_id: string | null
+  media_files: MediaFile[] | null
+  thumbnail: MediaFile | null
+}
+
+// API Response types
+export interface BlogPostsResponse {
+  data: BlogPost[]
+  meta?: {
+    pagination?: {
+      page: number
+      pageSize: number
+      total: number
+      pageCount: number
+    }
+  }
+}
+
+export interface SingleBlogPostResponse {
+  data: BlogPost
+}
+
+declare module "@tanstack/react-table" {
+  interface ColumnMeta<TData extends RowData, TValue> {
+    className?: string
+    thClassName?: string
+    tdClassName?: string
+  }
 }

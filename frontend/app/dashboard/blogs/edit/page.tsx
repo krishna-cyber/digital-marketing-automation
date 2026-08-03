@@ -5,21 +5,21 @@ import { AxiosError } from "axios"
 import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import ArticleEditForm from "./article-edit-form"
+import ArticleEditForm, { type ArticleContentType } from "./article-edit-form"
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
 const page = async ({ searchParams }: { searchParams: SearchParams }) => {
   const resolvedParams = await searchParams
   const documentId = resolvedParams.documentId as string
-
-  if (!documentId) {
+  const contentType = resolvedParams.contentType as string
+  if (!documentId || !contentType) {
     notFound()
   }
 
   try {
     const response = await strapiRequest.get(
-      `/api/linkedin-posts/${documentId}?populate=*`
+      `/api/${contentType}/${documentId}?populate=*`
     )
     const articleData = response.data?.data
     return (
@@ -35,15 +35,18 @@ const page = async ({ searchParams }: { searchParams: SearchParams }) => {
             <h1 className="text-2xl font-bold tracking-tight">
               {articleData?.title}
             </h1>
-            {articleData?.image_alt_text && (
+            {articleData?.meta_description && (
               <p className="text-sm text-muted-foreground">
-                {articleData.image_alt_text}
+                {articleData.meta_description}
               </p>
             )}
           </span>
         </div>
         <section className={"py-16"}>
-          <ArticleEditForm document={articleData} />
+          <ArticleEditForm
+            contentType={contentType as ArticleContentType}
+            document={articleData}
+          />
         </section>
       </Main>
     )

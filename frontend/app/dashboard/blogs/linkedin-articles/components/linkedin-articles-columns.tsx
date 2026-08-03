@@ -7,6 +7,7 @@ import { getStrapiMediaUrl } from "@/lib/media"
 import { LinkedInArticle } from "@/types/types"
 import { createColumnHelper } from "@tanstack/react-table"
 import { ExternalLink } from "lucide-react"
+import Link from "next/link"
 import BlogTableRowActions from "./linkedin-article-table-row-actions"
 
 const columnHelper = createColumnHelper<LinkedInArticle>()
@@ -17,9 +18,13 @@ export const defaultColumns = [
       <DataTableColumnHeader column={column} title="Title" />
     ),
     cell: (props) => (
-      <LongText className="max-w-48 font-medium">
-        {props.getValue() ?? "-"}
-      </LongText>
+      <Link
+        href={`/dashboard/blogs/edit?contentType=linkedin-posts&documentId=${props.row.original.documentId}`}
+      >
+        <LongText className="max-w-48 font-medium">
+          {props.getValue() ?? "-"}
+        </LongText>
+      </Link>
     ),
   }),
   columnHelper.display({

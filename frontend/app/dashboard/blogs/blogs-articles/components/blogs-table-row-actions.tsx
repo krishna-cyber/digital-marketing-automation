@@ -7,7 +7,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { LinkedInArticle } from "@/types/types"
+import { BlogPost } from "@/types/types"
 import { Row } from "@tanstack/react-table"
 import {
   Check,
@@ -18,15 +18,15 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import React from "react"
-import { useLinkedInArticles } from "./linkedin-articles-provider"
+import { useBlogs } from "./blogs-provider"
 
 type DataTableRowActionsProps = {
-  row: Row<LinkedInArticle>
+  row: Row<BlogPost>
 }
 
-const LinkedinArticleTableRowActions = ({ row }: DataTableRowActionsProps) => {
+const BlogTableRowActions = ({ row }: DataTableRowActionsProps) => {
   const router = useRouter()
-  const { setOpen, setCurrentRow } = useLinkedInArticles()
+  const { setOpen, setCurrentRow } = useBlogs()
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -42,7 +42,7 @@ const LinkedinArticleTableRowActions = ({ row }: DataTableRowActionsProps) => {
         <DropdownMenuItem
           onClick={() => {
             router.push(
-              `/dashboard/blogs/edit?documentId=${row.original.documentId}`
+              `/dashboard/blogs/edit?contentType=blogs&documentId=${row.original.documentId}`
             )
           }}
         >
@@ -89,4 +89,4 @@ const LinkedinArticleTableRowActions = ({ row }: DataTableRowActionsProps) => {
   )
 }
 
-export default LinkedinArticleTableRowActions
+export default BlogTableRowActions

@@ -14,23 +14,21 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Newspaper } from "lucide-react"
 import React from "react"
 import { toast } from "sonner"
-import { useLinkedInArticles } from "./linkedin-articles-provider"
+import { useBlogs } from "./blogs-provider"
 
-const DeleteLinkedinArticleAlert = () => {
-  const { currentRow, open, setOpen } = useLinkedInArticles()
+const DeleteBlogArticleAlert = () => {
+  const { currentRow, open, setOpen } = useBlogs()
   const queryClient = useQueryClient()
   const handleDelete = useMutation({
     mutationKey: ["delete-blog-article", currentRow?.id],
     mutationFn: async () => {
-      const response = await strapiRequest.delete(
-        `/api/linkedin-posts/${currentRow?.id}`
-      )
+      const response = await strapiRequest.delete(`/api/blogs/${currentRow?.id}`)
       return response.data
     },
     onSuccess: () => {
-      toast.success("Blog or article deleted successfully.")
+      toast.success("Blog has been deleted successfully.")
       setOpen(null)
-      queryClient.invalidateQueries({ queryKey: ["blogs-and-articles"] })
+      queryClient.invalidateQueries({ queryKey: ["blogs"] })
     },
     onError: (error) => {
       console.error("Error deleting blog or article:", error)
@@ -72,4 +70,4 @@ const DeleteLinkedinArticleAlert = () => {
   )
 }
 
-export default DeleteLinkedinArticleAlert
+export default DeleteBlogArticleAlert

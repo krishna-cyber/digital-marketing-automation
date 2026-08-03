@@ -42,7 +42,11 @@ const searchParams = {
   pageIndex: parseAsInteger.withDefault(0), // 0-indexed, table-internal
   pageSize: parseAsInteger.withDefault(10),
 }
-const LinkedInArticlesTable = () => {
+const LinkedInArticlesTable = ({
+  setLinkedinArticlesCount,
+}: {
+  setLinkedinArticlesCount: (count: number) => void
+}) => {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     documentId: false,
@@ -55,7 +59,7 @@ const LinkedInArticlesTable = () => {
   const [{ pageIndex, pageSize }, setSearch] = useQueryStates(searchParams)
 
   const { data: blogsAndArticlesData, isFetching } = useQuery({
-    queryKey: ["blogs-and-articles", pageIndex, pageSize, sorting],
+    queryKey: ["linkedin-posts", pageIndex, pageSize, sorting],
     queryFn: async () => {
       const response = await strapiRequest.get(
         // Strapi's pagination[page] is 1-indexed — convert here, keep table 0-indexed internally
@@ -69,6 +73,7 @@ const LinkedInArticlesTable = () => {
   const pageCount = blogsAndArticlesData?.meta?.pagination?.pageCount ?? -1
 
   const rows = blogsAndArticlesData?.data ?? []
+  setLinkedinArticlesCount(blogsAndArticlesData?.meta?.pagination?.total ?? 0)
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: rows,
