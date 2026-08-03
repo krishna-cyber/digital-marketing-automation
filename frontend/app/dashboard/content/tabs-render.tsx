@@ -5,20 +5,27 @@ import UploadMedia from "@/components/upload-media"
 import React from "react"
 import { MediaProvider } from "./media/components/media-provider"
 import { MediaTable } from "./media/components/media-table"
-import { PostsTable } from "./posts/components/post-table"
-import { PostsProvider } from "./posts/components/posts-provider"
+import { SocialsProvider } from "./socials/components/socials-provider"
+import { SocialsTable } from "./socials/components/social-table"
 
 const TabsRender = () => {
-  const [linkedinPostsCount, setLinkedinPostsCount] = React.useState(12)
+  const [socialsCount, setSocialsCount] = React.useState(0)
   const [mediaAssetsCount, setMediaAssetsCount] = React.useState(0)
+  const [thoughtLeadershipCount, setThoughtLeadershipCount] = React.useState(0)
   return (
     <div className="mt-4 flex w-full flex-col gap-6">
-      <Tabs defaultValue="linkedin-posts">
+      <Tabs defaultValue="social-posts">
         <TabsList variant="line" className="mb-3.5 max-w-xl">
-          <TabsTrigger value="linkedin-posts" className="gap-2">
-            Linkedin Posts
+          <TabsTrigger value="social-posts" className="gap-2">
+            Social Posts
             <Badge variant="primary-light" size="sm">
-              {linkedinPostsCount}
+              {socialsCount}
+            </Badge>
+          </TabsTrigger>
+          <TabsTrigger value="thought-leadership" className="gap-2">
+            Thought Leadership
+            <Badge variant="success-light" size="sm">
+              {thoughtLeadershipCount}
             </Badge>
           </TabsTrigger>
           <TabsTrigger value="media-assets" className="gap-2">
@@ -28,17 +35,28 @@ const TabsRender = () => {
             </Badge>
           </TabsTrigger>
         </TabsList>
-        <TabsContent className="w-full" value="linkedin-posts">
+        <TabsContent className="w-full" value="social-posts">
           <div className="mb-2.5 flex flex-wrap items-end justify-between gap-2">
             <p className="text-muted-foreground">
-              Manage your linkedin posts here. You can create, edit, and delete
+              Manage your social posts here. You can create, edit, and delete
               them.
             </p>
             {/* <UploadMedia title="Upload Media" /> */}
           </div>
-          <PostsProvider>
-            <PostsTable setLinkedinPostsCount={setLinkedinPostsCount} />
-          </PostsProvider>
+          <SocialsProvider>
+            <SocialsTable setSocialsCount={setSocialsCount} />
+          </SocialsProvider>
+        </TabsContent>
+        <TabsContent className="w-full" value="thought-leadership">
+          <div className="mb-2.5 flex flex-wrap items-end justify-between gap-2">
+            <p className="text-muted-foreground">
+              Manage your thought leadership content here. You can create, edit,
+              and delete them.
+            </p>
+          </div>
+          <SocialsProvider>
+            <SocialsTable setSocialsCount={setSocialsCount} />
+          </SocialsProvider>
         </TabsContent>
         <TabsContent value="media-assets">
           <div className="mb-2.5 flex flex-wrap items-end justify-between gap-2">

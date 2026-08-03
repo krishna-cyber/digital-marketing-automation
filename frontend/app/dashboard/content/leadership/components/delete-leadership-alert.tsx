@@ -13,7 +13,7 @@ import { strapiRequest } from "@/lib/api"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { FileX } from "lucide-react"
 import { toast } from "sonner"
-import { usePosts } from "./posts-provider"
+import { usePosts } from "./leadership-provider"
 
 const DeletePostAlert = () => {
   const { currentRow, open, setOpen } = usePosts()

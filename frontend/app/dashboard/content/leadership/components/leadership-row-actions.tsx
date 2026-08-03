@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 // import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { handleCopyToClipboard, handleDownload } from "@/lib/utils"
-import { LinkedInPost } from "@/types/types"
+import { SocialPost } from "@/types/types"
 import { type Row } from "@tanstack/react-table"
 import {
   ClipboardCheck,
@@ -21,10 +21,10 @@ import {
   UserPen,
 } from "lucide-react"
 
-import { usePosts } from "./posts-provider"
+import { usePosts } from "./leadership-provider"
 
 type DataTableRowActionsProps = {
-  row: Row<LinkedInPost>
+  row: Row<SocialPost>
 }
 
 export function DataTableRowActions({

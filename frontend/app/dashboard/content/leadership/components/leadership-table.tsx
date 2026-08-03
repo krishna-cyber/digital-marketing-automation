@@ -35,8 +35,8 @@ import { Rss } from "lucide-react"
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs"
 import { useState } from "react"
 // import { linkedinPosts } from "../data/data"
-import DeletePostAlert from "./delete-post-alert"
-import { defaultColumns as columns } from "./post-columns"
+import DeletePostAlert from "./delete-leadership-alert"
+import { defaultColumns as columns } from "./leadership-columns"
 import PostsEditDialog from "./post-edit-dialog"
 
 export const searchParams = {
@@ -63,7 +63,7 @@ export function PostsTable({
     queryFn: async () => {
       const response = await strapiRequest.get(
         // Strapi's pagination[page] is 1-indexed — convert here, keep table 0-indexed internally
-        // `/api/linkedin-posts/page?pagin ation[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
+        // `/api/linkedin-posts/page?pagination[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
         `api/socials?populate=*`
       )
       setLinkedinPostsCount(response.data.meta.pagination.total ?? 0)

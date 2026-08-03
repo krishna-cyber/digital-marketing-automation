@@ -34,10 +34,10 @@ import {
 import { Rss } from "lucide-react"
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs"
 import { useState } from "react"
-// import { linkedinPosts } from "../data/data"
-import DeletePostAlert from "./delete-post-alert"
-import { defaultColumns as columns } from "./post-columns"
-import PostsEditDialog from "./post-edit-dialog"
+// import { socialPosts } from "../data/data"
+import DeleteSocialAlert from "./delete-social-alert"
+import { defaultColumns as columns } from "./social-columns"
+import SocialsEditDialog from "./social-edit-dialog"
 
 export const searchParams = {
   searchQuery: parseAsString.withDefault(""),
@@ -45,10 +45,10 @@ export const searchParams = {
   pageSize: parseAsInteger.withDefault(10),
 }
 
-export function PostsTable({
-  setLinkedinPostsCount,
+export function SocialsTable({
+  setSocialsCount,
 }: Readonly<{
-  setLinkedinPostsCount: React.Dispatch<React.SetStateAction<number>>
+  setSocialsCount: React.Dispatch<React.SetStateAction<number>>
 }>) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
@@ -58,22 +58,22 @@ export function PostsTable({
 
   const [{ pageIndex, pageSize }, setSearch] = useQueryStates(searchParams)
 
-  const { data: postsData, isFetching } = useQuery({
-    queryKey: ["posts", pageIndex, pageSize, sorting],
+  const { data: socialsData, isFetching } = useQuery({
+    queryKey: ["socials", pageIndex, pageSize, sorting],
     queryFn: async () => {
       const response = await strapiRequest.get(
         // Strapi's pagination[page] is 1-indexed — convert here, keep table 0-indexed internally
-        // `/api/linkedin-posts/page?pagin ation[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
+        // `/api/linkedin-posts/page?pagination[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
         `api/socials?populate=*`
       )
-      setLinkedinPostsCount(response.data.meta.pagination.total ?? 0)
+      setSocialsCount(response.data.meta.pagination.total ?? 0)
       return response.data as SocialPostsResponse
     },
     placeholderData: (previousData) => previousData,
   })
 
-  const rows = postsData?.data ?? []
-  const pageCount = postsData?.meta?.pagination?.pageCount ?? -1
+  const rows = socialsData?.data ?? []
+  const pageCount = socialsData?.meta?.pagination?.pageCount ?? -1
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
@@ -119,7 +119,7 @@ export function PostsTable({
     >
       <DataTableToolbar
         table={table}
-        searchPlaceholder="Filter posts..."
+        searchPlaceholder="Filter socials..."
         filters={[
           {
             columnId: "media_type",
@@ -215,9 +215,9 @@ export function PostsTable({
                         <EmptyMedia variant="icon">
                           <Rss />
                         </EmptyMedia>
-                        <EmptyTitle>Linkedin Posts</EmptyTitle>
+                        <EmptyTitle>Social Posts</EmptyTitle>
                         <EmptyDescription>
-                          You&apos;re all caught up. No posts to show here.
+                          You&apos;re all caught up. No socials to show here.
                         </EmptyDescription>
                       </EmptyHeader>
                     </Empty>
@@ -230,8 +230,8 @@ export function PostsTable({
       </div>
 
       <DataTablePagination table={table} className="mt-auto" />
-      <PostsEditDialog />
-      <DeletePostAlert />
+      <SocialsEditDialog />
+      <DeleteSocialAlert />
     </div>
   )
 }

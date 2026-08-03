@@ -264,18 +264,22 @@ interface EngagementMetrics {
   updatedAt: string // ISO date string
 }
 export type MediaType = "text" | "image" | "document"
-// Main LinkedIn Post type based on your actual schema
-export interface LinkedInPost {
+// Main Social Post type based on your actual schema
+export interface SocialPost {
   id: number
   documentId: string
   title: string | null
   content: string | null // Rich text
   linkedin_post_id?: string | null
   linkedin_post_url?: string | null
+  facebook_post_id?: string | null
+  facebook_post_url?: string | null
+  instagram_post_id?: string | null
+  instagram_post_url?: string | null
   post_status: CalendarEventStatus
   media_files: MediaFile[] | null
   thumbnail: MediaFile | null
-  media_type: MediaType
+  media_type: MediaType | null
   hashtags?: string | null
   visibility: string | null
   post_type: string | null
@@ -290,8 +294,8 @@ export interface LinkedInPost {
 }
 
 // API Response types
-export interface LinkedInPostsResponse {
-  data: LinkedInPost[]
+export interface SocialPostsResponse {
+  data: SocialPost[]
   meta?: {
     pagination?: {
       page: number
@@ -302,8 +306,44 @@ export interface LinkedInPostsResponse {
   }
 }
 
-export interface SingleLinkedInPostResponse {
-  data: LinkedInPost
+export interface SingleSocialPostResponse {
+  data: SocialPost
+}
+
+// Main Thought Leadership Post type
+export interface ThoughtLeadershipPost {
+  id: number
+  documentId: string
+  title: string
+  content: string | null // Rich text
+  event_id: string | null
+  start_date: string | null // ISO Date String
+  end_date: string | null // ISO Date String
+  post_status: CalendarEventStatus
+  visibility: string | null
+  post_type: string | null
+  linkedin_post_id?: string | null
+  linkedin_post_url?: string | null
+  createdAt: string
+  updatedAt: string
+  publishedAt?: string | null
+}
+
+// API Response types
+export interface ThoughtLeadershipPostsResponse {
+  data: ThoughtLeadershipPost[]
+  meta?: {
+    pagination?: {
+      page: number
+      pageSize: number
+      total: number
+      pageCount: number
+    }
+  }
+}
+
+export interface SingleThoughtLeadershipPostResponse {
+  data: ThoughtLeadershipPost
 }
 
 export interface LinkedInArticle {

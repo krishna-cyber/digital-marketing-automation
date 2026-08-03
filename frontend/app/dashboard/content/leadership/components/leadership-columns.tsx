@@ -3,11 +3,11 @@ import { SingleImagePreview } from "@/components/examples/image-preview"
 import { LongText } from "@/components/long-text"
 import { Badge } from "@/components/ui/badge"
 import { getStrapiMediaUrl } from "@/lib/media"
-import { CalendarEventStatus, LinkedInPost } from "@/types/types"
+import { CalendarEventStatus, SocialPost } from "@/types/types"
 import { createColumnHelper } from "@tanstack/react-table"
-import { DataTableRowActions } from "./post-data-table-row-actions"
+import { DataTableRowActions } from "./leadership-row-actions"
 
-const columnHelper = createColumnHelper<LinkedInPost>()
+const columnHelper = createColumnHelper<SocialPost>()
 
 export const BadgeColors = ({ status }: { status: CalendarEventStatus }) => {
   switch (status) {

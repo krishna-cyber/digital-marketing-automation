@@ -1,4 +1,4 @@
-import { BadgeColors } from "@/app/dashboard/content/posts/components/post-columns"
+import { BadgeColors } from "@/app/dashboard/content/socials/components/social-columns"
 import { DataTableColumnHeader } from "@/components/data-table-column-header"
 import { SingleImagePreview } from "@/components/examples/image-preview"
 import { LongText } from "@/components/long-text"

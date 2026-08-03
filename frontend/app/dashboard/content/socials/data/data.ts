@@ -1,6 +1,6 @@
-import { LinkedInPost } from "@/types/types"
+import { SocialPost } from "@/types/types"
 
-export const linkedinPosts: LinkedInPost[] = [
+export const socialPosts: SocialPost[] = [
   {
     id: 22,
     documentId: "mphxxwo6m84y7m1ptq0whx77",

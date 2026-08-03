@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
-import { usePosts } from "./posts-provider"
+import { usePosts } from "./leadership-provider"
 
 const PostsEditDialog = () => {
   const { currentRow, setOpen, open } = usePosts()
