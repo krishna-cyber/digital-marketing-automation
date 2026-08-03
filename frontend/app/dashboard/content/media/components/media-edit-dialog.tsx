@@ -13,8 +13,7 @@ import { useMedia } from "./media-provider"
 
 const MediaEditDialog = () => {
   const { currentRow, setOpen, open } = useMedia()
-  console.log("currentRow", currentRow)
-  console.log("open", open)
+
   return (
     <Dialog open={open === "edit"} onOpenChange={() => setOpen(null)}>
       <DialogContent className="max-w-2xl!">

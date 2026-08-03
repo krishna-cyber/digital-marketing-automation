@@ -204,7 +204,7 @@ export function PostsTable({
                         <EmptyMedia variant="icon">
                           <Rss />
                         </EmptyMedia>
-                        <EmptyTitle>Thought Leadership Posts</EmptyTitle>
+                        <EmptyTitle>Thought Leadership</EmptyTitle>
                         <EmptyDescription>
                           You&apos;re all caught up. No posts to show here.
                         </EmptyDescription>

@@ -1,43 +1,43 @@
 "use client"
-import { SingleImagePreview } from "@/components/examples/image-preview"
+import { SingleImagePreview } from "@/components/examples/image-preview";
 import {
-  SimpleEditor,
-  type SimpleEditorHandle,
-} from "@/components/tiptap-templates/simple/simple-editor"
-import { Button } from "@/components/ui/button"
-import { ButtonGroup } from "@/components/ui/button-group"
+    SimpleEditor,
+    type SimpleEditorHandle,
+} from "@/components/tiptap-templates/simple/simple-editor";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-import { Field, FieldError, FieldLabel } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { InputGroup, InputGroupTextarea } from "@/components/ui/input-group"
-import { strapiRequest } from "@/lib/api"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { InputGroup, InputGroupTextarea } from "@/components/ui/input-group";
+import { strapiRequest } from "@/lib/api";
 import {
-  BlogPost,
-  CalendarEventStatus,
-  LinkedInArticle,
-  MediaType,
-} from "@/types/types"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+    BlogPost,
+    CalendarEventStatus,
+    LinkedInArticle,
+    MediaType,
+} from "@/types/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
-  CircleX,
-  EllipsisVerticalIcon,
-  FileCheckCorner,
-  SaveCheck,
-} from "lucide-react"
-import { useRouter } from "next/navigation"
-import React, { useRef } from "react"
-import { Controller, useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { z } from "zod"
+    CircleX,
+    EllipsisVerticalIcon,
+    FileCheckCorner,
+    SaveCheck,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useRef } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 export type ArticleContentType = "linkedin-posts" | "blogs"
 
@@ -365,7 +365,9 @@ const ArticleEditForm = ({
                 <FieldLabel htmlFor="article-edit-form-cover">Cover</FieldLabel>
 
                 <div className="w-full max-w-xs overflow-auto rounded-lg">
-                  <SingleImagePreview imageUrl="https://picsum.photos/1000/800?random=1" />
+                  <SingleImagePreview
+                    imageUrl={`${process.env.NEXT_PUBLIC_STRAPI_URL}${document.media_files?.[0]?.url}`}
+                  />
                 </div>
 
                 {fieldState.invalid && (
