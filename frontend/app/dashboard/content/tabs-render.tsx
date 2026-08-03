@@ -5,6 +5,8 @@ import UploadMedia from "@/components/upload-media"
 import React from "react"
 import { MediaProvider } from "./media/components/media-provider"
 import { MediaTable } from "./media/components/media-table"
+import { PostsProvider } from "./leadership/components/leadership-provider"
+import { PostsTable } from "./leadership/components/leadership-table"
 import { SocialsProvider } from "./socials/components/socials-provider"
 import { SocialsTable } from "./socials/components/social-table"
 
@@ -54,9 +56,9 @@ const TabsRender = () => {
               and delete them.
             </p>
           </div>
-          <SocialsProvider>
-            <SocialsTable setSocialsCount={setSocialsCount} />
-          </SocialsProvider>
+          <PostsProvider>
+            <PostsTable setLinkedinPostsCount={setThoughtLeadershipCount} />
+          </PostsProvider>
         </TabsContent>
         <TabsContent value="media-assets">
           <div className="mb-2.5 flex flex-wrap items-end justify-between gap-2">

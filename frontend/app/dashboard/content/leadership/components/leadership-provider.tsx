@@ -1,5 +1,5 @@
 "use client"
-import { SocialPost, MediaFile } from "@/types/types"
+import { ThoughtLeadershipPost } from "@/types/types"
 import React, { useState } from "react"
 
 type PostDialogType = "edit" | "delete"
@@ -7,8 +7,10 @@ type PostDialogType = "edit" | "delete"
 type PostsContextType = {
   open: PostDialogType | null
   setOpen: (str: PostDialogType | null) => void
-  currentRow: SocialPost | null
-  setCurrentRow: React.Dispatch<React.SetStateAction<SocialPost | null>>
+  currentRow: ThoughtLeadershipPost | null
+  setCurrentRow: React.Dispatch<
+    React.SetStateAction<ThoughtLeadershipPost | null>
+  >
 }
 
 const PostsContext = React.createContext<PostsContextType | null>(null)
@@ -17,7 +19,9 @@ export function PostsProvider({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const [open, setOpen] = useState<PostDialogType | null>(null)
-  const [currentRow, setCurrentRow] = useState<SocialPost | null>(null)
+  const [currentRow, setCurrentRow] = useState<ThoughtLeadershipPost | null>(
+    null
+  )
 
   return (
     <PostsContext value={{ open, setOpen, currentRow, setCurrentRow }}>

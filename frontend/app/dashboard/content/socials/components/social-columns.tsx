@@ -2,9 +2,12 @@ import { DataTableColumnHeader } from "@/components/data-table-column-header"
 import { SingleImagePreview } from "@/components/examples/image-preview"
 import { LongText } from "@/components/long-text"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { getStrapiMediaUrl } from "@/lib/media"
+import { handleCopyToClipboard } from "@/lib/utils"
 import { CalendarEventStatus, SocialPost } from "@/types/types"
 import { createColumnHelper } from "@tanstack/react-table"
+import { Copy } from "lucide-react"
 import { DataTableRowActions } from "./social-data-table-row-actions"
 
 const columnHelper = createColumnHelper<SocialPost>()
@@ -204,6 +207,21 @@ export const defaultColumns = [
     ),
     cell: ({ row }) => (
       <p className="capitalize">{row.original.visibility ?? "-"}</p>
+    ),
+    enableSorting: false,
+  }),
+  columnHelper.accessor("documentId", {
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Document ID" />
+    ),
+    cell: ({ row }) => (
+      <Button
+        variant="ghost"
+        onClick={() => handleCopyToClipboard(row.original.documentId ?? "")}
+      >
+        {row.original.documentId ?? "-"}
+        <Copy aria-hidden="true" />
+      </Button>
     ),
     enableSorting: false,
   }),

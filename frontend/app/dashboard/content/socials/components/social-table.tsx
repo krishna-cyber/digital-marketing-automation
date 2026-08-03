@@ -53,6 +53,9 @@ export function SocialsTable({
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     documentId: false,
+    start_date: false,
+    createdAt: false,
+    updatedAt: false,
   })
   const [sorting, setSorting] = useState<SortingState>([])
 

@@ -4,6 +4,9 @@ import { LongText } from "@/components/long-text"
 import { MediaFile } from "@/types/types"
 import { createColumnHelper } from "@tanstack/react-table"
 
+import { Button } from "@/components/ui/button"
+import { handleCopyToClipboard } from "@/lib/utils"
+import { Copy } from "lucide-react"
 import { DataTableRowActions } from "./media-data-table-row-actions"
 
 const columnHelper = createColumnHelper<MediaFile>()
@@ -59,6 +62,21 @@ export const defaultColumns = [
       <DataTableColumnHeader column={column} title="Size (KB)" />
     ),
     cell: (props) => <p>{props.getValue().toFixed()}</p>,
+    enableSorting: false,
+  }),
+  columnHelper.accessor("documentId", {
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Document ID" />
+    ),
+    cell: ({ row }) => (
+      <Button
+        variant="ghost"
+        onClick={() => handleCopyToClipboard(row.original.documentId ?? "")}
+      >
+        {row.original.documentId ?? "-"}
+        <Copy aria-hidden="true" />
+      </Button>
+    ),
     enableSorting: false,
   }),
   columnHelper.accessor("createdAt", {

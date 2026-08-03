@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/table"
 import { strapiRequest } from "@/lib/api"
 import { cn } from "@/lib/utils"
-import { SocialPostsResponse } from "@/types/types"
+import { ThoughtLeadershipPostsResponse } from "@/types/types"
 import { useQuery } from "@tanstack/react-query"
 import {
   type SortingState,
@@ -62,12 +62,10 @@ export function PostsTable({
     queryKey: ["posts", pageIndex, pageSize, sorting],
     queryFn: async () => {
       const response = await strapiRequest.get(
-        // Strapi's pagination[page] is 1-indexed — convert here, keep table 0-indexed internally
-        // `/api/linkedin-posts/page?pagination[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
-        `api/socials?populate=*`
+        `api/thought-leaderships?populate=*`
       )
       setLinkedinPostsCount(response.data.meta.pagination.total ?? 0)
-      return response.data as SocialPostsResponse
+      return response.data as ThoughtLeadershipPostsResponse
     },
     placeholderData: (previousData) => previousData,
   })
@@ -121,15 +119,6 @@ export function PostsTable({
         table={table}
         searchPlaceholder="Filter posts..."
         filters={[
-          {
-            columnId: "media_type",
-            title: "Media Type",
-            options: [
-              { label: "Text", value: "text" },
-              { label: "Image", value: "image" },
-              { label: "Document", value: "document" },
-            ],
-          },
           {
             columnId: "post_status",
             title: "Post Status",
@@ -215,7 +204,7 @@ export function PostsTable({
                         <EmptyMedia variant="icon">
                           <Rss />
                         </EmptyMedia>
-                        <EmptyTitle>Linkedin Posts</EmptyTitle>
+                        <EmptyTitle>Thought Leadership Posts</EmptyTitle>
                         <EmptyDescription>
                           You&apos;re all caught up. No posts to show here.
                         </EmptyDescription>

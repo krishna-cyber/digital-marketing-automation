@@ -8,14 +8,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 // import { DotsHorizontalIcon } from "@radix-ui/react-icons"
-import { handleCopyToClipboard, handleDownload } from "@/lib/utils"
-import { SocialPost } from "@/types/types"
+import { handleCopyToClipboard } from "@/lib/utils"
+import { ThoughtLeadershipPost } from "@/types/types"
 import { type Row } from "@tanstack/react-table"
 import {
   ClipboardCheck,
   EllipsisVertical,
   ExternalLink,
-  ImageDown,
   Link,
   Trash2,
   UserPen,
@@ -24,7 +23,7 @@ import {
 import { usePosts } from "./leadership-provider"
 
 type DataTableRowActionsProps = {
-  row: Row<SocialPost>
+  row: Row<ThoughtLeadershipPost>
 }
 
 export function DataTableRowActions({
@@ -75,22 +74,6 @@ export function DataTableRowActions({
           Copy post ID
           <DropdownMenuShortcut>
             <ClipboardCheck size={16} />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          disabled={row.original.media_type === "text"}
-          onClick={() => {
-            row.original.media_files?.forEach((file) => {
-              handleDownload({
-                fileUrl: `${process.env.NEXT_PUBLIC_STRAPI_URL}${file.url}`,
-                filename: file.name || "download",
-              })
-            })
-          }}
-        >
-          Download
-          <DropdownMenuShortcut>
-            <ImageDown size={16} />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuItem
