@@ -15,10 +15,10 @@ export const isImage = (file: File | FileMetadata) => {
 export const handleCopyToClipboard = async (text: string) => {
   try {
     await navigator.clipboard.writeText(text)
-    toast.success("Copied to clipboard!")
+    toast.success("Link copied to clipboard!")
   } catch (error) {
     console.error("Failed to copy:", error)
-    toast.error("Failed to copy to clipboard")
+    toast.error("Failed to copy link to clipboard")
   }
 }
 
