@@ -34,17 +34,19 @@ export function NotificationCenter() {
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative h-8 w-8">
-          <Bell className="h-4 w-4" />
-          {count > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-medium text-white">
-              {count > 9 ? "9+" : count}
-            </span>
-          )}
-          <span className="sr-only">Notifications</span>
-        </Button>
-      </PopoverTrigger>
+      <PopoverTrigger
+        render={
+          <Button variant="ghost" size="icon" className="relative h-8 w-8">
+            <Bell className="h-4 w-4" />
+            {count > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-medium text-white">
+                {count > 9 ? "9+" : count}
+              </span>
+            )}
+            <span className="sr-only">Notifications</span>
+          </Button>
+        }
+      />
       <PopoverContent
         align="end"
         className="w-[calc(100vw-2rem)] p-0 sm:w-[380px]"

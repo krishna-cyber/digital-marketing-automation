@@ -18,31 +18,31 @@ export function AppTitle() {
         <SidebarMenuButton
           size="lg"
           className="gap-0 py-0 hover:bg-transparent active:bg-transparent"
-          asChild
-        >
-          <div className="flex items-center justify-between gap-2">
-            <Link
-              href="/"
-              onClick={() => setOpenMobile(false)}
-              className={cn(
-                "flex flex-1 flex-col items-center text-start text-sm leading-tight",
-                isCollapsed && "justify-center"
-              )}
-            >
-              <Image
-                src={isCollapsed ? "/logo.jpeg" : "/logo.png"}
-                alt="Digital Marketing Automation"
-                width={isCollapsed ? 32 : 140}
-                height={isCollapsed ? 32 : 40}
+          render={
+            <div className="flex items-center justify-between gap-2">
+              <Link
+                href="/"
+                onClick={() => setOpenMobile(false)}
                 className={cn(
-                  "object-contain",
-                  isCollapsed ? "h-8 w-8" : "h-10 w-[140px]"
+                  "flex flex-1 flex-col items-center text-start text-sm leading-tight",
+                  isCollapsed && "justify-center"
                 )}
-                priority
-              />
-            </Link>
-          </div>
-        </SidebarMenuButton>
+              >
+                <Image
+                  src={isCollapsed ? "/logo.jpeg" : "/logo.png"}
+                  alt="Digital Marketing Automation"
+                  width={isCollapsed ? 32 : 140}
+                  height={isCollapsed ? 32 : 40}
+                  className={cn(
+                    "object-contain",
+                    isCollapsed ? "h-8 w-8" : "h-10 w-[140px]"
+                  )}
+                  priority
+                />
+              </Link>
+            </div>
+          }
+        />
       </SidebarMenuItem>
     </SidebarMenu>
   )

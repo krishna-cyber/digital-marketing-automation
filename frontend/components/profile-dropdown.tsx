@@ -23,41 +23,41 @@ export function ProfileDropdown({
   return (
     <>
       <DropdownMenu modal={false}>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={user?.image || ""} alt={user?.name} />
-              <AvatarFallback className="rounded-lg">
-                {user?.name?.charAt(0)}
-              </AvatarFallback>
-            </Avatar>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56" align="end" forceMount>
-          <DropdownMenuLabel className="font-normal">
-            <div className="flex flex-col gap-1.5">
-              <p className="text-sm leading-none font-medium">{user?.name}</p>
-              <p className="text-xs leading-none text-muted-foreground">
-                {user?.email}
-              </p>
-            </div>
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
+        <DropdownMenuTrigger
+          render={
+            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={user?.image || ""} alt={user?.name} />
+                <AvatarFallback className="rounded-lg">
+                  {user?.name?.charAt(0)}
+                </AvatarFallback>
+              </Avatar>
+            </Button>
+          }
+        />
+        <DropdownMenuContent className="w-56" align="end">
           <DropdownMenuGroup>
-            <DropdownMenuItem asChild>
-              <Link href="/settings">
-                <User /> Profile
-              </Link>
+            <DropdownMenuLabel className="font-normal">
+              <div className="flex flex-col gap-1.5">
+                <p className="text-sm leading-none font-medium">{user?.name}</p>
+                <p className="text-xs leading-none text-muted-foreground">
+                  {user?.email}
+                </p>
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+          </DropdownMenuGroup>
+          <DropdownMenuGroup>
+            <DropdownMenuItem render={<Link href="/settings" />}>
+              <User /> Profile
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/settings">
-                <CreditCard /> Billing
-              </Link>
+            <DropdownMenuItem render={<Link href="/settings" />}>
+              <CreditCard /> Billing
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/dashboard/settings/branding">
-                <Settings /> Settings
-              </Link>
+            <DropdownMenuItem
+              render={<Link href="/dashboard/settings/branding" />}
+            >
+              <Settings /> Settings
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Plus /> New Team

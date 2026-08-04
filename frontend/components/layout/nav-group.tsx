@@ -23,6 +23,7 @@ import { Badge } from "../ui/badge"
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -72,16 +73,16 @@ function SidebarMenuLink({
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
-        asChild
         isActive={checkIsActive(href, item)}
         tooltip={item.title}
-      >
-        <Link href={item.url} onClick={() => setOpenMobile(false)}>
-          {item.icon && <item.icon />}
-          <span>{item.title}</span>
-          {item.badge && <NavBadge>{item.badge}</NavBadge>}
-        </Link>
-      </SidebarMenuButton>
+        render={
+          <Link href={item.url} onClick={() => setOpenMobile(false)}>
+            {item.icon && <item.icon />}
+            <span>{item.title}</span>
+            {item.badge && <NavBadge>{item.badge}</NavBadge>}
+          </Link>
+        }
+      />
     </SidebarMenuItem>
   )
 }
@@ -96,39 +97,45 @@ function SidebarMenuCollapsible({
   const { setOpenMobile } = useSidebar()
   return (
     <Collapsible
-      asChild
+      render={
+        <SidebarMenuItem>
+          <CollapsibleTrigger
+            render={
+              <SidebarMenuButton tooltip={item.title}>
+                {item.icon && <item.icon />}
+                <span>{item.title}</span>
+                {item.badge && <NavBadge>{item.badge}</NavBadge>}
+                <ChevronRight className="ms-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 rtl:rotate-180" />
+              </SidebarMenuButton>
+            }
+          />
+
+          <CollapsibleContent className="CollapsibleContent">
+            <SidebarMenuSub>
+              {item.items.map((subItem) => (
+                <SidebarMenuSubItem key={subItem.title}>
+                  <SidebarMenuSubButton
+                    render={
+                      <Link
+                        href={subItem.url}
+                        onClick={() => setOpenMobile(false)}
+                      >
+                        {subItem.icon && <subItem.icon />}
+                        <span>{subItem.title}</span>
+                        {subItem.badge && <NavBadge>{subItem.badge}</NavBadge>}
+                      </Link>
+                    }
+                    isActive={checkIsActive(href, subItem)}
+                  />
+                </SidebarMenuSubItem>
+              ))}
+            </SidebarMenuSub>
+          </CollapsibleContent>
+        </SidebarMenuItem>
+      }
       defaultOpen={checkIsActive(href, item, true)}
       className="group/collapsible"
-    >
-      <SidebarMenuItem>
-        <CollapsibleTrigger asChild>
-          <SidebarMenuButton tooltip={item.title}>
-            {item.icon && <item.icon />}
-            <span>{item.title}</span>
-            {item.badge && <NavBadge>{item.badge}</NavBadge>}
-            <ChevronRight className="ms-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 rtl:rotate-180" />
-          </SidebarMenuButton>
-        </CollapsibleTrigger>
-        <CollapsibleContent className="CollapsibleContent">
-          <SidebarMenuSub>
-            {item.items.map((subItem) => (
-              <SidebarMenuSubItem key={subItem.title}>
-                <SidebarMenuSubButton
-                  asChild
-                  isActive={checkIsActive(href, subItem)}
-                >
-                  <Link href={subItem.url} onClick={() => setOpenMobile(false)}>
-                    {subItem.icon && <subItem.icon />}
-                    <span>{subItem.title}</span>
-                    {subItem.badge && <NavBadge>{subItem.badge}</NavBadge>}
-                  </Link>
-                </SidebarMenuSubButton>
-              </SidebarMenuSubItem>
-            ))}
-          </SidebarMenuSub>
-        </CollapsibleContent>
-      </SidebarMenuItem>
-    </Collapsible>
+    />
   )
 }
 
@@ -142,36 +149,43 @@ function SidebarMenuCollapsedDropdown({
   return (
     <SidebarMenuItem>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <SidebarMenuButton
-            tooltip={item.title}
-            isActive={checkIsActive(href, item)}
-          >
-            {item.icon && <item.icon />}
-            <span>{item.title}</span>
-            {item.badge && <NavBadge>{item.badge}</NavBadge>}
-            <ChevronRight className="ms-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-          </SidebarMenuButton>
-        </DropdownMenuTrigger>
+        <DropdownMenuTrigger
+          render={
+            <SidebarMenuButton
+              tooltip={item.title}
+              isActive={checkIsActive(href, item)}
+            >
+              {item.icon && <item.icon />}
+              <span>{item.title}</span>
+              {item.badge && <NavBadge>{item.badge}</NavBadge>}
+              <ChevronRight className="ms-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+            </SidebarMenuButton>
+          }
+        />
         <DropdownMenuContent side="right" align="start" sideOffset={4}>
-          <DropdownMenuLabel>
-            {item.title} {item.badge ? `(${item.badge})` : ""}
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          {item.items.map((sub) => (
-            <DropdownMenuItem key={`${sub.title}-${sub.url}`} asChild>
-              <Link
-                href={sub.url}
-                className={`${checkIsActive(href, sub) ? "bg-secondary" : ""}`}
-              >
-                {sub.icon && <sub.icon />}
-                <span className="max-w-52 text-wrap">{sub.title}</span>
-                {sub.badge && (
-                  <span className="ms-auto text-xs">{sub.badge}</span>
-                )}
-              </Link>
-            </DropdownMenuItem>
-          ))}
+          <DropdownMenuGroup>
+            <DropdownMenuLabel>
+              {item.title} {item.badge ? `(${item.badge})` : ""}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {item.items.map((sub) => (
+              <DropdownMenuItem
+                key={`${sub.title}-${sub.url}`}
+                render={
+                  <Link
+                    href={sub.url}
+                    className={`${checkIsActive(href, sub) ? "bg-secondary" : ""}`}
+                  >
+                    {sub.icon && <sub.icon />}
+                    <span className="max-w-52 text-wrap">{sub.title}</span>
+                    {sub.badge && (
+                      <span className="ms-auto text-xs">{sub.badge}</span>
+                    )}
+                  </Link>
+                }
+              />
+            ))}
+          </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
     </SidebarMenuItem>

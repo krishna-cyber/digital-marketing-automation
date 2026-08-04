@@ -37,7 +37,7 @@ import { useState } from "react"
 // import { linkedinPosts } from "../data/data"
 import DeletePostAlert from "./delete-leadership-alert"
 import { defaultColumns as columns } from "./leadership-columns"
-import PostsEditDialog from "./post-edit-dialog"
+import PostsEditDialog from "./leadership-edit-dialog"
 
 export const searchParams = {
   searchQuery: parseAsString.withDefault(""),

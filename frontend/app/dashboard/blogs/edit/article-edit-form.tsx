@@ -79,7 +79,6 @@ const ArticleEditForm = ({
   const blogDocument = document as BlogPost
   const linkedinDocument = document as LinkedInArticle
 
-  console.log("Document received in ArticleEditForm:", document)
   const router = useRouter()
   const queryClient = useQueryClient()
   const updateArticleMutation = useMutation({
@@ -214,6 +213,7 @@ const ArticleEditForm = ({
   return (
     <form
       id="article-edit-form"
+      // eslint-disable-next-line react-hooks/refs
       onSubmit={form.handleSubmit((data) => handleSubmit(data))}
     >
       <div className="mb-4 flex items-center justify-end">

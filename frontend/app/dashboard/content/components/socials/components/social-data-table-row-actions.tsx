@@ -8,40 +8,44 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 // import { DotsHorizontalIcon } from "@radix-ui/react-icons"
-import { handleCopyToClipboard } from "@/lib/utils"
-import { ThoughtLeadershipPost } from "@/types/types"
+import { handleCopyToClipboard, handleDownload } from "@/lib/utils"
+import { SocialPost } from "@/types/types"
 import { type Row } from "@tanstack/react-table"
 import {
   ClipboardCheck,
   EllipsisVertical,
   ExternalLink,
+  ImageDown,
   Link,
   Trash2,
   UserPen,
 } from "lucide-react"
 
-import { usePosts } from "./leadership-provider"
+import { useSocials } from "./socials-provider"
 
 type DataTableRowActionsProps = {
-  row: Row<ThoughtLeadershipPost>
+  row: Row<SocialPost>
 }
 
 export function DataTableRowActions({
   row,
 }: Readonly<DataTableRowActionsProps>) {
-  const { setOpen, setCurrentRow } = usePosts()
+  const { setOpen, setCurrentRow } = useSocials()
 
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-        >
-          <EllipsisVertical className="h-4 w-4" />
-          <span className="sr-only">Open menu</span>
-        </Button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            variant="ghost"
+            className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+          >
+            <EllipsisVertical className="h-4 w-4" />
+            <span className="sr-only">Open menu</span>
+          </Button>
+        }
+      />
+
       <DropdownMenuContent align="end" className="w-40">
         <DropdownMenuItem
           disabled={!row.original.linkedin_post_url}
@@ -74,6 +78,22 @@ export function DataTableRowActions({
           Copy post ID
           <DropdownMenuShortcut>
             <ClipboardCheck size={16} />
+          </DropdownMenuShortcut>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          disabled={row.original.media_type === "text"}
+          onClick={() => {
+            row.original.media_files?.forEach((file) => {
+              handleDownload({
+                fileUrl: `${process.env.NEXT_PUBLIC_STRAPI_URL}${file.url}`,
+                filename: file.name || "download",
+              })
+            })
+          }}
+        >
+          Download
+          <DropdownMenuShortcut>
+            <ImageDown size={16} />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
         <DropdownMenuItem

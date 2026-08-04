@@ -3,12 +3,12 @@ import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import UploadMedia from "@/components/upload-media"
 import React from "react"
-import { MediaProvider } from "./media/components/media-provider"
-import { MediaTable } from "./media/components/media-table"
-import { PostsProvider } from "./leadership/components/leadership-provider"
-import { PostsTable } from "./leadership/components/leadership-table"
-import { SocialsProvider } from "./socials/components/socials-provider"
-import { SocialsTable } from "./socials/components/social-table"
+import { PostsProvider } from "./components/leadership/components/leadership-provider"
+import { PostsTable } from "./components/leadership/components/leadership-table"
+import { MediaProvider } from "./components/media/components/media-provider"
+import { MediaTable } from "./components/media/components/media-table"
+import { SocialsTable } from "./components/socials/components/social-table"
+import { SocialsProvider } from "./components/socials/components/socials-provider"
 
 const TabsRender = () => {
   const [socialsCount, setSocialsCount] = React.useState(0)

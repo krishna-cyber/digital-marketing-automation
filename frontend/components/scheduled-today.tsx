@@ -30,11 +30,13 @@ const actionsMenu = [
 const Actions = () => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="h-8 w-8 shrink-0">
-          <EllipsisVertical />
-        </Button>
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger
+        render={
+          <Button variant="outline" size="icon" className="h-8 w-8 shrink-0">
+            <EllipsisVertical />
+          </Button>
+        }
+      />
       <DropdownMenuContent>
         <DropdownMenuGroup>
           {actionsMenu.map((action) => (
