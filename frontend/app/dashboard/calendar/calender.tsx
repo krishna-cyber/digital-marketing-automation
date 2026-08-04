@@ -10,7 +10,7 @@ import interactionPlugin from "@fullcalendar/react/interaction"
 import themePlugin from "@fullcalendar/react/themes/classic"
 import timeGridPlugin from "@fullcalendar/react/timegrid"
 import React, { useState } from "react"
-import { ExtendedEventInput, INITIAL_EVENTS } from "./data"
+import { ExtendedEventInput } from "./data"
 
 //Css of calender
 import { EventAddForm, EventAddFormValues } from "@/components/event-add-form"
@@ -21,8 +21,6 @@ import "@fullcalendar/react/themes/classic/theme.css"
 import { useQuery } from "@tanstack/react-query"
 import { toast } from "sonner"
 import EventDetailsDrawer from "./event-details-drawer"
-
-console.log("initial events", INITIAL_EVENTS)
 
 export const renderBadgeEventStatus = (status: string) => {
   switch (status) {
@@ -129,11 +127,11 @@ function handleDateSelect(selectInfo: DateSelectInfo) {
 }
 
 const Calendar = () => {
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["calendar", "events"],
     queryFn: async () => {
-      const response = await api.get("/api/v1/calendar")
-      return response.data as ExtendedEventInput[]
+      const response = await api.get("/api/v1/calendar?limit=50&offset=0")
+      return response.data.data as ExtendedEventInput[]
     },
   })
 
@@ -218,10 +216,10 @@ const Calendar = () => {
         selectable={true}
         nowIndicator={true}
         buttonDisplay="auto"
-        dayMaxEvents={true}
+        dayMaxEvents={2}
         weekends={weekendsVisible}
-        events={data ?? []} // alternatively, use the `events` setting to fetch from a feed
-        initialEvents={INITIAL_EVENTS}
+        events={data} // alternatively, use the `events` setting to fetch from a feed
+        initialEvents={[]} // alternatively, use the `events` setting to fetch from a feed}
         select={handleDateSelect} // called when a date is selected
         eventContent={renderEventContent} // custom render function
         eventClick={(eventInfo) => handleEventClick(eventInfo)}
@@ -271,7 +269,7 @@ function renderEventContent(eventInfo: EventDisplayInfo) {
         >
           {pillar}
         </span>
-        <span className="opacity-70">{channel.replace(/_/g, " ")}</span>
+        <span className="opacity-70">{channel.replaceAll("_", " ")}</span>
       </div>
       <div className="flex items-center gap-1">
         {renderBadgeEventStatus(status)}

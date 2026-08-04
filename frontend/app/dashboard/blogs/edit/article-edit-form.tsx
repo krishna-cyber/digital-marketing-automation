@@ -252,14 +252,9 @@ const ArticleEditForm = ({
                       handleSubmit(data, "approved")
                     )()
 
-                    await api
-                      .post(`/api/v1/approval/${document.event_id}/approve`)
-                      .then(() => {
-                        console.log("Article approved successfully.")
-                      })
-                      .catch((error) => {
-                        console.error("Error approving the article:", error)
-                      })
+                    await api.post(
+                      `/api/v1/approval/${document.event_id}/approve`
+                    )
                   }}
                 >
                   <FileCheckCorner aria-hidden="true" />
