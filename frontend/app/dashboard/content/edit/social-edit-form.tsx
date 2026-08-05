@@ -158,7 +158,7 @@ const SocialEditForm = ({ socialContent }: { socialContent: SocialPost }) => {
   const watchedPostUrl = form.watch("linkedin_post_url")
 
   const previewUser: LinkedInPostUser = {
-    name: "Pal Mind AI",
+    name: "Palm Mind AI",
     handle: "@alexmdev",
     avatar: "/logo.jpeg",
     verified: true,
