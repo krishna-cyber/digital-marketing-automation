@@ -84,11 +84,6 @@ export function DataTableRowActions({
         <DropdownMenuItem
           onClick={() => {
             setCurrentRow(row.original)
-            setOpen("edit")
-            console.log(
-              "Navigating to edit page for documentId:",
-              row.original.documentId
-            )
             router.push(
               `/dashboard/content/edit?contentType=thought-leaderships&documentId=${row.original.documentId}`
             )

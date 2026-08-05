@@ -26,12 +26,17 @@ const page = async ({ searchParams }: { searchParams: SearchParams }) => {
       <Main>
         <div className="mb-2 flex items-center justify-between space-y-2">
           <span>
-            <Button variant={"link"} size={"sm"} asChild>
-              <Link href={"/dashboard/blogs"}>
-                <ArrowLeft />
-                Back
-              </Link>
-            </Button>{" "}
+            <Button
+              variant={"link"}
+              size={"sm"}
+              render={
+                <Link href={"/dashboard/blogs"}>
+                  <ArrowLeft />
+                  Back
+                </Link>
+              }
+            />
+
             <h1 className="text-2xl font-bold tracking-tight">
               {articleData?.title}
             </h1>

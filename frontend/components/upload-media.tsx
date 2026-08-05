@@ -110,9 +110,8 @@ const UploadMediaContent = ({
       <ImageUploadAndPreview />
 
       <DialogFooter>
-        <DialogClose asChild>
-          <Button variant="outline">Cancel</Button>
-        </DialogClose>
+        <DialogClose render={<Button variant="outline">Cancel</Button>} />
+
         <Button
           disabled={uploadFiles.length === 0 || isPending}
           onClick={handleUpload}
@@ -132,12 +131,14 @@ export default function UploadMedia({ title = "Upload Media" }) {
     <FileUploadProvider>
       <div className="flex items-center justify-center">
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button variant="outline">
-              <ImagePlus />
-              {title}
-            </Button>
-          </DialogTrigger>
+          <DialogTrigger
+            render={
+              <Button variant="outline">
+                <ImagePlus />
+                {title}
+              </Button>
+            }
+          />
           <UploadMediaContent dialogOpen={open} setDialogOpen={setOpen} />
         </Dialog>
       </div>

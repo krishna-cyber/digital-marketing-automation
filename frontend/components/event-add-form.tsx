@@ -176,15 +176,19 @@ export function EventAddForm({
                   <FormLabel>Color</FormLabel>
                   <FormControl>
                     <Popover>
-                      <PopoverTrigger asChild className="cursor-pointer">
-                        <div className="flex w-full flex-row items-center space-x-2 pl-2">
-                          <div
-                            className={`h-5 w-5 cursor-pointer rounded-full`}
-                            style={{ backgroundColor: field.value }}
-                          ></div>
-                          <Input {...field} />
-                        </div>
-                      </PopoverTrigger>
+                      <PopoverTrigger
+                        render={
+                          <div className="flex w-full flex-row items-center space-x-2 pl-2">
+                            <div
+                              className={`h-5 w-5 cursor-pointer rounded-full`}
+                              style={{ backgroundColor: field.value }}
+                            ></div>
+                            <Input {...field} />
+                          </div>
+                        }
+                        className="cursor-pointer"
+                      />
+
                       <PopoverContent className="mx-auto flex items-center justify-center">
                         <HexColorPicker
                           className="flex"

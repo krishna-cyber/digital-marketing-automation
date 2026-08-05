@@ -37,7 +37,6 @@ import { useState } from "react"
 // import { socialPosts } from "../data/data"
 import DeleteSocialAlert from "./delete-social-alert"
 import { defaultColumns as columns } from "./social-columns"
-import SocialsEditDialog from "./social-edit-dialog"
 
 export const searchParams = {
   searchQuery: parseAsString.withDefault(""),
@@ -233,7 +232,6 @@ export function SocialsTable({
       </div>
 
       <DataTablePagination table={table} className="mt-auto" />
-      <SocialsEditDialog />
       <DeleteSocialAlert />
     </div>
   )

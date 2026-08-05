@@ -21,6 +21,7 @@ import {
   UserPen,
 } from "lucide-react"
 
+import { useRouter } from "next/navigation"
 import { useSocials } from "./socials-provider"
 
 type DataTableRowActionsProps = {
@@ -31,7 +32,7 @@ export function DataTableRowActions({
   row,
 }: Readonly<DataTableRowActionsProps>) {
   const { setOpen, setCurrentRow } = useSocials()
-
+  const router = useRouter()
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger
@@ -99,7 +100,9 @@ export function DataTableRowActions({
         <DropdownMenuItem
           onClick={() => {
             setCurrentRow(row.original)
-            setOpen("edit")
+            router.push(
+              `/dashboard/content/edit?contentType=socials&documentId=${row.original.documentId}`
+            )
           }}
         >
           Edit

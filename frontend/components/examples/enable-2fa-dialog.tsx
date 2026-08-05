@@ -169,9 +169,8 @@ export function Enable2faDialog({
           </Form>
 
           <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
+            <DialogClose render={<Button variant="outline">Cancel</Button>} />
+
             <Button
               variant="default"
               disabled={verifyOtpForm.formState.isSubmitting}
@@ -226,9 +225,7 @@ export function Enable2faDialog({
               />
             </form>
             <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DialogClose>
+              <DialogClose render={<Button variant="outline">Cancel</Button>} />
               <Button
                 variant="default"
                 type="submit"

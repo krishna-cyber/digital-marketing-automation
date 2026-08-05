@@ -7,6 +7,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import React from "react"
 import LeadershipEditForm from "./leadership-edit-form"
+import SocialEditForm from "./social-edit-form"
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
 
@@ -31,12 +32,16 @@ const page = async ({ searchParams }: { searchParams: SearchParams }) => {
       <Main>
         <div className="mb-2 flex items-center justify-between space-y-2">
           <span>
-            <Button variant={"link"} size={"sm"} asChild>
-              <Link href={"/dashboard/content"}>
-                <ArrowLeft />
-                Back
-              </Link>
-            </Button>{" "}
+            <Button
+              variant={"link"}
+              size={"sm"}
+              render={
+                <Link href={"/dashboard/content"}>
+                  <ArrowLeft />
+                  Back
+                </Link>
+              }
+            />
             <h1 className="text-2xl font-bold tracking-tight">
               {leadershipContent?.title}
             </h1>
@@ -48,7 +53,11 @@ const page = async ({ searchParams }: { searchParams: SearchParams }) => {
           </span>
         </div>
         <section className={"py-16"}>
-          <LeadershipEditForm />
+          {contentType === "thought-leaderships" ? (
+            <LeadershipEditForm leadershipContent={leadershipContent} />
+          ) : (
+            <SocialEditForm socialContent={leadershipContent} />
+          )}
         </section>
       </Main>
     )

@@ -45,13 +45,15 @@ export function LongText({
   return (
     <>
       <div className="hidden sm:block">
-        <TooltipProvider delayDuration={0}>
+        <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
-              <div ref={refCallback} className={cn("truncate", className)}>
-                {children}
-              </div>
-            </TooltipTrigger>
+            <TooltipTrigger
+              render={
+                <div ref={refCallback} className={cn("truncate", className)}>
+                  {children}
+                </div>
+              }
+            />
             <TooltipContent>
               <p className={contentClassName}>{children}</p>
             </TooltipContent>
@@ -60,11 +62,13 @@ export function LongText({
       </div>
       <div className="sm:hidden">
         <Popover>
-          <PopoverTrigger asChild>
-            <div ref={refCallback} className={cn("truncate", className)}>
-              {children}
-            </div>
-          </PopoverTrigger>
+          <PopoverTrigger
+            render={
+              <div ref={refCallback} className={cn("truncate", className)}>
+                {children}
+              </div>
+            }
+          />
           <PopoverContent className={cn("w-fit", contentClassName)}>
             <p>{children}</p>
           </PopoverContent>

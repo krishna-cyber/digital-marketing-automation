@@ -233,16 +233,19 @@ const ArticleEditForm = ({
             <span>save changes</span>
           </Button>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                aria-label="More options"
-                type="button"
-              >
-                <EllipsisVerticalIcon aria-hidden="true" />
-              </Button>
-            </DropdownMenuTrigger>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="outline"
+                  size="icon"
+                  aria-label="More options"
+                  type="button"
+                >
+                  <EllipsisVerticalIcon aria-hidden="true" />
+                </Button>
+              }
+            />
+
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuGroup>
                 <DropdownMenuItem
