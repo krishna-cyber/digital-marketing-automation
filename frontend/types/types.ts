@@ -21,8 +21,8 @@ export type Notification = {
 
 export interface CalendarEvent {
   id: string
-  title: string
-  description: string
+  title?: string
+  description?: string
   topic: string
   channel: string
   pillar: string

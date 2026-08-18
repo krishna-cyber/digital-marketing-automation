@@ -1,5 +1,5 @@
 import { DateTimePicker } from "@/components/date-picker"
-import { Badge } from "@/components/ui/badge"
+import { ContentLifecycleTimeline } from "@/components/examples/content-lifecycle-timeline"
 import { Button } from "@/components/ui/button"
 import {
   Combobox,
@@ -14,21 +14,15 @@ import {
   useComboboxAnchor,
 } from "@/components/ui/combobox"
 import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer"
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field"
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -42,6 +36,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { api } from "@/lib/api"
 import { CalendarEvent } from "@/types/types"
 import { useQuery } from "@tanstack/react-query"
+import { enUS } from "date-fns/locale"
 import {
   Ban,
   Calendar,
@@ -169,71 +164,40 @@ const EventDetailsDrawer = ({
     queryKey: ["eventDetails", eventId],
     queryFn: async () => {
       const response = await api.get(`/api/v1/calendar/${eventId}`)
-      return response.data
+      return response.data as { data: CalendarEvent }
     },
     enabled: !!eventId, // Only run the query if eventId is not null
   })
 
+  console.log("eventDetails", eventDetails)
+
   const anchor = useComboboxAnchor()
   return (
-    <Drawer open={open} onOpenChange={setOpen} direction="right">
-      <DrawerContent className="data-[vaul-drawer-direction=bottom]:max-h-[50vh] data-[vaul-drawer-direction=top]:max-h-[50vh]">
-        <DrawerHeader>
-          <DrawerTitle>Event Details</DrawerTitle>
-          <DrawerDescription>
-            Here you can find all the details about the event.
-          </DrawerDescription>
-        </DrawerHeader>
-        {/* <div className="p-4 pb-0">
-            <div className="flex items-center justify-center space-x-2">
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 shrink-0 rounded-full"
-                onClick={() => onClick(-10)}
-                disabled={goal <= 200}
-              >
-                <Minus />
-                <span className="sr-only">Decrease</span>
-              </Button>
-              <div className="flex-1 text-center">
-                <div className="text-7xl font-bold tracking-tighter">
-                  {goal}
-                </div>
-                <div className="text-[0.70rem] text-muted-foreground uppercase">
-                  Calories/day
-                </div>
-              </div>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 shrink-0 rounded-full"
-                onClick={() => onClick(10)}
-                disabled={goal >= 400}
-              >
-                <Plus />
-                <span className="sr-only">Increase</span>
-              </Button>
-            </div>
-            <div className="mt-3 h-[120px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={data}>
-                  <Bar
-                    dataKey="goal"
-                    style={
-                      {
-                        fill: "var(--chart-1)",
-                      } as React.CSSProperties
-                    }
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div> */}
-        <div className="no-scrollbar overflow-y-auto p-4 px-4 pb-0">
-          {/* hERE display form with event details and disabled section and editable section */}
-          <form className="space-y-4">
-            <div className="mb-4 no-scrollbar overflow-y-auto px-4">
+    <div className="flex items-center justify-center">
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="min-w-4xl">
+          <DialogHeader>
+            <DialogTitle>
+              {eventDetails?.data?.topic || "Event Details"}
+            </DialogTitle>
+            {/* <DialogDescription>
+              {eventDetails?.data?.subtopics?.length &&
+              eventDetails.data.subtopics.length > 0
+                ? eventDetails?.data?.subtopics.map((subtopic, index) => (
+                    <p key={index}>{subtopic}</p>
+                  ))
+                : "No subtopics available."}
+            </DialogDescription> */}
+            <DialogDescription>
+              {eventDetails?.data?.research_insight
+                ? `Research Insight: ${eventDetails.data.research_insight}`
+                : "No research insight available."}
+            </DialogDescription>
+          </DialogHeader>
+          {/* Scrollable content */}
+          <div className="-mx-4 no-scrollbar max-h-[70vh] overflow-y-auto px-4">
+            {/* hERE display form with event details and disabled section and editable section */}
+            <form id="event-edit-form">
               <FieldGroup>
                 <Field>
                   <FieldLabel htmlFor="event-topic">
@@ -267,44 +231,52 @@ const EventDetailsDrawer = ({
                     This name will be displayed on your public profile.
                   </FieldDescription> */}
                 </Field>
-                {/* Channel */}
-                <Field>
-                  <FieldLabel htmlFor="event-channel">
-                    Channel <span className="text-destructive">*</span>
-                  </FieldLabel>
-                  <Input
-                    id="event-channel"
-                    value={eventDetailsMockData.channel}
-                    disabled
-                    required
-                  />
-                  {/* <FieldDescription>
+
+                <FieldGroup className="flex flex-row gap-4">
+                  {/* Channel */}
+                  <Field>
+                    <FieldLabel htmlFor="event-channel">
+                      Channel <span className="text-destructive">*</span>
+                    </FieldLabel>
+                    <Input
+                      id="event-channel"
+                      value={eventDetailsMockData.channel}
+                      disabled
+                      required
+                    />
+                    {/* <FieldDescription>
                     This name will be displayed on your public profile.
                   </FieldDescription> */}
-                </Field>
-                {/* pillar */}
-                <Field>
-                  <FieldLabel htmlFor="event-pillar">
-                    Pillar <span className="text-destructive">*</span>
-                  </FieldLabel>
-                  <Input
-                    id="event-pillar"
-                    required
-                    disabled
-                    value={eventDetailsMockData.pillar}
-                  />
-                  {/* <FieldDescription>
+                  </Field>
+                  {/* pillar */}
+                  <Field>
+                    <FieldLabel htmlFor="event-pillar">
+                      Pillar <span className="text-destructive">*</span>
+                    </FieldLabel>
+                    <Input
+                      id="event-pillar"
+                      required
+                      disabled
+                      value={eventDetailsMockData.pillar}
+                    />
+                    {/* <FieldDescription>
                     This name will be displayed on your public profile.
                   </FieldDescription> */}
-                </Field>
+                  </Field>
+                </FieldGroup>
+
                 {/* start end date */}
-                <FieldGroup>
+                <FieldGroup className="flex flex-row gap-4">
                   <Field>
                     <FieldLabel htmlFor="event-start">
                       Start <span className="text-destructive">*</span>
                     </FieldLabel>
                     <DateTimePicker
                       disabled
+                      locale={enUS}
+                      showOutsideDays
+                      showWeekNumber={false}
+                      weekStartsOn={0}
                       value={eventDetailsMockData.start}
                     />
                   </Field>
@@ -312,50 +284,61 @@ const EventDetailsDrawer = ({
                     <FieldLabel htmlFor="event-end">
                       End <span className="text-destructive">*</span>
                     </FieldLabel>
-                    <DateTimePicker disabled value={eventDetailsMockData.end} />
+                    <DateTimePicker
+                      disabled
+                      locale={enUS}
+                      showOutsideDays
+                      showWeekNumber={false}
+                      weekStartsOn={0}
+                      value={eventDetailsMockData.end}
+                    />
                   </Field>
                 </FieldGroup>
-                {/* Color */}
 
-                {/* Status */}
-                <Field className="max-w-xs">
-                  <FieldLabel>Status</FieldLabel>
-                  <Select defaultValue={eventDetailsMockData.status}>
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="Select an option" />
-                    </SelectTrigger>
-                    <SelectContent position="popper">
-                      <SelectGroup>
-                        {status_items.slice(1).map((item) => (
-                          <SelectItem
-                            disabled
-                            key={item.value}
-                            value={item.value!}
-                          >
-                            {item.icon}
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </Field>
-                {/* Color */}
-                <Field>
-                  <FieldLabel htmlFor="event-color">
-                    Color <span className="text-destructive">*</span>
-                  </FieldLabel>
-                  <div className="flex w-full flex-row items-center space-x-2 pl-2">
-                    <div
-                      className={`h-8 w-8 cursor-pointer`}
-                      style={{ backgroundColor: eventDetailsMockData.color }}
-                    ></div>
-                    {/* <Input {...field} /> */}
-                  </div>
-                  {/* <FieldDescription>
+                <FieldGroup className="flex flex-row gap-4">
+                  {/* Status */}
+                  <Field className="max-w-xs">
+                    <FieldLabel>Status</FieldLabel>
+                    <Select defaultValue={eventDetailsMockData.status}>
+                      <SelectTrigger className="w-50">
+                        <SelectValue placeholder="Select an option" />
+                      </SelectTrigger>
+                      <SelectContent alignItemWithTrigger={true}>
+                        <SelectGroup>
+                          {status_items.slice(1).map((item) => (
+                            <SelectItem
+                              disabled
+                              key={item.value}
+                              value={item.value!}
+                            >
+                              {item.icon}
+                              {item.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </Field>
+                  {/* Color */}
+                  <Field>
+                    <FieldLabel htmlFor="event-color">
+                      Color <span className="text-destructive">*</span>
+                    </FieldLabel>
+                    <div className="flex w-full flex-row items-center space-x-2 pl-2">
+                      <div
+                        className={`h-8 w-8 cursor-pointer`}
+                        style={{
+                          backgroundColor: eventDetailsMockData.color,
+                        }}
+                      ></div>
+                      {/* <Input {...field} /> */}
+                    </div>
+                    {/* <FieldDescription>
                     This name will be displayed on your public profile.
                   </FieldDescription> */}
-                </Field>
+                  </Field>
+                </FieldGroup>
+
                 {/* keywords */}
                 <Field className="max-w-xs">
                   <FieldLabel htmlFor="event-channel">Keywords</FieldLabel>
@@ -404,18 +387,25 @@ const EventDetailsDrawer = ({
                   />
                 </Field>
               </FieldGroup>
-            </div>
-          </form>
-        </div>
+              {/* Content lifecycle timeline */}
+              <FieldGroup className="mt-8">
+                <ContentLifecycleTimeline />
+              </FieldGroup>
+            </form>
+          </div>
 
-        <DrawerFooter>
-          <Button>Submit</Button>
-          <DrawerClose asChild>
-            <Button variant="outline">Close</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+          {/* <Separator className="my-4" /> */}
+          <DialogFooter>
+            <Button disabled={isLoading} type="submit" form="event-edit-form">
+              Submit
+            </Button>
+            <DialogClose render={<Button variant="outline" />}>
+              Close
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
   )
 }
 

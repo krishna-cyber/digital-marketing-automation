@@ -10,16 +10,21 @@ import interactionPlugin from "@fullcalendar/react/interaction"
 import themePlugin from "@fullcalendar/react/themes/classic"
 import timeGridPlugin from "@fullcalendar/react/timegrid"
 import React, { useState } from "react"
-import { ExtendedEventInput } from "./data"
 
 //Css of calender
 import { EventAddForm, EventAddFormValues } from "@/components/event-add-form"
+
 import { api } from "@/lib/api"
+import { ExtendedEventInput } from "@/types/types"
 import "@fullcalendar/react/skeleton.css"
 import "@fullcalendar/react/themes/classic/palette.css"
 import "@fullcalendar/react/themes/classic/theme.css"
 import { useQuery } from "@tanstack/react-query"
+
+import { parseAsString, useQueryStates } from "nuqs"
 import { toast } from "sonner"
+
+import { CalendarEventFilters } from "./calendar-event-filters"
 import EventDetailsDrawer from "./event-details-drawer"
 
 export const renderBadgeEventStatus = (status: string) => {
@@ -109,33 +114,37 @@ interface DateSelectInfor {
   start: Date
   end: Date
 }
-function handleDateSelect(selectInfo: DateSelectInfo) {
-  const title = prompt("Please enter a new title for your event")
-  const calendarApi = selectInfo.view.calendar
 
-  calendarApi.unselect() // clear date selection
-
-  if (title) {
-    calendarApi.addEvent({
-      id: Math.random().toString(),
-      title,
-      start: selectInfo.startStr,
-      end: selectInfo.endStr,
-      allDay: selectInfo.allDay,
-    })
-  }
+const searchParams = {
+  channels: parseAsString.withDefault(""),
+  pillar: parseAsString.withDefault(""), // 0-indexed, table-internal
+  status: parseAsString.withDefault(""),
 }
 
-const Calendar = () => {
-  const { data } = useQuery({
-    queryKey: ["calendar", "events"],
+const Calendar = ({
+  events: providedEvents = [],
+}: {
+  events?: ExtendedEventInput[]
+}) => {
+  //nuqs query states for filters
+  const [{ channels, pillar, status }, setSearchFilters] =
+    useQueryStates(searchParams)
+
+  const { data: fetchedEvents, isFetching } = useQuery({
+    queryKey: ["calendar", "events", { channels, pillar, status }],
     queryFn: async () => {
-      const response = await api.get("/api/v1/calendar?limit=50&offset=0")
-      return response.data.data as ExtendedEventInput[]
+      const params = new URLSearchParams({ limit: "50", offset: "0" })
+      if (channels) params.set("channels", channels)
+      if (pillar) params.set("pillar", pillar)
+      if (status) params.set("status", status)
+      const response = await api.get(`/api/v1/calendar?${params.toString()}`)
+      return (response.data.data as ExtendedEventInput[]) || []
     },
+    enabled: providedEvents.length === 0,
+    placeholderData: (previousData) => previousData,
   })
 
-  console.log("Calendar Fetched events:", data)
+  const data = providedEvents.length > 0 ? providedEvents : fetchedEvents
 
   const [weekendsVisible, setWeekendsVisible] = useState(true)
   const [currentEvents, setCurrentEvents] = useState<EventApi[]>([])
@@ -144,9 +153,6 @@ const Calendar = () => {
   )
   const [eventDetailsOpen, setEventDetailsOpen] = useState(false)
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null)
-  function handleWeekendsToggle() {
-    setWeekendsVisible(!weekendsVisible)
-  }
 
   function handleDateSelect(selectInfo: DateSelectInfo) {
     const eventClickInfo: DateSelectInfor = {
@@ -169,7 +175,8 @@ const Calendar = () => {
     }
 
     console.log("newEvent", data)
-    // setCurrentEvents((prevEvents) => [...prevEvents, newEvent])
+    console.log("newEvent", newEvent)
+
     setEventAddOpen(false)
     toast("Event has been created", {
       description: "You can view your event in the calendar.",
@@ -180,17 +187,9 @@ const Calendar = () => {
     })
   }
   function handleEventClick(clickInfo: EventClickInfo) {
-    if (
-      true
-      // confirm(
-      //   `Are you sure you want to delete the event '${clickInfo.event.title}'`
-      // )
-    ) {
-      console.log("Event clicked:", clickInfo.event.id)
-      setSelectedEventId(clickInfo.event.id)
-      setEventDetailsOpen(true)
-      // clickInfo.event.remove()
-    }
+    console.log("Event clicked:", clickInfo.event.id)
+    setSelectedEventId(clickInfo.event.id)
+    setEventDetailsOpen(true)
   }
 
   function handleEvents(events: EventApi[]) {
@@ -198,39 +197,80 @@ const Calendar = () => {
   }
   return (
     <>
-      <FullCalendar
-        className="demo-app-calendar"
-        plugins={[
-          themePlugin,
-          dayGridPlugin,
-          timeGridPlugin,
-          interactionPlugin,
-        ]}
-        headerToolbar={{
-          left: "prev,next today",
-          center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay",
-        }}
-        initialView="dayGridMonth"
-        editable={true}
-        selectable={true}
-        nowIndicator={true}
-        buttonDisplay="auto"
-        dayMaxEvents={2}
-        weekends={weekendsVisible}
-        events={data} // alternatively, use the `events` setting to fetch from a feed
-        initialEvents={[]} // alternatively, use the `events` setting to fetch from a feed}
-        select={handleDateSelect} // called when a date is selected
-        eventContent={renderEventContent} // custom render function
-        eventClick={(eventInfo) => handleEventClick(eventInfo)}
-        eventsSet={handleEvents} // called after events are initialized/added/changed/removed
-        /* you can update a remote database when these fire:
+      {/* Filters for calendar page goes here */}{" "}
+      <CalendarEventFilters
+        pillar={pillar}
+        status={status}
+        onPillarChange={(value) => setSearchFilters({ pillar: value })}
+        onStatusChange={(value) => setSearchFilters({ status: value })}
+      />
+      {isFetching ? (
+        <div className="flex h-100 w-full items-center justify-center">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            className="text-foreground"
+            style={{ animation: "spin 0.8s steps(8, end) infinite" }}
+          >
+            {Array.from({ length: 8 }).map((_, i) => (
+              <rect
+                key={i}
+                x="11"
+                y="2.5"
+                width="2"
+                height="5"
+                rx="1"
+                fill="currentColor"
+                fillOpacity={+(1 - (i / 8) * 0.85).toFixed(2)}
+                transform={`rotate(${i * 45} 12 12)`}
+              />
+            ))}
+          </svg>
+        </div>
+      ) : (
+        <FullCalendar
+          className="demo-app-calendar mt-6"
+          plugins={[
+            themePlugin,
+            dayGridPlugin,
+            timeGridPlugin,
+            interactionPlugin,
+          ]}
+          headerToolbar={{
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,timeGridDay",
+          }}
+          initialView="dayGridMonth"
+          editable={true}
+          selectable={true}
+          nowIndicator={true}
+          buttonDisplay="auto"
+          dayMaxEvents={2}
+          weekends={weekendsVisible}
+
+          events={data && data.length > 0 ? data : undefined} // alternatively, use the `events` setting to fetch from a feed
+          initialEvents={[]} // alternatively, use the `events` setting to fetch from a feed}
+          select={handleDateSelect} // called when a date is selected
+          eventContent={renderEventContent} // custom render function
+          noEventsContent={() => (
+            <div className="flex h-full w-full items-center justify-center">
+              <p className="text-sm text-muted-foreground">
+                No events to display
+              </p>
+            </div>
+          )}
+          noEventsText="fdsfasdfdasf"
+          eventClick={(eventInfo) => handleEventClick(eventInfo)}
+          eventsSet={handleEvents} // called after events are initialized/added/changed/removed
+          /* you can update a remote database when these fire:
           eventAdd={function(){}}
           eventChange={function(){}}
           eventRemove={function(){}}
           */
-      />
-
+        />
+      )}
       <EventAddForm
         allday={typeof eventAddOpen === "boolean" ? false : eventAddOpen.allday}
         start={
