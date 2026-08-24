@@ -32,7 +32,7 @@ const Actions = () => {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button variant="outline" size="icon" className="h-8 w-8 shrink-0">
+          <Button variant="outline" size="icon">
             <EllipsisVertical />
           </Button>
         }

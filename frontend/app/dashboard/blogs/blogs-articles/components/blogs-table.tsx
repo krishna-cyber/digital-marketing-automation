@@ -21,21 +21,17 @@ import { cn } from "@/lib/utils"
 import { BlogPostsResponse } from "@/types/types"
 import { useQuery } from "@tanstack/react-query"
 import {
+  ColumnVisibilityState,
   flexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getSortedRowModel,
   SortingState,
-  useReactTable,
-  VisibilityState,
+  useTable,
 } from "@tanstack/react-table"
 import { Rss } from "lucide-react"
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs"
 import React, { useState } from "react"
-import { defaultColumns as columns } from "./blogs-columns"
+import { columns } from "./blogs-columns"
 import DeleteBlogArticleAlert from "./delete-blog-alert"
+import { features } from "./table-feature"
 
 const searchParams = {
   searchQuery: parseAsString.withDefault(""),
@@ -48,12 +44,13 @@ const BlogsTable = ({
   setBlogsCount: (count: number) => void
 }) => {
   const [rowSelection, setRowSelection] = useState({})
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    documentId: false,
-    event_id: false,
-    updatedAt: false,
-    publishedAt: false,
-  })
+  const [columnVisibility, setColumnVisibility] =
+    useState<ColumnVisibilityState>({
+      documentId: false,
+      event_id: false,
+      updatedAt: false,
+      publishedAt: false,
+    })
   const [sorting, setSorting] = useState<SortingState>([])
 
   const [{ pageIndex, pageSize }, setSearch] = useQueryStates(searchParams)
@@ -73,8 +70,9 @@ const BlogsTable = ({
   setBlogsCount(blogsAndArticlesData?.meta?.pagination?.total ?? 0)
 
   const rows = blogsAndArticlesData?.data ?? []
-  // eslint-disable-next-line react-hooks/incompatible-library
-  const table = useReactTable({
+
+  const table = useTable({
+    features,
     data: rows,
     columns,
     state: {
@@ -83,7 +81,7 @@ const BlogsTable = ({
       rowSelection,
       columnVisibility,
     },
-    manualPagination: true, // server owns pagination — don't re-slice client-side
+    // manualPagination: true, // server owns pagination — don't re-slice client-side
     pageCount, // real total from Strapi meta, drives getPageCount()/getCanNextPage()
     enableRowSelection: true,
     onPaginationChange: (updater) => {
@@ -101,12 +99,8 @@ const BlogsTable = ({
     onColumnVisibilityChange: setColumnVisibility,
     // NOTE: getPaginationRowModel intentionally removed — client-side
     // pagination on already-server-paginated data was the main bug.
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
   })
+
   return (
     <div
       className={cn(

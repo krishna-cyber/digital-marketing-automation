@@ -21,22 +21,18 @@ import { cn } from "@/lib/utils"
 import { ThoughtLeadershipPostsResponse } from "@/types/types"
 import { useQuery } from "@tanstack/react-query"
 import {
-  type SortingState,
-  type VisibilityState,
+  type ColumnVisibilityState,
   flexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getSortedRowModel,
-  useReactTable,
+  type SortingState,
+  useTable,
 } from "@tanstack/react-table"
 import { Rss } from "lucide-react"
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs"
 import { useState } from "react"
 // import { linkedinPosts } from "../data/data"
+import { features } from "@/app/dashboard/blogs/blogs-articles/components/table-feature"
 import DeletePostAlert from "./delete-leadership-alert"
-import { defaultColumns as columns } from "./leadership-columns"
+import { columns } from "./leadership-columns"
 
 export const searchParams = {
   searchQuery: parseAsString.withDefault(""),
@@ -50,9 +46,10 @@ export function PostsTable({
   setLinkedinPostsCount: React.Dispatch<React.SetStateAction<number>>
 }>) {
   const [rowSelection, setRowSelection] = useState({})
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    documentId: false,
-  })
+  const [columnVisibility, setColumnVisibility] =
+    useState<ColumnVisibilityState>({
+      documentId: false,
+    })
   const [sorting, setSorting] = useState<SortingState>([])
 
   const [{ pageIndex, pageSize }, setSearch] = useQueryStates(searchParams)
@@ -73,7 +70,8 @@ export function PostsTable({
   const pageCount = postsData?.meta?.pagination?.pageCount ?? -1
 
   // eslint-disable-next-line react-hooks/incompatible-library
-  const table = useReactTable({
+  const table = useTable({
+    features,
     data: rows,
     columns,
     state: {
@@ -99,12 +97,12 @@ export function PostsTable({
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
     // NOTE: getPaginationRowModel intentionally removed — client-side
-    // pagination on already-server-paginated data was the main bug.
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
+    // // pagination on already-server-paginated data was the main bug.
+    // getCoreRowModel: getCoreRowModel(),
+    // getFilteredRowModel: getFilteredRowModel(),
+    // getSortedRowModel: getSortedRowModel(),
+    // getFacetedRowModel: getFacetedRowModel(),
+    // getFacetedUniqueValues: getFacetedUniqueValues(),
   })
 
   return (

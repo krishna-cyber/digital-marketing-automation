@@ -4,16 +4,15 @@ import { LongText } from "@/components/long-text"
 import { MediaFile } from "@/types/types"
 import { createColumnHelper } from "@tanstack/react-table"
 
+import { features } from "@/app/dashboard/blogs/blogs-articles/components/table-feature"
 import { Button } from "@/components/ui/button"
 import { handleCopyToClipboard } from "@/lib/utils"
 import { Copy } from "lucide-react"
 import { DataTableRowActions } from "./media-data-table-row-actions"
 
-const columnHelper = createColumnHelper<MediaFile>()
+const columnHelper = createColumnHelper<typeof features, MediaFile>()
 
-//Make some columns!
-
-export const defaultColumns = [
+export const columns = columnHelper.columns([
   //Display column
   columnHelper.display({
     id: "preview",
@@ -99,4 +98,4 @@ export const defaultColumns = [
     header: () => <span>Actions</span>,
     cell: (props) => <DataTableRowActions row={props.row} />,
   }),
-]
+])

@@ -38,13 +38,11 @@ export function Disable2faDialog({
       fetchOptions: {
         onSuccess: () => {
           toast.success("Two-factor authentication disabled successfully.")
-          window.location.reload()
         },
         onError: ({ error }) => {
           toast.error(
             error.message || "Failed to disable two-factor authentication."
           )
-          window.location.reload()
         },
       },
     })
@@ -87,9 +85,7 @@ export function Disable2faDialog({
             />
           </form>
           <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
+            <DialogClose render={<Button variant="outline">Cancel</Button>} />
             <Button
               variant="destructive"
               type="submit"

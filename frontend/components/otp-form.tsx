@@ -1,14 +1,6 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
-import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
@@ -20,9 +12,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
+import { Field, FieldError, FieldLabel } from "./ui/field"
 
 export const otpFormSchema = z.object({
   otp: z
@@ -65,48 +58,47 @@ export function OtpForm({ className, ...props }: Readonly<OtpFormProps>) {
   }
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className={cn("grid gap-2", className)}
-        {...props}
-      >
-        <FormField
-          control={form.control}
-          name="otp"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="sr-only">One-Time Password</FormLabel>
-              <FormControl>
-                <InputOTP
-                  maxLength={6}
-                  {...field}
-                  containerClassName='justify-between sm:[&>[data-slot="input-otp-group"]>div]:w-12'
-                >
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                  </InputOTPGroup>
-                  <InputOTPSeparator />
-                  <InputOTPGroup>
-                    <InputOTPSlot index={2} />
-                    <InputOTPSlot index={3} />
-                  </InputOTPGroup>
-                  <InputOTPSeparator />
-                  <InputOTPGroup>
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
-                  </InputOTPGroup>
-                </InputOTP>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button className="mt-2" disabled={otp.length < 6 || isLoading}>
-          Verify
-        </Button>
-      </form>
-    </Form>
+    <form
+      id="otp-form"
+      onSubmit={form.handleSubmit(onSubmit)}
+      className={cn("grid gap-2", className)}
+      {...props}
+    >
+      <Controller
+        control={form.control}
+        name="otp"
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <FieldLabel className="sr-only">One-Time Password</FieldLabel>
+
+            <InputOTP
+              maxLength={6}
+              {...field}
+              containerClassName='justify-between sm:[&>[data-slot="input-otp-group"]>div]:w-12'
+            >
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+              </InputOTPGroup>
+              <InputOTPSeparator />
+              <InputOTPGroup>
+                <InputOTPSlot index={2} />
+                <InputOTPSlot index={3} />
+              </InputOTPGroup>
+              <InputOTPSeparator />
+              <InputOTPGroup>
+                <InputOTPSlot index={4} />
+                <InputOTPSlot index={5} />
+              </InputOTPGroup>
+            </InputOTP>
+
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )}
+      />
+      <Button className="mt-2" disabled={otp.length < 6 || isLoading}>
+        Verify
+      </Button>
+    </form>
   )
 }

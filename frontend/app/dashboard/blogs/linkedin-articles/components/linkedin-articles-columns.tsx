@@ -10,12 +10,13 @@ import { LinkedInArticle } from "@/types/types"
 import { createColumnHelper } from "@tanstack/react-table"
 import { Copy, ExternalLink } from "lucide-react"
 import Link from "next/link"
+import { features } from "../../blogs-articles/components/table-feature"
 import BlogTableRowActions from "./linkedin-article-table-row-actions"
 
-const columnHelper = createColumnHelper<LinkedInArticle>()
+const columnHelper = createColumnHelper<typeof features, LinkedInArticle>()
 
 //TODO: ADD COLUMNS FOR DOCUMENTId
-export const defaultColumns = [
+export const columns = columnHelper.columns([
   columnHelper.accessor("title", {
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Title" />
@@ -166,4 +167,4 @@ export const defaultColumns = [
     header: () => <span>Actions</span>,
     cell: (props) => <BlogTableRowActions row={props.row} />,
   }),
-]
+])

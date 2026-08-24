@@ -21,22 +21,18 @@ import { cn } from "@/lib/utils"
 import { SocialPostsResponse } from "@/types/types"
 import { useQuery } from "@tanstack/react-query"
 import {
-  type SortingState,
-  type VisibilityState,
+  type ColumnVisibilityState,
   flexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getSortedRowModel,
-  useReactTable,
+  type SortingState,
+  useTable,
 } from "@tanstack/react-table"
 import { Rss } from "lucide-react"
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs"
 import { useState } from "react"
 // import { socialPosts } from "../data/data"
+import { features } from "@/app/dashboard/blogs/blogs-articles/components/table-feature"
 import DeleteSocialAlert from "./delete-social-alert"
-import { defaultColumns as columns } from "./social-columns"
+import { columns } from "./social-columns"
 
 export const searchParams = {
   searchQuery: parseAsString.withDefault(""),
@@ -50,12 +46,13 @@ export function SocialsTable({
   setSocialsCount: React.Dispatch<React.SetStateAction<number>>
 }>) {
   const [rowSelection, setRowSelection] = useState({})
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    documentId: false,
-    start_date: false,
-    createdAt: false,
-    updatedAt: false,
-  })
+  const [columnVisibility, setColumnVisibility] =
+    useState<ColumnVisibilityState>({
+      documentId: false,
+      start_date: false,
+      createdAt: false,
+      updatedAt: false,
+    })
   const [sorting, setSorting] = useState<SortingState>([])
 
   const [{ pageIndex, pageSize }, setSearch] = useQueryStates(searchParams)
@@ -77,8 +74,8 @@ export function SocialsTable({
   const rows = socialsData?.data ?? []
   const pageCount = socialsData?.meta?.pagination?.pageCount ?? -1
 
-  // eslint-disable-next-line react-hooks/incompatible-library
-  const table = useReactTable({
+  const table = useTable({
+    features,
     data: rows,
     columns,
     state: {
@@ -105,11 +102,11 @@ export function SocialsTable({
     onColumnVisibilityChange: setColumnVisibility,
     // NOTE: getPaginationRowModel intentionally removed — client-side
     // pagination on already-server-paginated data was the main bug.
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
+    // getCoreRowModel: getCoreRowModel(),
+    // getFilteredRowModel: getFilteredRowModel(),
+    // getSortedRowModel: getSortedRowModel(),
+    // getFacetedRowModel: getFacetedRowModel(),
+    // getFacetedUniqueValues: getFacetedUniqueValues(),
   })
 
   return (

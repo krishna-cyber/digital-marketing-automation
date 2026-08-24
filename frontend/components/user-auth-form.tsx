@@ -1,13 +1,5 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 
@@ -15,13 +7,13 @@ import { authClient } from "@/lib/auth-client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2, LogIn } from "lucide-react"
 import Image from "next/image"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import { PasswordInput } from "./password-input"
+import { Field, FieldError, FieldLabel } from "./ui/field"
 
 const formSchema = z.object({
   email: z.email({
@@ -85,74 +77,73 @@ export function UserAuthForm({
   }
 
   return (
-    <Form {...form}>
-      <form
-        id="sign-in-form"
-        onSubmit={form.handleSubmit(onSubmit)}
-        className={cn("grid gap-3", className)}
-        {...props}
-      >
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder="name@example.com" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem className="relative">
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <PasswordInput placeholder="********" {...field} />
-              </FormControl>
-              <FormMessage />
-              <Link
-                href="/forgot-password"
-                className="absolute inset-e-0 -top-0.5 text-sm font-medium text-muted-foreground hover:opacity-75"
-              >
-                Forgot password?
-              </Link>
-            </FormItem>
-          )}
-        />
+    <form
+      id="sign-in-form"
+      onSubmit={form.handleSubmit(onSubmit)}
+      className={cn("grid gap-3", className)}
+      {...props}
+    >
+      <Controller
+        name="email"
+        control={form.control}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <FieldLabel htmlFor="article-edit-form-title">
+              Email<span className="text-red-500">*</span>
+            </FieldLabel>
+            <Input
+              {...field}
+              id="article-edit-form-title"
+              aria-invalid={fieldState.invalid}
+              placeholder="name@example.com"
+              autoComplete="off"
+            />
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )}
+      />
 
-        <Button
-          className="mt-2"
-          form="sign-in-form"
-          type="submit"
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <Loader2 className="animate-spin" />
-          ) : (
-            <LogIn className="me-2 h-4 w-4" />
-          )}
-          Sign in
-        </Button>
-        <div className="relative my-2">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">
-              Or continue with
-            </span>
-          </div>
+      <Controller
+        name="password"
+        control={form.control}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <FieldLabel htmlFor="article-edit-form-title">
+              Password<span className="text-red-500">*</span>
+            </FieldLabel>
+            <PasswordInput placeholder="********" {...field} />
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )}
+      />
+
+      <Button
+        className="mt-2"
+        form="sign-in-form"
+        type="submit"
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <Loader2 className="animate-spin" />
+        ) : (
+          <LogIn className="me-2 h-4 w-4" />
+        )}
+        Sign in
+      </Button>
+      <div className="relative my-2">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
         </div>
-        <Button variant="outline" type="button">
-          <Image src="/google.svg" alt="Google" width={16} height={16} />
-          Google
-        </Button>
-      </form>
-    </Form>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-background px-2 text-muted-foreground">
+            Or continue with
+          </span>
+        </div>
+      </div>
+      <Button variant="outline" type="button">
+        <Image src="/google.svg" alt="Google" width={16} height={16} />
+        Google
+      </Button>
+    </form>
   )
 }

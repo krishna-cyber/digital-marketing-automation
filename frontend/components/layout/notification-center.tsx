@@ -1,5 +1,5 @@
-import { mockNotifications } from "@/app/dashboard/settings/notifications/data"
 import { Button } from "@/components/ui/button"
+import { Notification } from "@/types/types"
 
 import {
   Popover,
@@ -8,9 +8,14 @@ import {
 } from "@/components/ui/popover"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
+import { api } from "@/lib/api"
+
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { Bell, ChevronRight } from "lucide-react"
 import Link from "next/link"
+import { toast } from "sonner"
 import { EmptyNotifications } from "../examples/empty-notifications"
+import MarkAllAsRead from "../mark-all-as-read"
 import { NotificationCard } from "../notification-card"
 // import { useNotificationStore } from "../utils/store"
 
@@ -23,14 +28,34 @@ const actionRoutes: Record<string, string> = {
   open: "/dashboard/kanban",
   "open-chat": "/dashboard/chat",
 }
-
+interface UnreadCountResponse {
+  data: { unread: number }
+}
 export function NotificationCenter() {
-  //   const { notifications, markAsRead, markAllAsRead, unreadCount } =
-  //     useNotificationStore()
+  const queryClient = useQueryClient()
 
-  //   const count = unreadCount()
-  const count = mockNotifications.filter((n) => n.status === "unread").length
-  const visibleNotifications = mockNotifications.slice(0, MAX_VISIBLE)
+  const { data: unreadCount, error } = useQuery({
+    queryKey: ["unreadCount"],
+    queryFn: async () => {
+      const response = await api.get("/api/v1/notifications/unread-count")
+      return response.data as UnreadCountResponse
+    },
+  })
+
+  const { data: notifications } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: async () => {
+      const response = await api.get("/api/v1/notifications?limit=10&offset=0")
+      return response.data
+    },
+  })
+
+  console.log("unread count data", unreadCount)
+
+  const unreadCountValue = unreadCount?.data?.unread ?? 0
+
+  const notificationItems: Notification[] = notifications?.data ?? []
+  const visibleNotifications = notificationItems.slice(0, MAX_VISIBLE)
 
   return (
     <Popover>
@@ -38,9 +63,14 @@ export function NotificationCenter() {
         render={
           <Button variant="ghost" size="icon" className="relative h-8 w-8">
             <Bell className="h-4 w-4" />
-            {count > 0 && (
+            {error && (
               <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-medium text-white">
-                {count > 9 ? "9+" : count}
+                Error
+              </span>
+            )}
+            {unreadCountValue > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-medium text-white">
+                {unreadCountValue > 9 ? "9+" : unreadCountValue}
               </span>
             )}
             <span className="sr-only">Notifications</span>
@@ -49,7 +79,7 @@ export function NotificationCenter() {
       />
       <PopoverContent
         align="end"
-        className="w-[calc(100vw-2rem)] p-0 sm:w-[380px]"
+        className="w-[calc(100vw-3rem)] p-0 sm:w-95"
         sideOffset={8}
       >
         <div className="flex items-center justify-between px-4 py-3">
@@ -63,27 +93,18 @@ export function NotificationCenter() {
             <ChevronRight className="h-3.5 w-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
           </Link>
           <div className="flex items-center gap-2">
-            {count > 0 && (
+            {unreadCountValue > 0 && (
               <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
-                {count} new
+                {unreadCountValue} new
               </span>
             )}
-            {count > 0 && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-auto px-2 py-1 text-xs text-muted-foreground"
-                // onClick={markAllAsRead}
-              >
-                Mark all as read
-              </Button>
-            )}
+            {unreadCountValue > 0 && <MarkAllAsRead />}
           </div>
         </div>
         <Separator />
 
-        <ScrollArea className="h-[400px]">
-          {mockNotifications.length === 0 ? (
+        <ScrollArea className="h-100">
+          {notificationItems.length === 0 ? (
             <EmptyNotifications />
           ) : (
             <div className="flex flex-col gap-1 p-2">
@@ -92,11 +113,11 @@ export function NotificationCenter() {
                   key={notification.id}
                   id={notification.id}
                   title={notification.title}
-                  body={notification.body}
+                  body={notification.message}
                   status={notification.status}
-                  createdAt={notification.createdAt}
+                  createdAt={notification.created_at}
                   actions={notification.actions}
-                  //   onMarkAsRead={markAsRead}
+                  // onMarkAsRead={markAsRead}
                   //   onAction={(notifId, actionId) => {
                   //     const route = actionRoutes[actionId]
                   //     if (route) {
