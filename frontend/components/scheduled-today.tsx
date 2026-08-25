@@ -31,8 +31,9 @@ const Actions = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
+        data-slot="button"
         render={
-          <Button variant="outline" size="icon">
+          <Button variant="outline" size="icon" nativeButton>
             <EllipsisVertical />
           </Button>
         }
