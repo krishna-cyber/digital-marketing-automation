@@ -9,6 +9,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { api } from "@/lib/api"
+import { useQuery } from "@tanstack/react-query"
 import { Badge } from "../ui/badge"
 import {
   Card,
@@ -18,14 +20,11 @@ import {
   CardTitle,
 } from "../ui/card"
 
-const chartData = [
-  { month: "January", accepted: 186, rejected: 80 },
-  { month: "February", accepted: 305, rejected: 200 },
-  { month: "March", accepted: 237, rejected: 120 },
-  { month: "April", accepted: 73, rejected: 190 },
-  { month: "May", accepted: 209, rejected: 130 },
-  { month: "June", accepted: 214, rejected: 140 },
-]
+type chartDataItem = {
+  month: string
+  accepted: number
+  rejected: number
+}
 
 const chartConfig = {
   accepted: {
@@ -39,6 +38,14 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function AcceptedVsRejectedTrend({ className }: { className?: string }) {
+  const { data: chartData } = useQuery({
+    queryKey: ["accepted-vs-rejected-trend"],
+    queryFn: async () => {
+      const response = await api.get("/api/v1/analytics/accept-reject-trend")
+      return response.data.data as chartDataItem[]
+    },
+  })
+
   return (
     <Card className={className}>
       <CardHeader>
