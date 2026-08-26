@@ -11,8 +11,9 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { TrendingUpIcon } from "lucide-react"
-import { Badge } from "../ui/badge"
+import { api } from "@/lib/api"
+import { useQuery } from "@tanstack/react-query"
+
 import {
   Card,
   CardContent,
@@ -21,17 +22,15 @@ import {
   CardTitle,
 } from "../ui/card"
 
-const chartData = [
-  { status: "generated", count: 275, fill: "var(--color-generated)" },
-  { status: "approved", count: 200, fill: "var(--color-approved)" },
-  { status: "rejected", count: 87, fill: "var(--color-rejected)" },
-  { status: "scheduled", count: 173, fill: "var(--color-scheduled)" },
-  { status: "review", count: 120, fill: "var(--color-review)" },
-]
+interface chartDataItemResponse {
+  status: string
+  count: number
+}
 
 const chartConfig = {
   count: {
     label: "Posts",
+    color: "var(--color-count)",
   },
   generated: {
     label: "Generated",
@@ -56,19 +55,34 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function ContentGeneratedPie({ className }: { className?: string }) {
+  const { data: chartData } = useQuery({
+    queryKey: ["content-generated-pie"],
+    queryFn: async () => {
+      const response = await api.get("/api/v1/analytics/content-by-status")
+      return response.data.data as chartDataItemResponse[]
+    },
+    select: (data) => {
+      return data.map((item: chartDataItemResponse) => ({
+        status: item.status,
+        count: item.count,
+        fill: chartConfig[item.status as keyof typeof chartConfig].color,
+      }))
+    },
+  })
+
   const totalPosts = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.count, 0)
-  }, [])
+    return (chartData ?? []).reduce((acc, curr) => acc + curr.count, 0)
+  }, [chartData])
 
   return (
     <Card className={className}>
       <CardHeader>
         <CardTitle>
           Content Status Distribution
-          <Badge variant="success-light" className="ml-2">
+          {/* <Badge variant="success-light" className="ml-2">
             <TrendingUpIcon aria-hidden="true" />
             +5.2%
-          </Badge>
+          </Badge> */}
         </CardTitle>
         <CardDescription>Current state of generated content.</CardDescription>
       </CardHeader>

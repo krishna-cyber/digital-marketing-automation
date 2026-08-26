@@ -50,8 +50,6 @@ export function NotificationCenter() {
     },
   })
 
-  console.log("unread count data", unreadCount)
-
   const unreadCountValue = unreadCount?.data?.unread ?? 0
 
   const notificationItems: Notification[] = notifications?.data ?? []

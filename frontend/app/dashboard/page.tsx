@@ -2,6 +2,7 @@ import { AcceptedVsRejectedTrend } from "@/components/analytics/accepted-vs-reje
 import AutomationHealthStatus from "@/components/analytics/automation-health"
 import { ContentByChannel } from "@/components/analytics/content-by-channel"
 import { ContentGeneratedPie } from "@/components/analytics/content-generated-pie"
+import { ReviewQueueItems } from "@/components/analytics/review-queue-items"
 import { Main } from "@/components/layout/main"
 import ScheduledToday from "@/components/scheduled-today"
 import StatCard, { StatCardProps } from "@/components/stat-card"
@@ -98,6 +99,9 @@ const page = async () => {
 
           {/* Task status */}
           <ContentGeneratedPie className="col-span-1 lg:col-span-3" />
+
+          {/* Review Queue  Items*/}
+          <ReviewQueueItems className="col-span-1 lg:col-span-4" />
 
           {/* Content by Channel */}
           <ContentByChannel className="col-span-1 lg:col-span-4" />
