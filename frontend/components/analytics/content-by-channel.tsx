@@ -14,11 +14,22 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart"
+import { api } from "@/lib/api"
+import { useQuery } from "@tanstack/react-query"
 import { TrendingDownIcon } from "lucide-react"
 import { CSSProperties } from "react"
 import { Bar, BarChart, XAxis } from "recharts"
 
-const chartData = [
+type ChartData = {
+  month: string
+  linkedinCompany: number
+  instagram: number
+  facebook: number
+  linkedinTL: number
+  blog: number
+}
+
+const chartData: ChartData[] = [
   {
     month: "Jan",
     linkedinCompany: 42,
@@ -92,6 +103,14 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 export function ContentByChannel({ className }: { className?: string }) {
+  const { data: chartData } = useQuery({
+    queryKey: ["content-by-channel"],
+    queryFn: async () => {
+      const response = await api.get("/api/v1/analytics/content-by-channel")
+      return response.data?.data as ChartData[]
+    },
+  })
+
   return (
     <Card className={className}>
       <CardHeader>
