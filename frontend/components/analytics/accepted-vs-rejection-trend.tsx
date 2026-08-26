@@ -26,6 +26,15 @@ type chartDataItem = {
   rejected: number
 }
 
+const chartData = [
+  { month: "January", accepted: 186, rejected: 80 },
+  { month: "February", accepted: 305, rejected: 200 },
+  { month: "March", accepted: 237, rejected: 120 },
+  { month: "April", accepted: 73, rejected: 190 },
+  { month: "May", accepted: 209, rejected: 130 },
+  { month: "June", accepted: 214, rejected: 140 },
+]
+
 const chartConfig = {
   accepted: {
     label: "Accepted",
