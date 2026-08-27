@@ -33,6 +33,7 @@ const page = async ({ searchParams }: { searchParams: SearchParams }) => {
         <div className="mb-2 flex items-center justify-between space-y-2">
           <span>
             <Button
+              nativeButton={false}
               variant={"link"}
               size={"sm"}
               render={

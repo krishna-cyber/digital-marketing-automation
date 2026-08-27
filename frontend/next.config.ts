@@ -5,8 +5,7 @@ const nextConfig: NextConfig = {
     "scorpion-follicle-stilt.ngrok-free.dev",
     "https://2lqsmd5t-3000.inc1.devtunnels.ms",
     "bennett-bidding-occupied-refresh.trycloudflare.com",
-    "enhancing-belly-reveal-thinkpad.trycloudflare.com",
-    "wright-hall-cheese-gamma.trycloudflare.com",
+    "appreciate-hourly-challenging-bathroom.trycloudflare.com",
     "https://192.168.1.92",
   ],
 }
