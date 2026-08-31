@@ -1,8 +1,22 @@
 import { NotificationCard } from "@/components/notification-card"
-import { Notification } from "@/types/types"
-import { Bell } from "lucide-react"
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+} from "@/components/ui/pagination"
+import { type Notification } from "@/types/types"
+import {
+  Bell,
+  ChevronFirstIcon,
+  ChevronLastIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "lucide-react"
 
 export const renderList = (items: Notification[]) => {
+  console.log("renderList items", items)
   if (items.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16">
@@ -19,10 +33,11 @@ export const renderList = (items: Notification[]) => {
           key={notification.id}
           id={notification.id}
           title={notification.title}
-          body={notification.body}
+          body={notification.message}
           status={notification.status}
-          createdAt={notification.createdAt}
+          createdAt={notification.created_at}
           actions={notification.actions}
+          // actions={notification.actions}
           //   onMarkAsRead={markAsRead}
           //   onAction={(notifId, actionId) => {
           //     const route = actionRoutes[actionId]

@@ -1,4 +1,5 @@
 "use client"
+import { features } from "@/app/dashboard/blogs/blogs-articles/components/table-feature"
 import { DataTablePagination } from "@/components/data-table-pagination"
 import { DataTableToolbar } from "@/components/data-table-toolbar"
 import EmptyMediaContent from "@/components/examples/empty-media"
@@ -15,20 +16,15 @@ import { cn } from "@/lib/utils"
 import { MediaApiResponse } from "@/types/types"
 import { useQuery } from "@tanstack/react-query"
 import {
-  type SortingState,
-  type VisibilityState,
+  type ColumnVisibilityState,
   flexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getSortedRowModel,
-  useReactTable,
+  type SortingState,
+  useTable,
 } from "@tanstack/react-table"
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs"
 import { useState } from "react"
 import DeleteMediaAlert from "./delete-media-alert"
-import { defaultColumns as columns } from "./media-columns"
+import { columns } from "./media-columns"
 import MediaEditDialog from "./media-edit-dialog"
 
 const searchParams = {
@@ -43,9 +39,10 @@ export function MediaTable({
   setMediaAssetsCount: React.Dispatch<React.SetStateAction<number>>
 }>) {
   const [rowSelection, setRowSelection] = useState({})
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    documentId: false,
-  })
+  const [columnVisibility, setColumnVisibility] =
+    useState<ColumnVisibilityState>({
+      documentId: false,
+    })
   const [sorting, setSorting] = useState<SortingState>([])
 
   const [{ pageIndex, pageSize }, setSearch] = useQueryStates(searchParams)
@@ -66,8 +63,8 @@ export function MediaTable({
   const rows = mediaData?.data ?? []
   const pageCount = mediaData?.meta?.pagination?.pageCount ?? -1
 
-  // eslint-disable-next-line react-hooks/incompatible-library
-  const table = useReactTable({
+  const table = useTable({
+    features,
     data: rows,
     columns,
     state: {
@@ -94,11 +91,11 @@ export function MediaTable({
     onColumnVisibilityChange: setColumnVisibility,
     // NOTE: getPaginationRowModel intentionally removed — client-side
     // pagination on already-server-paginated data was the main bug.
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
+    // getCoreRowModel: getCoreRowModel(),
+    // getFilteredRowModel: getFilteredRowModel(),
+    // getSortedRowModel: getSortedRowModel(),
+    // getFacetedRowModel: getFacetedRowModel(),
+    // getFacetedUniqueValues: getFacetedUniqueValues(),
   })
 
   return (

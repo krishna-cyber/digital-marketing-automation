@@ -238,9 +238,13 @@ const LinkedInPostCard = ({
 
           {/* Image if available */}
           {image && (
-            <div className="mt-4 overflow-hidden rounded-xl">
-              <div className="relative aspect-video w-full sm:aspect-auto sm:h-60">
-                <img src={image} alt="Post image" className="object-cover" />
+            <div className="mt-4 overflow-hidden rounded-xl bg-muted">
+              <div className="relative flex h-60 w-full items-center justify-center sm:h-72">
+                <img
+                  src={image}
+                  alt="Post image"
+                  className="h-full w-full object-contain"
+                />
               </div>
             </div>
           )}
@@ -293,6 +297,7 @@ const LinkedInPostCard = ({
           {/* Action button */}
           <div className="mt-3">
             <Button
+              nativeButton={false}
               className={`hover:bg-opacity-90 w-full gap-2 border border-blue-200 bg-blue-50 text-blue-600 dark:border-blue-700/30 dark:bg-blue-950/30`}
               variant="outline"
               render={

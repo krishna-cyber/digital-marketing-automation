@@ -12,7 +12,7 @@ import timeGridPlugin from "@fullcalendar/react/timegrid"
 import React, { useState } from "react"
 
 //Css of calender
-import { EventAddForm, EventAddFormValues } from "@/components/event-add-form"
+import { EventAddFormValues } from "@/components/event-add-form"
 
 import { api } from "@/lib/api"
 import { ExtendedEventInput } from "@/types/types"
@@ -271,7 +271,7 @@ const Calendar = ({
           */
         />
       )}
-      <EventAddForm
+      {/* <EventAddForm
         allday={typeof eventAddOpen === "boolean" ? false : eventAddOpen.allday}
         start={
           typeof eventAddOpen === "boolean" ? new Date() : eventAddOpen.start
@@ -282,7 +282,7 @@ const Calendar = ({
         }
         setEventAddOpen={setEventAddOpen}
         handleSubmit={onSubmit}
-      />
+      /> */}
       <EventDetailsDrawer
         open={eventDetailsOpen}
         eventId={selectedEventId}

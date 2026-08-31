@@ -12,11 +12,42 @@ export interface NotificationAction {
 export type NotificationStatus = "unread" | "read" | "archived"
 export type Notification = {
   id: string
+  event_id: string
   title: string
-  body: string
-  status: NotificationStatus
-  createdAt: string
+  message: string
+  event_type: string
   actions?: NotificationAction[]
+  status: NotificationStatus
+  created_at: string
+  updated_at?: string
+}
+
+// Notification Center API types
+export type NotificationEventType =
+  | "generated"
+  | "review"
+  | "approved"
+  | "rejected"
+  | "published"
+  | "failed"
+  | "sync_error"
+
+export interface NotificationActionItem {
+  label: string
+  type: "button" | "link"
+  value: string
+}
+
+export interface NotificationsApiResponse {
+  data: Notification[]
+  meta?: {
+    pagination?: {
+      page: number
+      pageSize: number
+      total: number
+      pageCount: number
+    }
+  }
 }
 
 export interface CalendarEvent {

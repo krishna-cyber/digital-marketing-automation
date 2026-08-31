@@ -10,9 +10,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import {
-  Form,
   FormControl,
-  FormField,
   FormItem,
   FormLabel,
   FormMessage,
@@ -23,9 +21,10 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { enUS } from "date-fns/locale"
 import React, { useEffect } from "react"
 import { HexColorPicker } from "react-colorful"
-import { useForm } from "react-hook-form"
+import { Controller, useForm } from "react-hook-form"
 import { z } from "zod"
 import { DateTimePicker } from "./date-picker"
+import { Field, FieldLabel } from "./ui/field"
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { Textarea } from "./ui/textarea"
 
@@ -89,127 +88,123 @@ export function EventAddForm({
           <AlertDialogTitle>Add Event</AlertDialogTitle>
         </AlertDialogHeader>
 
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-2.5"
-          >
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Title</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Standup Meeting" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Daily session"
-                      className="max-h-36"
-                      {...field}
+        <form
+          onSubmit={form.handleSubmit(handleSubmit)}
+          className="space-y-2.5"
+        >
+          <Controller
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <Field>
+                <FieldLabel>Title</FieldLabel>
+                <Input placeholder="Standup Meeting" {...field} />
+                <FormMessage />
+              </Field>
+            )}
+          />
+          <Controller
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <Field>
+                <FieldLabel>Description</FieldLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Daily session"
+                    className="max-h-36"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </Field>
+            )}
+          />
+          <Controller
+            control={form.control}
+            name="start"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel htmlFor="datetime">Start</FormLabel>
+                <FormControl>
+                  <DateTimePicker
+                    locale={enUS}
+                    value={field.value}
+                    onChange={field.onChange}
+                    hourCycle={12}
+                    granularity={allday ? "day" : "minute"}
+                    weekStartsOn={undefined}
+                    showWeekNumber={undefined}
+                    showOutsideDays={undefined}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Controller
+            control={form.control}
+            name="end"
+            render={({ field }) => (
+              <Field className="flex flex-col">
+                <FieldLabel htmlFor="datetime">End</FieldLabel>
+                <FormControl>
+                  <DateTimePicker
+                    locale={enUS}
+                    value={field.value}
+                    onChange={field.onChange}
+                    hourCycle={12}
+                    granularity={allday ? "day" : "minute"}
+                    weekStartsOn={undefined}
+                    showWeekNumber={undefined}
+                    showOutsideDays={undefined}
+                  />
+                </FormControl>
+                <FormMessage />
+              </Field>
+            )}
+          />
+          <Controller
+            control={form.control}
+            name="color"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Color</FormLabel>
+                <FormControl>
+                  <Popover>
+                    <PopoverTrigger
+                      render={
+                        <div className="flex w-full flex-row items-center space-x-2 pl-2">
+                          <div
+                            className={`h-5 w-5 cursor-pointer rounded-full`}
+                            style={{ backgroundColor: field.value }}
+                          ></div>
+                          <Input {...field} />
+                        </div>
+                      }
+                      className="cursor-pointer"
                     />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="start"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel htmlFor="datetime">Start</FormLabel>
-                  <FormControl>
-                    <DateTimePicker
-                      locale={enUS}
-                      value={field.value}
-                      onChange={field.onChange}
-                      hourCycle={12}
-                      granularity={allday ? "day" : "minute"}
-                      weekStartsOn={undefined}
-                      showWeekNumber={undefined}
-                      showOutsideDays={undefined}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="end"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel htmlFor="datetime">End</FormLabel>
-                  <FormControl>
-                    <DateTimePicker
-                      locale={enUS}
-                      value={field.value}
-                      onChange={field.onChange}
-                      hourCycle={12}
-                      granularity={allday ? "day" : "minute"}
-                      weekStartsOn={undefined}
-                      showWeekNumber={undefined}
-                      showOutsideDays={undefined}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="color"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Color</FormLabel>
-                  <FormControl>
-                    <Popover>
-                      <PopoverTrigger
-                        render={
-                          <div className="flex w-full flex-row items-center space-x-2 pl-2">
-                            <div
-                              className={`h-5 w-5 cursor-pointer rounded-full`}
-                              style={{ backgroundColor: field.value }}
-                            ></div>
-                            <Input {...field} />
-                          </div>
-                        }
-                        className="cursor-pointer"
-                      />
 
-                      <PopoverContent className="mx-auto flex items-center justify-center">
-                        <HexColorPicker
-                          className="flex"
-                          color={field.value}
-                          onChange={field.onChange}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <AlertDialogFooter className="pt-2">
-              <AlertDialogCancel onClick={() => setEventAddOpen(false)}>
-                Cancel
-              </AlertDialogCancel>
-              <AlertDialogAction type="submit">Add Event</AlertDialogAction>
-            </AlertDialogFooter>
-          </form>
-        </Form>
+                    <PopoverContent className="mx-auto flex items-center justify-center">
+                      <HexColorPicker
+                        className="flex"
+                        color={field.value}
+                        onChange={field.onChange}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <AlertDialogFooter className="pt-2">
+            <AlertDialogCancel onClick={() => setEventAddOpen(false)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction type="submit">Add Event</AlertDialogAction>
+          </AlertDialogFooter>
+        </form>
       </AlertDialogContent>
     </AlertDialog>
   )

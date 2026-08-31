@@ -1,3 +1,4 @@
+import { features } from "@/app/dashboard/blogs/blogs-articles/components/table-feature"
 import { DataTableColumnHeader } from "@/components/data-table-column-header"
 import { SingleImagePreview } from "@/components/examples/image-preview"
 import { LongText } from "@/components/long-text"
@@ -10,7 +11,7 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { Copy } from "lucide-react"
 import { DataTableRowActions } from "./social-data-table-row-actions"
 
-const columnHelper = createColumnHelper<SocialPost>()
+const columnHelper = createColumnHelper<typeof features, SocialPost>()
 
 export const BadgeColors = ({ status }: { status: CalendarEventStatus }) => {
   switch (status) {
@@ -73,7 +74,7 @@ export const BadgeColors = ({ status }: { status: CalendarEventStatus }) => {
   }
 }
 
-export const defaultColumns = [
+export const columns = columnHelper.columns([
   columnHelper.display({
     id: "id",
     header: () => <span>Id</span>,
@@ -252,4 +253,4 @@ export const defaultColumns = [
     header: () => <span>Actions</span>,
     cell: (props) => <DataTableRowActions row={props.row} />,
   }),
-]
+])

@@ -11,14 +11,16 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { Copy, ExternalLink } from "lucide-react"
 import Link from "next/link"
 import BlogTableRowActions from "./blogs-table-row-actions"
+import { features } from "./table-feature"
 
-const columnHelper = createColumnHelper<BlogPost>()
+const columnHelper = createColumnHelper<typeof features, BlogPost>()
 
-export const defaultColumns = [
+export const columns = columnHelper.columns([
   columnHelper.accessor("title", {
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Title" />
     ),
+
     cell: (props) => (
       <Link
         href={`/dashboard/blogs/edit?contentType=blogs&documentId=${props.row.original.documentId}`}
@@ -51,7 +53,8 @@ export const defaultColumns = [
         )
       }
     },
-    enableSorting: false,
+
+    sortFn: "alphanumeric",
   }),
   columnHelper.accessor("post_status", {
     header: ({ column }) => (
@@ -66,7 +69,7 @@ export const defaultColumns = [
         </Badge>
       )
     },
-    enableSorting: false,
+    enableSorting: true,
   }),
   columnHelper.accessor("media_type", {
     header: ({ column }) => (
@@ -107,6 +110,7 @@ export const defaultColumns = [
       const value = props.getValue()
       return value ? <p>{new Date(value).toLocaleDateString()}</p> : <p>-</p>
     },
+    enableSorting: true,
   }),
   columnHelper.accessor("blog_post_url", {
     header: ({ column }) => (
@@ -156,4 +160,4 @@ export const defaultColumns = [
     header: () => <span>Actions</span>,
     cell: (props) => <BlogTableRowActions row={props.row} />,
   }),
-]
+])

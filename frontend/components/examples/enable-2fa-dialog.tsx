@@ -8,14 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form"
+
 import {
   InputOTP,
   InputOTPGroup,
@@ -128,45 +121,46 @@ export function Enable2faDialog({
             <QRCode value={totpURI} />
           </div>
           <Separator />
-          <Form {...verifyOtpForm}>
-            <form
-              id="verify-2fa-otp"
-              onSubmit={verifyOtpForm.handleSubmit(verifyOtpSubmit)}
-            >
-              <FormField
-                control={verifyOtpForm.control}
-                name="otp"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="sr-only">One-Time Password</FormLabel>
-                    <FormControl>
-                      <InputOTP
-                        maxLength={6}
-                        {...field}
-                        containerClassName='justify-between sm:[&>[data-slot="input-otp-group"]>div]:w-12'
-                      >
-                        <InputOTPGroup>
-                          <InputOTPSlot index={0} />
-                          <InputOTPSlot index={1} />
-                        </InputOTPGroup>
-                        <InputOTPSeparator />
-                        <InputOTPGroup>
-                          <InputOTPSlot index={2} />
-                          <InputOTPSlot index={3} />
-                        </InputOTPGroup>
-                        <InputOTPSeparator />
-                        <InputOTPGroup>
-                          <InputOTPSlot index={4} />
-                          <InputOTPSlot index={5} />
-                        </InputOTPGroup>
-                      </InputOTP>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
+
+          <form
+            id="verify-2fa-otp"
+            onSubmit={verifyOtpForm.handleSubmit(verifyOtpSubmit)}
+          >
+            <Controller
+              control={verifyOtpForm.control}
+              name="otp"
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel className="sr-only">One-Time Password</FieldLabel>
+
+                  <InputOTP
+                    aria-invalid={fieldState.invalid}
+                    maxLength={6}
+                    {...field}
+                    containerClassName='justify-between sm:[&>[data-slot="input-otp-group"]>div]:w-12'
+                  >
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                    </InputOTPGroup>
+                    <InputOTPSeparator />
+                    <InputOTPGroup>
+                      <InputOTPSlot index={2} />
+                      <InputOTPSlot index={3} />
+                    </InputOTPGroup>
+                    <InputOTPSeparator />
+                    <InputOTPGroup>
+                      <InputOTPSlot index={4} />
+                      <InputOTPSlot index={5} />
+                    </InputOTPGroup>
+                  </InputOTP>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </form>
 
           <DialogFooter>
             <DialogClose render={<Button variant="outline">Cancel</Button>} />
