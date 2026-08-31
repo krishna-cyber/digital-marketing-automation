@@ -2,18 +2,13 @@ import {
   Bell,
   BookOpen,
   Calendar,
-  ChartColumnStacked,
-  ClipboardClock,
   FileText,
   HelpCircle,
   LayoutDashboard,
-  MessageSquareText,
   Newspaper,
   Palette,
   PenSquare,
-  Rss,
   Settings,
-  Sparkles,
   User,
 } from "lucide-react"
 
@@ -32,17 +27,17 @@ export const sidebarData = {
           url: "/dashboard/calendar",
           icon: Calendar,
         },
-        {
-          title: "Generate",
-          url: "/dashboard/generate",
-          icon: Sparkles,
-        },
-        {
-          title: "Comments",
-          url: "/dashboard/comments",
-          badge: "3",
-          icon: MessageSquareText,
-        },
+        // {
+        //   title: "Generate",
+        //   url: "/dashboard/generate",
+        //   icon: Sparkles,
+        // },
+        // {
+        //   title: "Comments",
+        //   url: "/dashboard/comments",
+        //   badge: "3",
+        //   icon: MessageSquareText,
+        // },
         {
           title: "Content",
           url: "/dashboard/content",
@@ -92,21 +87,22 @@ export const sidebarData = {
               url: "/dashboard/settings/brand-styles",
               icon: Palette,
             },
-            {
-              title: "Scheduling",
-              url: "/dashboard/settings/scheduling-rules",
-              icon: ClipboardClock,
-            },
-            {
-              title: "Channels",
-              url: "/dashboard/settings/channel-connections",
-              icon: Rss,
-            },
-            {
-              title: "Pillar Management",
-              url: "/dashboard/settings/pillar-management",
-              icon: ChartColumnStacked,
-            },
+
+            // {
+            //   title: "Channels",
+            //   url: "/dashboard/settings/channel-connections",
+            //   icon: Rss,
+            // },
+            // {
+            //   title: "Scheduling",
+            //   url: "/dashboard/settings/scheduling-rules",
+            //   icon: ClipboardClock,
+            // },
+            // {
+            //   title: "Pillar Management",
+            //   url: "/dashboard/settings/pillar-management",
+            //   icon: ChartColumnStacked,
+            // },
           ],
         },
         {
