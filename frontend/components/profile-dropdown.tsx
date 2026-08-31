@@ -48,20 +48,20 @@ export function ProfileDropdown({
             <DropdownMenuSeparator />
           </DropdownMenuGroup>
           <DropdownMenuGroup>
-            <DropdownMenuItem render={<Link href="/settings" />}>
+            {/* <DropdownMenuItem render={<Link href="/settings" />}>
               <User /> Profile
-            </DropdownMenuItem>
-            <DropdownMenuItem render={<Link href="/settings" />}>
+            </DropdownMenuItem> */}
+            {/* <DropdownMenuItem render={<Link href="/settings" />}>
               <CreditCard /> Billing
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
             <DropdownMenuItem
               render={<Link href="/dashboard/settings/brand-styles" />}
             >
               <Settings /> Settings
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            {/* <DropdownMenuItem>
               <Plus /> New Team
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem
