@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Session } from "@/lib/auth"
 import { authClient } from "@/lib/auth-client"
-import { CreditCard, LogOut, Plus, Settings, User } from "lucide-react"
+import { LogOut, Settings } from "lucide-react"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 
