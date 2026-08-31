@@ -22,26 +22,26 @@ const sidebarNavItems = [
     href: "/dashboard/settings/notifications",
     icon: <Bell size={18} />,
   },
-  {
-    title: "Branding",
-    href: "/dashboard/settings/brand-styles",
-    icon: <Palette size={18} />,
-  },
-  {
-    title: "Scheduling",
-    href: "/dashboard/settings/scheduling-rules",
-    icon: <ClipboardClock size={18} />,
-  },
-  {
-    title: "Channels",
-    href: "/dashboard/settings/channel-connections",
-    icon: <Rss size={18} />,
-  },
-  {
-    title: "Pillar Management",
-    href: "/dashboard/settings/pillar-management",
-    icon: <ChartColumnStacked size={18} />,
-  },
+  // {
+  //   title: "Branding",
+  //   href: "/dashboard/settings/brand-styles",
+  //   icon: <Palette size={18} />,
+  // },
+  // {
+  //   title: "Scheduling",
+  //   href: "/dashboard/settings/scheduling-rules",
+  //   icon: <ClipboardClock size={18} />,
+  // },
+  // {
+  //   title: "Channels",
+  //   href: "/dashboard/settings/channel-connections",
+  //   icon: <Rss size={18} />,
+  // },
+  // {
+  //   title: "Pillar Management",
+  //   href: "/dashboard/settings/pillar-management",
+  //   icon: <ChartColumnStacked size={18} />,
+  // },
 ]
 
 const layout = ({ children }: { children: React.ReactNode }) => {
