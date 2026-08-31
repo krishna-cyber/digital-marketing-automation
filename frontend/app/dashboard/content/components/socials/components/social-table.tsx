@@ -41,9 +41,9 @@ export const searchParams = {
 }
 
 export function SocialsTable({
-  setSocialsCount,
+  setSocialsCount = null,
 }: Readonly<{
-  setSocialsCount: React.Dispatch<React.SetStateAction<number>>
+  setSocialsCount: React.Dispatch<React.SetStateAction<number>> | null
 }>) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] =
@@ -65,7 +65,9 @@ export function SocialsTable({
         // `/api/linkedin-posts/page?pagination[page]=${pageIndex + 1}&pagination[pageSize]=${pageSize}`
         `api/socials?populate=*`
       )
-      setSocialsCount(response.data.meta.pagination.total ?? 0)
+      if (setSocialsCount) {
+        setSocialsCount(response.data.meta.pagination.total ?? 0)
+      }
       return response.data as SocialPostsResponse
     },
     placeholderData: (previousData) => previousData,
