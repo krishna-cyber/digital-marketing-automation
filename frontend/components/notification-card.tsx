@@ -1,10 +1,12 @@
 "use client"
+import { api } from "@/lib/api"
 import { cn } from "@/lib/utils"
 import {
   ActionType,
   NotificationAction,
   NotificationStatus,
 } from "@/types/types"
+import { useQueryClient } from "@tanstack/react-query"
 import {
   Check,
   CircleAlert,
@@ -13,6 +15,7 @@ import {
   LoaderCircle,
 } from "lucide-react"
 import { FC } from "react"
+import { toast } from "sonner"
 
 export interface NotificationCardProps {
   id: string
@@ -21,7 +24,7 @@ export interface NotificationCardProps {
   status?: NotificationStatus
   createdAt?: string | Date
   actions?: NotificationAction[]
-  onMarkAsRead?: (id: string) => void
+  markAsRead?: (id: string) => void
   onAction?: (
     notificationId: string,
     actionId: string,
@@ -73,11 +76,31 @@ export const NotificationCard: FC<NotificationCardProps> = ({
   status = "unread",
   createdAt,
   actions = [],
-  onMarkAsRead,
+
   onAction,
   loadingActionId,
   className,
 }) => {
+  const queryClient = useQueryClient()
+  const markAsRead = async (notificationId: string) => {
+    try {
+      await api.put(`/api/v1/notifications/${notificationId}/read`)
+      // Refetch the unread count after marking a notification as read
+      toast.success("Notification marked as read")
+
+      //Refresh the unread count and notifications list
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["unreadCount"] }),
+        queryClient.invalidateQueries({ queryKey: ["notifications"] }),
+      ])
+    } catch (error) {
+      console.error(
+        `Error marking notification ${notificationId} as read:`,
+        error
+      )
+    }
+  }
+
   const isUnread = status === "unread"
 
   return (
@@ -119,10 +142,10 @@ export const NotificationCard: FC<NotificationCardProps> = ({
           </div>
 
           {/* Mark as read button */}
-          {isUnread && onMarkAsRead && (
+          {isUnread && markAsRead && (
             <button
               type="button"
-              onClick={() => onMarkAsRead(id)}
+              onClick={() => markAsRead(id)}
               className={cn(
                 "rounded-lg p-1.5 transition-colors",
                 "text-muted-foreground hover:bg-accent hover:text-foreground"

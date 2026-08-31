@@ -1,3 +1,4 @@
+import { features } from "@/app/dashboard/blogs/blogs-articles/components/table-feature"
 import { DataTableColumnHeader } from "@/components/data-table-column-header"
 import { LongText } from "@/components/long-text"
 import { Badge } from "@/components/ui/badge"
@@ -9,9 +10,12 @@ import { Copy } from "lucide-react"
 import { BadgeColors } from "../../socials/components/social-columns"
 import { DataTableRowActions } from "./leadership-row-actions"
 
-const columnHelper = createColumnHelper<ThoughtLeadershipPost>()
+const columnHelper = createColumnHelper<
+  typeof features,
+  ThoughtLeadershipPost
+>()
 
-export const defaultColumns = [
+export const columns = columnHelper.columns([
   columnHelper.display({
     id: "id",
     header: () => <span>Id</span>,
@@ -110,4 +114,4 @@ export const defaultColumns = [
     header: () => <span>Actions</span>,
     cell: (props) => <DataTableRowActions row={props.row} />,
   }),
-]
+])

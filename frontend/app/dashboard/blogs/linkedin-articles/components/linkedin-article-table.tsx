@@ -21,21 +21,17 @@ import { cn } from "@/lib/utils"
 import { LinkedInArticlesResponse } from "@/types/types"
 import { useQuery } from "@tanstack/react-query"
 import {
+  ColumnVisibilityState,
   flexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getSortedRowModel,
   SortingState,
-  useReactTable,
-  VisibilityState,
+  useTable,
 } from "@tanstack/react-table"
 import { Newspaper } from "lucide-react"
 import { parseAsInteger, parseAsString, useQueryStates } from "nuqs"
 import React, { useState } from "react"
+import { features } from "../../blogs-articles/components/table-feature"
 import DeleteBlogArticleAlert from "./delete-linkedin-article-alert"
-import { defaultColumns as columns } from "./linkedin-articles-columns"
+import { columns } from "./linkedin-articles-columns"
 
 const searchParams = {
   searchQuery: parseAsString.withDefault(""),
@@ -48,12 +44,13 @@ const LinkedInArticlesTable = ({
   setLinkedinArticlesCount: (count: number) => void
 }) => {
   const [rowSelection, setRowSelection] = useState({})
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
-    documentId: false,
-    event_id: false,
-    updatedAt: false,
-    publishedAt: false,
-  })
+  const [columnVisibility, setColumnVisibility] =
+    useState<ColumnVisibilityState>({
+      documentId: false,
+      event_id: false,
+      updatedAt: false,
+      publishedAt: false,
+    })
   const [sorting, setSorting] = useState<SortingState>([])
 
   const [{ pageIndex, pageSize }, setSearch] = useQueryStates(searchParams)
@@ -74,8 +71,9 @@ const LinkedInArticlesTable = ({
 
   const rows = blogsAndArticlesData?.data ?? []
   setLinkedinArticlesCount(blogsAndArticlesData?.meta?.pagination?.total ?? 0)
-  // eslint-disable-next-line react-hooks/incompatible-library
-  const table = useReactTable({
+
+  const table = useTable({
+    features,
     data: rows,
     columns,
     state: {
@@ -102,11 +100,11 @@ const LinkedInArticlesTable = ({
     onColumnVisibilityChange: setColumnVisibility,
     // NOTE: getPaginationRowModel intentionally removed — client-side
     // pagination on already-server-paginated data was the main bug.
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
+    // getCoreRowModel: getCoreRowModel(),
+    // getFilteredRowModel: getFilteredRowModel(),
+    // getSortedRowModel: getSortedRowModel(),
+    // getFacetedRowModel: getFacetedRowModel(),
+    // getFacetedUniqueValues: getFacetedUniqueValues(),
   })
   return (
     <div

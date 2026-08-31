@@ -1,3 +1,4 @@
+import { features } from "@/app/dashboard/blogs/blogs-articles/components/table-feature"
 import { Button } from "@/components/ui/button"
 import {
   Select,
@@ -16,53 +17,51 @@ import {
   ChevronsRight,
 } from "lucide-react"
 
-type DataTablePaginationProps<TData> = {
-  table: Table<TData>
+type DataTablePaginationProps<TData extends object> = {
+  table: Table<typeof features, TData>
   className?: string
 }
 export function getPageNumbers(currentPage: number, totalPages: number) {
   const maxVisiblePages = 5 // Maximum number of page buttons to show
-  const rangeWithDots = []
+  const rangeWithDots: Array<number | "..."> = []
 
-  if (totalPages <= maxVisiblePages) {
-    // If total pages is 5 or less, show all pages
-    for (let i = 1; i <= totalPages; i++) {
+  const addRange = (start: number, end: number) => {
+    for (let i = start; i <= end; i++) {
       rangeWithDots.push(i)
     }
-  } else {
-    // Always show first page
-    rangeWithDots.push(1)
-
-    if (currentPage <= 3) {
-      // Near the beginning: [1] [2] [3] [4] ... [10]
-      for (let i = 2; i <= 4; i++) {
-        rangeWithDots.push(i)
-      }
-      rangeWithDots.push("...", totalPages)
-    } else if (currentPage >= totalPages - 2) {
-      // Near the end: [1] ... [7] [8] [9] [10]
-      rangeWithDots.push("...")
-      for (let i = totalPages - 3; i <= totalPages; i++) {
-        rangeWithDots.push(i)
-      }
-    } else {
-      // In the middle: [1] ... [4] [5] [6] ... [10]
-      rangeWithDots.push("...")
-      for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-        rangeWithDots.push(i)
-      }
-      rangeWithDots.push("...", totalPages)
-    }
   }
+
+  if (totalPages <= maxVisiblePages) {
+    addRange(1, totalPages)
+    return rangeWithDots
+  }
+
+  rangeWithDots.push(1)
+
+  if (currentPage <= 3) {
+    addRange(2, 4)
+    rangeWithDots.push("...", totalPages)
+    return rangeWithDots
+  }
+
+  if (currentPage >= totalPages - 2) {
+    rangeWithDots.push("...")
+    addRange(totalPages - 3, totalPages)
+    return rangeWithDots
+  }
+
+  rangeWithDots.push("...")
+  addRange(currentPage - 1, currentPage + 1)
+  rangeWithDots.push("...", totalPages)
 
   return rangeWithDots
 }
 
-export function DataTablePagination<TData>({
+export function DataTablePagination<TData extends object>({
   table,
   className,
 }: Readonly<DataTablePaginationProps<TData>>) {
-  const currentPage = table.getState().pagination.pageIndex + 1
+  const currentPage = table.store.state.pagination.pageIndex + 1
   const totalPages = table.getPageCount()
   const pageNumbers = getPageNumbers(currentPage, totalPages)
   return (
@@ -80,13 +79,15 @@ export function DataTablePagination<TData>({
         </div>
         <div className="flex items-center gap-2 @max-2xl/content:flex-row-reverse">
           <Select
-            value={`${table.getState().pagination.pageSize}`}
+            value={`${table.store.state.pagination.pageSize}`}
             onValueChange={(value) => {
               table.setPageSize(Number(value))
             }}
           >
             <SelectTrigger className="h-8 w-17.5">
-              <SelectValue placeholder={table.getState().pagination.pageSize} />
+              <SelectValue
+                placeholder={table.store.state.pagination.pageSize}
+              />
             </SelectTrigger>
             <SelectContent side="top">
               {[10, 20, 30, 40, 50].map((pageSize) => (
