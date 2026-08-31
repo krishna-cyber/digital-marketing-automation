@@ -55,7 +55,7 @@ export function ProfileDropdown({
               <CreditCard /> Billing
             </DropdownMenuItem>
             <DropdownMenuItem
-              render={<Link href="/dashboard/settings/branding" />}
+              render={<Link href="/dashboard/settings/brand-styles" />}
             >
               <Settings /> Settings
             </DropdownMenuItem>
