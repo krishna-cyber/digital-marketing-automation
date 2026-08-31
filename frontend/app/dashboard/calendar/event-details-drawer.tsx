@@ -399,7 +399,10 @@ const EventDetailsDrawer = ({
             <Button disabled={isLoading} type="submit" form="event-edit-form">
               Submit
             </Button>
-            <DialogClose render={<Button variant="outline" />}>
+            <DialogClose
+              nativeButton={false}
+              render={<Button variant="outline" />}
+            >
               Close
             </DialogClose>
           </DialogFooter>

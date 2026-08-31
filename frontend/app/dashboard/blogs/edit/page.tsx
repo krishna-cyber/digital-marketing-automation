@@ -29,6 +29,7 @@ const page = async ({ searchParams }: { searchParams: SearchParams }) => {
             <Button
               variant={"link"}
               size={"sm"}
+              nativeButton={false}
               render={
                 <Link href={"/dashboard/blogs"}>
                   <ArrowLeft />

@@ -38,7 +38,7 @@ export const BadgeColors = ({ status }: { status: CalendarEventStatus }) => {
       }
     case "approved":
       return {
-        css: "bg-emerald-200 text-emerald-700 hover:bg-emerald-300",
+        css: "bg-emerald-200 text-emerald-700 hover:bg-emerald-300 ",
         icon: "👍",
       }
     case "scheduled":
