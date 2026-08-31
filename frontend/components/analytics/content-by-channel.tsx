@@ -1,5 +1,4 @@
 "use client"
-import { Badge } from "@/components/reui/badge"
 import {
   Card,
   CardContent,
@@ -15,7 +14,6 @@ import {
 } from "@/components/ui/chart"
 import { api } from "@/lib/api"
 import { useQuery } from "@tanstack/react-query"
-import { TrendingDownIcon } from "lucide-react"
 import { CSSProperties } from "react"
 import { Bar, BarChart, XAxis } from "recharts"
 
@@ -28,56 +26,56 @@ type ChartData = {
   blog: number
 }
 
-const chartData: ChartData[] = [
-  {
-    month: "Jan",
-    linkedinCompany: 42,
-    instagram: 68,
-    facebook: 51,
-    linkedinTL: 35,
-    blog: 24,
-  },
-  {
-    month: "Feb",
-    linkedinCompany: 56,
-    instagram: 82,
-    facebook: 63,
-    linkedinTL: 41,
-    blog: 31,
-  },
-  {
-    month: "Mar",
-    linkedinCompany: 48,
-    instagram: 74,
-    facebook: 58,
-    linkedinTL: 39,
-    blog: 28,
-  },
-  {
-    month: "Apr",
-    linkedinCompany: 71,
-    instagram: 91,
-    facebook: 67,
-    linkedinTL: 52,
-    blog: 36,
-  },
-  {
-    month: "May",
-    linkedinCompany: 63,
-    instagram: 86,
-    facebook: 72,
-    linkedinTL: 47,
-    blog: 42,
-  },
-  {
-    month: "Jun",
-    linkedinCompany: 78,
-    instagram: 104,
-    facebook: 81,
-    linkedinTL: 59,
-    blog: 48,
-  },
-]
+// const chartData: ChartData[] = [
+//   {
+//     month: "Jan",
+//     linkedinCompany: 42,
+//     instagram: 68,
+//     facebook: 51,
+//     linkedinTL: 35,
+//     blog: 24,
+//   },
+//   {
+//     month: "Feb",
+//     linkedinCompany: 56,
+//     instagram: 82,
+//     facebook: 63,
+//     linkedinTL: 41,
+//     blog: 31,
+//   },
+//   {
+//     month: "Mar",
+//     linkedinCompany: 48,
+//     instagram: 74,
+//     facebook: 58,
+//     linkedinTL: 39,
+//     blog: 28,
+//   },
+//   {
+//     month: "Apr",
+//     linkedinCompany: 71,
+//     instagram: 91,
+//     facebook: 67,
+//     linkedinTL: 52,
+//     blog: 36,
+//   },
+//   {
+//     month: "May",
+//     linkedinCompany: 63,
+//     instagram: 86,
+//     facebook: 72,
+//     linkedinTL: 47,
+//     blog: 42,
+//   },
+//   {
+//     month: "Jun",
+//     linkedinCompany: 78,
+//     instagram: 104,
+//     facebook: 81,
+//     linkedinTL: 59,
+//     blog: 48,
+//   },
+// ]
 
 const chartConfig = {
   linkedinCompany: {
@@ -115,10 +113,10 @@ export function ContentByChannel({ className }: { className?: string }) {
       <CardHeader>
         <CardTitle>
           Content by Channel
-          <Badge variant="destructive-light" className="ml-2">
+          {/* <Badge variant="destructive-light" className="ml-2">
             <TrendingDownIcon aria-hidden="true" />
             -15%
-          </Badge>
+          </Badge> */}
         </CardTitle>
         <CardDescription>Monthly content publishing by channel</CardDescription>
       </CardHeader>
@@ -129,7 +127,6 @@ export function ContentByChannel({ className }: { className?: string }) {
           config={chartConfig}
         >
           <BarChart
-            accessibilityLayer
             data={chartData}
             margin={{
               top: 20,

@@ -1,6 +1,6 @@
 "use client"
 
-import { TrendingUp, TrendingUpIcon } from "lucide-react"
+import { TrendingUp } from "lucide-react"
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts"
 
 import {
@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/chart"
 import { api } from "@/lib/api"
 import { useQuery } from "@tanstack/react-query"
-import { Badge } from "../ui/badge"
 import {
   Card,
   CardContent,
@@ -26,14 +25,16 @@ type chartDataItem = {
   rejected: number
 }
 
-const chartData = [
-  { month: "January", accepted: 186, rejected: 80 },
-  { month: "February", accepted: 305, rejected: 200 },
-  { month: "March", accepted: 237, rejected: 120 },
-  { month: "April", accepted: 73, rejected: 190 },
-  { month: "May", accepted: 209, rejected: 130 },
-  { month: "June", accepted: 214, rejected: 140 },
-]
+//commented for data type preservation
+
+// const chartData = [
+//   { month: "January", accepted: 186, rejected: 80 },
+//   { month: "February", accepted: 305, rejected: 200 },
+//   { month: "March", accepted: 237, rejected: 120 },
+//   { month: "April", accepted: 73, rejected: 190 },
+//   { month: "May", accepted: 209, rejected: 130 },
+//   { month: "June", accepted: 214, rejected: 140 },
+// ]
 
 const chartConfig = {
   accepted: {
@@ -60,10 +61,10 @@ export function AcceptedVsRejectedTrend({ className }: { className?: string }) {
       <CardHeader>
         <CardTitle>
           Approval vs Rejection Trend
-          <Badge variant="success-light" className="ml-2">
+          {/* <Badge variant="success-light" className="ml-2">
             <TrendingUpIcon aria-hidden="true" />
             +5.2%
-          </Badge>
+          </Badge> */}
         </CardTitle>
         <CardDescription>
           Human review outcome across automation runs.
