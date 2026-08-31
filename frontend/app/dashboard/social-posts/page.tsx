@@ -1,7 +1,5 @@
 import { Main } from "@/components/layout/main"
-import React from "react"
-import { PostsProvider } from "../content/components/leadership/components/leadership-provider"
-import { PostsTable } from "../content/components/leadership/components/leadership-table"
+
 import { SocialsTable } from "../content/components/socials/components/social-table"
 import { SocialsProvider } from "../content/components/socials/components/socials-provider"
 
