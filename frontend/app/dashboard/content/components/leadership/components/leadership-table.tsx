@@ -41,9 +41,9 @@ export const searchParams = {
 }
 
 export function PostsTable({
-  setLinkedinPostsCount,
+  setLinkedinPostsCount = null,
 }: Readonly<{
-  setLinkedinPostsCount: React.Dispatch<React.SetStateAction<number>>
+  setLinkedinPostsCount: React.Dispatch<React.SetStateAction<number>> | null
 }>) {
   const [rowSelection, setRowSelection] = useState({})
   const [columnVisibility, setColumnVisibility] =
@@ -60,7 +60,9 @@ export function PostsTable({
       const response = await strapiRequest.get(
         `api/thought-leaderships?populate=*`
       )
-      setLinkedinPostsCount(response.data.meta.pagination.total ?? 0)
+      if (setLinkedinPostsCount) {
+        setLinkedinPostsCount(response.data.meta.pagination.total ?? 0)
+      }
       return response.data as ThoughtLeadershipPostsResponse
     },
     placeholderData: (previousData) => previousData,

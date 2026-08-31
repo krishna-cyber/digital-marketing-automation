@@ -1,27 +1,18 @@
-import { AcceptedVsRejectedTrend } from "@/components/analytics/accepted-vs-rejection-trend";
-import AutomationHealthStatus from "@/components/analytics/automation-health";
-import { ContentByChannel } from "@/components/analytics/content-by-channel";
-import { ContentGeneratedPie } from "@/components/analytics/content-generated-pie";
-import { ReviewQueueItems } from "@/components/analytics/review-queue-items";
-import { Main } from "@/components/layout/main";
-import ScheduledToday from "@/components/scheduled-today";
-import StatCard, { StatCardProps } from "@/components/stat-card";
+import { AcceptedVsRejectedTrend } from "@/components/analytics/accepted-vs-rejection-trend"
+import AutomationHealthStatus from "@/components/analytics/automation-health"
+import { ContentByChannel } from "@/components/analytics/content-by-channel"
+import { ContentGeneratedPie } from "@/components/analytics/content-generated-pie"
+import { Main } from "@/components/layout/main"
+import StatCard, { StatCardProps } from "@/components/stat-card"
+import { api } from "@/lib/api"
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import { api } from "@/lib/api";
-import {
-    CalendarClock,
-    CheckCircle2,
-    Clock,
-    Sparkles,
-    Workflow,
-    XCircle,
-} from "lucide-react";
+  CalendarClock,
+  CheckCircle2,
+  Clock,
+  Sparkles,
+  Workflow,
+  XCircle,
+} from "lucide-react"
 
 const statCardIcons = {
   Generated: <Sparkles color="violet" />,
@@ -78,8 +69,8 @@ const page = async () => {
               <CardDescription>
                 A quick overview of your scheduled posts for the week.
               </CardDescription> */}
-            {/* </CardHeader> */}
-            {/* <CardContent className="ps-2"><Overview /></CardContent> */}
+          {/* </CardHeader> */}
+          {/* <CardContent className="ps-2"><Overview /></CardContent> */}
           {/* </Card> */}
           {/* Scheduled today card */}
           {/* <Card className="col-span-1 lg:col-span-4">
