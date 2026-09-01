@@ -7,6 +7,7 @@ CREATE TABLE "user" (
     "image" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "twoFactorEnabled" BOOLEAN DEFAULT false,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
@@ -28,6 +29,7 @@ CREATE TABLE "session" (
 -- CreateTable
 CREATE TABLE "account" (
     "id" TEXT NOT NULL,
+    "issuer" TEXT NOT NULL,
     "accountId" TEXT NOT NULL,
     "providerId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -56,6 +58,19 @@ CREATE TABLE "verification" (
     CONSTRAINT "verification_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "twoFactor" (
+    "id" TEXT NOT NULL,
+    "secret" TEXT NOT NULL,
+    "backupCodes" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "verified" BOOLEAN DEFAULT true,
+    "failedVerificationCount" INTEGER DEFAULT 0,
+    "lockedUntil" TIMESTAMP(3),
+
+    CONSTRAINT "twoFactor_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
@@ -69,10 +84,22 @@ CREATE UNIQUE INDEX "session_token_key" ON "session"("token");
 CREATE INDEX "account_userId_idx" ON "account"("userId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "account_issuer_accountId_uidx" ON "account"("issuer", "accountId");
+
+-- CreateIndex
 CREATE INDEX "verification_identifier_idx" ON "verification"("identifier");
+
+-- CreateIndex
+CREATE INDEX "twoFactor_secret_idx" ON "twoFactor"("secret");
+
+-- CreateIndex
+CREATE INDEX "twoFactor_userId_idx" ON "twoFactor"("userId");
 
 -- AddForeignKey
 ALTER TABLE "session" ADD CONSTRAINT "session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "account" ADD CONSTRAINT "account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "twoFactor" ADD CONSTRAINT "twoFactor_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;

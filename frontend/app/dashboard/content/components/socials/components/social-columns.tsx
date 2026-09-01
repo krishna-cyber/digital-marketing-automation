@@ -21,11 +21,6 @@ export const BadgeColors = ({ status }: { status: CalendarEventStatus }) => {
         icon: "📝",
       }
 
-    case "generating":
-      return {
-        css: "bg-purple-200 text-purple-700 hover:bg-purple-300",
-        icon: "🔄",
-      }
     case "ready":
       return {
         css: "bg-blue-200 text-blue-700 hover:bg-blue-300",
@@ -46,11 +41,7 @@ export const BadgeColors = ({ status }: { status: CalendarEventStatus }) => {
         css: "bg-indigo-200 text-indigo-700 hover:bg-indigo-300",
         icon: "📅",
       }
-    case "publishing":
-      return {
-        css: "bg-orange-200 text-orange-700 hover:bg-orange-300 animate-pulse",
-        icon: "📤",
-      }
+
     case "published":
       return {
         css: "bg-green-200 text-green-700 hover:bg-green-300",
