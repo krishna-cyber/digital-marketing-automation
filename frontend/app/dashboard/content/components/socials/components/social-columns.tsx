@@ -14,52 +14,61 @@ import { DataTableRowActions } from "./social-data-table-row-actions"
 const columnHelper = createColumnHelper<typeof features, SocialPost>()
 
 export const BadgeColors = ({ status }: { status: CalendarEventStatus }) => {
+  const base =
+    "inline-flex items-center rounded px-2 py-3 text-md font-medium ring-1 ring-inset"
+
   switch (status) {
     case "draft":
       return {
-        css: "bg-gray-200 text-gray-700 hover:bg-gray-300",
+        css: `${base} bg-gray-100 text-gray-800 ring-gray-300`,
         icon: "📝",
       }
 
     case "ready":
       return {
-        css: "bg-blue-200 text-blue-700 hover:bg-blue-300",
+        css: `${base} bg-green-50 text-green-700 ring-green-600/20`,
         icon: "✅",
       }
+
     case "review":
       return {
-        css: "bg-yellow-200 text-yellow-700 hover:bg-yellow-300",
+        css: `${base} bg-yellow-50 text-yellow-800 ring-yellow-600/20`,
         icon: "👀",
       }
+
     case "approved":
       return {
-        css: "bg-emerald-200 text-emerald-700 hover:bg-emerald-300 ",
+        css: `${base} bg-green-50 text-green-700 ring-green-600/20`,
         icon: "👍",
       }
+
     case "scheduled":
       return {
-        css: "bg-indigo-200 text-indigo-700 hover:bg-indigo-300",
+        css: `${base} bg-blue-50 text-blue-700 ring-blue-700/10`,
         icon: "📅",
       }
 
     case "published":
       return {
-        css: "bg-green-200 text-green-700 hover:bg-green-300",
+        css: `${base} bg-green-50 text-green-700 ring-green-600/20`,
         icon: "📢",
       }
+
     case "failed":
       return {
-        css: "bg-red-200 text-red-700 hover:bg-red-300",
+        css: `${base} bg-red-50 text-red-700 ring-red-600/10`,
         icon: "❌",
       }
+
     case "rejected":
       return {
-        css: "bg-rose-200 text-rose-700 hover:bg-rose-300",
+        css: `${base} bg-red-50 text-red-700 ring-red-600/10`,
         icon: "🚫",
       }
+
     default:
       return {
-        css: "bg-gray-100 text-gray-500 hover:bg-gray-200",
+        css: `${base} bg-gray-100 text-gray-700 ring-gray-500/10`,
         icon: "",
       }
   }

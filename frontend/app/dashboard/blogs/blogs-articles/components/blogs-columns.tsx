@@ -64,7 +64,7 @@ export const columns = columnHelper.columns([
       const status = props.getValue()
       const { css, icon } = BadgeColors({ status })
       return (
-        <Badge className={css} size={"xl"} variant={"outline"}>
+        <Badge className={css}>
           {icon} {status}
         </Badge>
       )
