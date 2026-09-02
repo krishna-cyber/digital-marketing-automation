@@ -1,17 +1,20 @@
-import { prismaAdapter } from "better-auth/adapters/prisma"
 import { betterAuth } from "better-auth/minimal"
 import { nextCookies } from "better-auth/next-js"
 import { twoFactor } from "better-auth/plugins/two-factor"
-import prisma from "./prisma"
+
+import { mongodbAdapter } from "better-auth/adapters/mongodb"
+import { MongoClient } from "mongodb"
+
+const client = new MongoClient("mongodb://localhost:27017/betterauth")
+const db = client.db()
 
 export const auth = betterAuth({
   appName: "Digital Marketing Automation",
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
-  database: prismaAdapter(prisma, {
-    provider: "postgresql",
-  }),
+  database: mongodbAdapter(db),
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: false,
     autoSignIn: false,
   },
   plugins: [
@@ -36,11 +39,13 @@ export const auth = betterAuth({
   advanced: {
     disableOriginCheck: true,
     disableCSRFCheck: true,
+    database: {
+      joins: true,
+    },
   },
   logger: {
     level: "info",
   },
-  experimental: { joins: true },
 })
 
 export type Session = typeof auth.$Infer.Session
