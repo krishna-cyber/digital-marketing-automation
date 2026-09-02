@@ -655,7 +655,6 @@ const DateTimePicker = React.forwardRef<
     return (
       <Popover>
         <PopoverTrigger
-          nativeButton={false}
           render={
             <Button
               variant="outline"
