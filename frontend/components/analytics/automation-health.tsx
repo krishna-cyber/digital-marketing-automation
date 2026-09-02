@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils"
 
+import { api } from "@/lib/api"
 import {
   Card,
   CardAction,
@@ -18,7 +19,16 @@ const stats = [
   { label: "Failed runs", value: "0" },
 ]
 
-const AutomationHealthStatus = ({ className }: { className?: string }) => {
+const AutomationHealthStatus = async ({
+  className,
+}: {
+  className?: string
+}) => {
+  const response = await api.get(`/api/v1/dashboard/automation-health`)
+  const data = response.data?.data as typeof stats
+  if (!data) {
+    return <div className="text-red-500">Error loading automation health</div>
+  }
   return (
     <Card className={className}>
       <CardHeader>
@@ -36,7 +46,7 @@ const AutomationHealthStatus = ({ className }: { className?: string }) => {
       <CardContent>
         {/* Status Rows */}
         <div className="w-full space-y-1 px-4 pb-6">
-          {stats.map((item, index) => (
+          {data.map((item, index) => (
             <div
               key={item.label}
               className={cn(
