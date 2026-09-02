@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod"
 import { DateTimePicker } from "@/components/date-picker"
 import { ContentLifecycleTimeline } from "@/components/examples/content-lifecycle-timeline"
 import { Button } from "@/components/ui/button"
@@ -51,6 +52,8 @@ import {
   XCircle,
 } from "lucide-react"
 import React, { ReactElement } from "react"
+import { Controller, useForm, useWatch } from "react-hook-form"
+import { z } from "zod"
 interface EventDetailsDrawerProps {
   open?: boolean
   setOpen?: (open: boolean) => void
@@ -121,33 +124,61 @@ const status_items: Item[] = [
   },
 ]
 
-const eventDetailsMockData: CalendarEvent = {
-  id: "40e99859-83a4-4782-a4f9-20bb673906c9",
-  topic:
-    "The Future of Enterprise Automation: How Palm Concierge AI is Revolutionizing Customer Experience in 2026",
-  channel: "social",
-  pillar: "Palm Concierge",
-  start: new Date("2026-07-27T16:00:00Z"),
-  end: new Date("2026-07-27T17:00:00Z"),
-  color: "#3186F5",
-  status: "draft",
-  subtopics: [
-    "Discover the AI-driven concierge trends reshaping hospitality in 2026 and beyond",
-    "How Palm Concierge AI knows your customers better than ever before",
-    "Breaking barriers: The fusion of enterprise AI and personal touch",
-  ],
-  keywords: [
-    "Palm Concierge AI",
-    "enterprise automation",
-    "customer experience",
-    "2026 trends",
-    "hospitality AI",
-  ],
-  research_insight:
-    "AI is becoming a major trend in hospitality, with a focus on preemptive customer knowledge.",
-  strapi_entry_id: null,
-  live_url: null,
-}
+const formSchema = z.object({
+  topic: z.string().min(1, "Topic is required"),
+  subtopics: z.array(z.string()).min(1, "At least one subtopic is required"),
+  channel: z.string().min(1, "Channel is required"),
+  pillar: z.string().min(1, "Pillar is required"),
+  start: z.date(),
+  end: z.date(),
+  status: z
+    .enum([
+      "draft",
+      "generating",
+      "ready",
+      "review",
+      "approved",
+      "scheduled",
+      "publishing",
+      "published",
+      "failed",
+      "rejected",
+    ])
+    .default("draft"),
+  color: z.string().min(1, "Color is required"),
+  keywords: z.array(z.string()).optional(),
+  research_insight: z.string().min(1, "Research insight is required"),
+})
+
+type EventDetailsFormValues = z.input<typeof formSchema>
+
+// const eventDetailsMockData: CalendarEvent = {
+//   id: "40e99859-83a4-4782-a4f9-20bb673906c9",
+//   topic:
+//     "The Future of Enterprise Automation: How Palm Concierge AI is Revolutionizing Customer Experience in 2026",
+//   channel: "social",
+//   pillar: "Palm Concierge",
+//   start: new Date("2026-07-27T16:00:00Z"),
+//   end: new Date("2026-07-27T17:00:00Z"),
+//   color: "#3186F5",
+//   status: "draft",
+//   subtopics: [
+//     "Discover the AI-driven concierge trends reshaping hospitality in 2026 and beyond",
+//     "How Palm Concierge AI knows your customers better than ever before",
+//     "Breaking barriers: The fusion of enterprise AI and personal touch",
+//   ],
+//   keywords: [
+//     "Palm Concierge AI",
+//     "enterprise automation",
+//     "customer experience",
+//     "2026 trends",
+//     "hospitality AI",
+//   ],
+//   research_insight:
+//     "AI is becoming a major trend in hospitality, with a focus on preemptive customer knowledge.",
+//   strapi_entry_id: null,
+//   live_url: null,
+// }
 
 const EventDetailsDrawer = ({
   open = false,
@@ -170,6 +201,24 @@ const EventDetailsDrawer = ({
   })
 
   console.log("eventDetails", eventDetails)
+
+  const form = useForm<EventDetailsFormValues>({
+    resolver: zodResolver(formSchema),
+    values: eventDetails?.data
+      ? {
+          topic: eventDetails.data.topic,
+          subtopics: eventDetails.data.subtopics || [],
+          channel: eventDetails.data.channel,
+          pillar: eventDetails.data.pillar,
+          start: eventDetails.data.start,
+          end: eventDetails.data.end,
+          status: eventDetails.data.status,
+          color: eventDetails.data.color,
+          keywords: eventDetails.data.keywords || [],
+          research_insight: eventDetails.data.research_insight,
+        }
+      : undefined,
+  })
 
   const anchor = useComboboxAnchor()
   return (
@@ -197,7 +246,12 @@ const EventDetailsDrawer = ({
           {/* Scrollable content */}
           <div className="-mx-4 no-scrollbar max-h-[70vh] overflow-y-auto px-4">
             {/* hERE display form with event details and disabled section and editable section */}
-            <form id="event-edit-form">
+            <form
+              id="event-edit-form"
+              onSubmit={form.handleSubmit((data) => {
+                console.log("Form submitted", data)
+              })}
+            >
               <FieldGroup>
                 <Field>
                   <FieldLabel htmlFor="event-topic">
@@ -206,8 +260,8 @@ const EventDetailsDrawer = ({
                   <Textarea
                     id="event-topic"
                     disabled
-                    value={eventDetailsMockData.topic}
                     required
+                    {...form.register("topic")}
                   />
                   {/* <FieldDescription>
                     This name will be displayed on your public profile.
@@ -222,10 +276,19 @@ const EventDetailsDrawer = ({
                   <Textarea
                     id="event-sub-topic"
                     disabled
-                    value={eventDetailsMockData.subtopics
+                    required
+                    value={(useWatch({ control: form.control, name: "subtopics" }) ?? [])
                       .map((topic) => `• ${topic}`)
                       .join("\n")}
-                    required
+                    onChange={(e) =>
+                      form.setValue(
+                        "subtopics",
+                        e.target.value
+                          .split("\n")
+                          .map((line) => line.replace(/^•\s*/, ""))
+                          .filter(Boolean),
+                      )
+                    }
                   />
                   {/* <FieldDescription>
                     This name will be displayed on your public profile.
@@ -240,9 +303,9 @@ const EventDetailsDrawer = ({
                     </FieldLabel>
                     <Input
                       id="event-channel"
-                      value={eventDetailsMockData.channel}
                       disabled
                       required
+                      {...form.register("channel")}
                     />
                     {/* <FieldDescription>
                     This name will be displayed on your public profile.
@@ -257,7 +320,7 @@ const EventDetailsDrawer = ({
                       id="event-pillar"
                       required
                       disabled
-                      value={eventDetailsMockData.pillar}
+                      {...form.register("pillar")}
                     />
                     {/* <FieldDescription>
                     This name will be displayed on your public profile.
@@ -271,26 +334,40 @@ const EventDetailsDrawer = ({
                     <FieldLabel htmlFor="event-start">
                       Start <span className="text-destructive">*</span>
                     </FieldLabel>
-                    <DateTimePicker
-                      disabled
-                      locale={enUS}
-                      showOutsideDays
-                      showWeekNumber={false}
-                      weekStartsOn={0}
-                      value={eventDetailsMockData.start}
+                    <Controller
+                      control={form.control}
+                      name="start"
+                      render={({ field }) => (
+                        <DateTimePicker
+                          disabled
+                          locale={enUS}
+                          showOutsideDays
+                          showWeekNumber={false}
+                          weekStartsOn={0}
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      )}
                     />
                   </Field>
                   <Field>
                     <FieldLabel htmlFor="event-end">
                       End <span className="text-destructive">*</span>
                     </FieldLabel>
-                    <DateTimePicker
-                      disabled
-                      locale={enUS}
-                      showOutsideDays
-                      showWeekNumber={false}
-                      weekStartsOn={0}
-                      value={eventDetailsMockData.end}
+                    <Controller
+                      control={form.control}
+                      name="end"
+                      render={({ field }) => (
+                        <DateTimePicker
+                          disabled
+                          locale={enUS}
+                          showOutsideDays
+                          showWeekNumber={false}
+                          weekStartsOn={0}
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      )}
                     />
                   </Field>
                 </FieldGroup>
@@ -299,25 +376,35 @@ const EventDetailsDrawer = ({
                   {/* Status */}
                   <Field className="max-w-xs">
                     <FieldLabel>Status</FieldLabel>
-                    <Select defaultValue={eventDetailsMockData.status}>
-                      <SelectTrigger className="w-50">
-                        <SelectValue placeholder="Select an option" />
-                      </SelectTrigger>
-                      <SelectContent alignItemWithTrigger={true}>
-                        <SelectGroup>
-                          {status_items.slice(1).map((item) => (
-                            <SelectItem
-                              disabled
-                              key={item.value}
-                              value={item.value!}
-                            >
-                              {item.icon}
-                              {item.label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <Controller
+                      control={form.control}
+                      name="status"
+                      render={({ field }) => (
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          disabled
+                        >
+                          <SelectTrigger className="w-50">
+                            <SelectValue placeholder="Select an option" />
+                          </SelectTrigger>
+                          <SelectContent alignItemWithTrigger={true}>
+                            <SelectGroup>
+                              {status_items.slice(1).map((item) => (
+                                <SelectItem
+                                  disabled
+                                  key={item.value}
+                                  value={item.value!}
+                                >
+                                  {item.icon}
+                                  {item.label}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
                   </Field>
                   {/* Color */}
                   <Field>
@@ -328,7 +415,7 @@ const EventDetailsDrawer = ({
                       <div
                         className={`h-8 w-8 cursor-pointer`}
                         style={{
-                          backgroundColor: eventDetailsMockData.color,
+                          backgroundColor: form.watch("color"),
                         }}
                       ></div>
                       {/* <Input {...field} /> */}
@@ -342,48 +429,55 @@ const EventDetailsDrawer = ({
                 {/* keywords */}
                 <Field className="max-w-xs">
                   <FieldLabel htmlFor="event-channel">Keywords</FieldLabel>
-                  <Combobox
-                    multiple
-                    autoHighlight
-                    items={eventDetailsMockData.keywords}
-                    defaultValue={eventDetailsMockData.keywords}
-                    disabled
-                  >
-                    <ComboboxChips ref={anchor}>
-                      <ComboboxValue>
-                        {(values) => (
-                          <>
-                            {values.map((value: string) => (
-                              <ComboboxChip key={value}>{value}</ComboboxChip>
-                            ))}
-                            <ComboboxChipsInput placeholder="Select keywords..." />
-                          </>
-                        )}
-                      </ComboboxValue>
-                    </ComboboxChips>
-                    <ComboboxContent anchor={anchor}>
-                      <ComboboxEmpty>No keywords found.</ComboboxEmpty>
-                      <ComboboxList>
-                        {(item) => (
-                          <ComboboxItem key={item} value={item}>
-                            {item}
-                          </ComboboxItem>
-                        )}
-                      </ComboboxList>
-                    </ComboboxContent>
-                  </Combobox>
+                  <Controller
+                    control={form.control}
+                    name="keywords"
+                    render={({ field }) => (
+                      <Combobox
+                        multiple
+                        autoHighlight
+                        items={field.value || []}
+                        defaultValue={field.value || []}
+                        disabled
+                        onValueChange={field.onChange}
+                      >
+                        <ComboboxChips ref={anchor}>
+                          <ComboboxValue>
+                            {(values) => (
+                              <>
+                                {values.map((value: string) => (
+                                  <ComboboxChip key={value}>{value}</ComboboxChip>
+                                ))}
+                                <ComboboxChipsInput placeholder="Select keywords..." />
+                              </>
+                            )}
+                          </ComboboxValue>
+                        </ComboboxChips>
+                        <ComboboxContent anchor={anchor}>
+                          <ComboboxEmpty>No keywords found.</ComboboxEmpty>
+                          <ComboboxList>
+                            {(item) => (
+                              <ComboboxItem key={item} value={item}>
+                                {item}
+                              </ComboboxItem>
+                            )}
+                          </ComboboxList>
+                        </ComboboxContent>
+                      </Combobox>
+                    )}
+                  />
                 </Field>
                 {/* Research Insight */}
                 <Field>
-                  <FieldLabel htmlFor="event-pillar">
+                  <FieldLabel htmlFor="research-insight">
                     Research Insight:{" "}
                     <span className="text-destructive">*</span>
                   </FieldLabel>
                   <Textarea
-                    id="event-pillar"
+                    id="research-insight"
                     disabled
                     required
-                    value={eventDetailsMockData.research_insight || ""}
+                    {...form.register("research_insight")}
                   />
                 </Field>
               </FieldGroup>
