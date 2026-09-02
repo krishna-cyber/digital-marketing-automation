@@ -409,51 +409,51 @@ const EventDetailsDrawer = ({
                       )}
                     />
                   </Field>
+                  {/* keywords */}
+                  <Field className="max-w-xs">
+                    <FieldLabel htmlFor="event-channel">Keywords</FieldLabel>
+                    <Controller
+                      control={form.control}
+                      name="keywords"
+                      render={({ field }) => (
+                        <Combobox
+                          multiple
+                          autoHighlight
+                          items={field.value || []}
+                          defaultValue={field.value || []}
+                          disabled
+                          onValueChange={field.onChange}
+                        >
+                          <ComboboxChips ref={anchor}>
+                            <ComboboxValue>
+                              {(values) => (
+                                <>
+                                  {values.map((value: string) => (
+                                    <ComboboxChip key={value}>
+                                      {value}
+                                    </ComboboxChip>
+                                  ))}
+                                  <ComboboxChipsInput placeholder="Select keywords..." />
+                                </>
+                              )}
+                            </ComboboxValue>
+                          </ComboboxChips>
+                          <ComboboxContent anchor={anchor}>
+                            <ComboboxEmpty>No keywords found.</ComboboxEmpty>
+                            <ComboboxList>
+                              {(item) => (
+                                <ComboboxItem key={item} value={item}>
+                                  {item}
+                                </ComboboxItem>
+                              )}
+                            </ComboboxList>
+                          </ComboboxContent>
+                        </Combobox>
+                      )}
+                    />
+                  </Field>
                 </FieldGroup>
 
-                {/* keywords */}
-                <Field className="max-w-xs">
-                  <FieldLabel htmlFor="event-channel">Keywords</FieldLabel>
-                  <Controller
-                    control={form.control}
-                    name="keywords"
-                    render={({ field }) => (
-                      <Combobox
-                        multiple
-                        autoHighlight
-                        items={field.value || []}
-                        defaultValue={field.value || []}
-                        disabled
-                        onValueChange={field.onChange}
-                      >
-                        <ComboboxChips ref={anchor}>
-                          <ComboboxValue>
-                            {(values) => (
-                              <>
-                                {values.map((value: string) => (
-                                  <ComboboxChip key={value}>
-                                    {value}
-                                  </ComboboxChip>
-                                ))}
-                                <ComboboxChipsInput placeholder="Select keywords..." />
-                              </>
-                            )}
-                          </ComboboxValue>
-                        </ComboboxChips>
-                        <ComboboxContent anchor={anchor}>
-                          <ComboboxEmpty>No keywords found.</ComboboxEmpty>
-                          <ComboboxList>
-                            {(item) => (
-                              <ComboboxItem key={item} value={item}>
-                                {item}
-                              </ComboboxItem>
-                            )}
-                          </ComboboxList>
-                        </ComboboxContent>
-                      </Combobox>
-                    )}
-                  />
-                </Field>
                 {/* Research Insight */}
                 <Field>
                   <FieldLabel htmlFor="research-insight">
