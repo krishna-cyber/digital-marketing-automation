@@ -9,6 +9,7 @@ import { handleCopyToClipboard } from "@/lib/utils"
 import { CalendarEventStatus, SocialPost } from "@/types/types"
 import { createColumnHelper } from "@tanstack/react-table"
 import { Copy } from "lucide-react"
+import Link from "next/link"
 import { DataTableRowActions } from "./social-data-table-row-actions"
 
 const columnHelper = createColumnHelper<typeof features, SocialPost>()
@@ -91,7 +92,11 @@ export const columns = columnHelper.columns([
       <DataTableColumnHeader column={column} title="Title" />
     ),
     cell: (props) => (
-      <LongText className="max-w-36">{props.getValue()}</LongText>
+      <Link
+        href={`/dashboard/content/edit?contentType=socials&documentId=${props.row.original.documentId}`}
+      >
+        <LongText className="max-w-36">{props.getValue()}</LongText>
+      </Link>
     ),
   }),
   columnHelper.accessor("media_type", {

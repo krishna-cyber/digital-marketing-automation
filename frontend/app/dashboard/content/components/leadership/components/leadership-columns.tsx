@@ -7,6 +7,7 @@ import { handleCopyToClipboard } from "@/lib/utils"
 import { ThoughtLeadershipPost } from "@/types/types"
 import { createColumnHelper } from "@tanstack/react-table"
 import { Copy } from "lucide-react"
+import Link from "next/link"
 import { BadgeColors } from "../../socials/components/social-columns"
 import { DataTableRowActions } from "./leadership-row-actions"
 
@@ -32,7 +33,11 @@ export const columns = columnHelper.columns([
       <DataTableColumnHeader column={column} title="Title" />
     ),
     cell: (props) => (
-      <LongText className="max-w-36">{props.getValue()}</LongText>
+      <Link
+        href={`/dashboard/content/edit?contentType=thought-leaderships&documentId=${props.row.original.documentId}`}
+      >
+        <LongText className="max-w-36">{props.getValue()}</LongText>
+      </Link>
     ),
   }),
   columnHelper.accessor("post_status", {
