@@ -187,11 +187,7 @@ const EventDetailsDrawer = ({
   eventId = null,
 }: EventDetailsDrawerProps) => {
   //usequery to fetch event details based on eventId
-  const {
-    data: eventDetails,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: eventDetails, isLoading } = useQuery({
     queryKey: ["eventDetails", eventId],
     queryFn: async () => {
       const response = await api.get(`/api/v1/calendar/${eventId}`)
@@ -199,8 +195,6 @@ const EventDetailsDrawer = ({
     },
     enabled: !!eventId, // Only run the query if eventId is not null
   })
-
-  console.log("eventDetails", eventDetails)
 
   const form = useForm<EventDetailsFormValues>({
     resolver: zodResolver(formSchema),
@@ -469,9 +463,9 @@ const EventDetailsDrawer = ({
                 </Field>
               </FieldGroup>
               {/* Content lifecycle timeline */}
-              <FieldGroup className="mt-8">
+              {/* <FieldGroup className="mt-8">
                 <ContentLifecycleTimeline />
-              </FieldGroup>
+              </FieldGroup> */}
             </form>
           </div>
 
