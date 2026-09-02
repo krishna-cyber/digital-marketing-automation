@@ -1,4 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod"
 import { DateTimePicker } from "@/components/date-picker"
 import { ContentLifecycleTimeline } from "@/components/examples/content-lifecycle-timeline"
 import { Button } from "@/components/ui/button"
@@ -36,6 +35,7 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { api } from "@/lib/api"
 import { CalendarEvent } from "@/types/types"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useQuery } from "@tanstack/react-query"
 import { enUS } from "date-fns/locale"
 import {
@@ -277,7 +277,10 @@ const EventDetailsDrawer = ({
                     id="event-sub-topic"
                     disabled
                     required
-                    value={(useWatch({ control: form.control, name: "subtopics" }) ?? [])
+                    value={(
+                      useWatch({ control: form.control, name: "subtopics" }) ??
+                      []
+                    )
                       .map((topic) => `• ${topic}`)
                       .join("\n")}
                     onChange={(e) =>
@@ -286,7 +289,7 @@ const EventDetailsDrawer = ({
                         e.target.value
                           .split("\n")
                           .map((line) => line.replace(/^•\s*/, ""))
-                          .filter(Boolean),
+                          .filter(Boolean)
                       )
                     }
                   />
@@ -406,24 +409,6 @@ const EventDetailsDrawer = ({
                       )}
                     />
                   </Field>
-                  {/* Color */}
-                  <Field>
-                    <FieldLabel htmlFor="event-color">
-                      Color <span className="text-destructive">*</span>
-                    </FieldLabel>
-                    <div className="flex w-full flex-row items-center space-x-2 pl-2">
-                      <div
-                        className={`h-8 w-8 cursor-pointer`}
-                        style={{
-                          backgroundColor: form.watch("color"),
-                        }}
-                      ></div>
-                      {/* <Input {...field} /> */}
-                    </div>
-                    {/* <FieldDescription>
-                    This name will be displayed on your public profile.
-                  </FieldDescription> */}
-                  </Field>
                 </FieldGroup>
 
                 {/* keywords */}
@@ -446,7 +431,9 @@ const EventDetailsDrawer = ({
                             {(values) => (
                               <>
                                 {values.map((value: string) => (
-                                  <ComboboxChip key={value}>{value}</ComboboxChip>
+                                  <ComboboxChip key={value}>
+                                    {value}
+                                  </ComboboxChip>
                                 ))}
                                 <ComboboxChipsInput placeholder="Select keywords..." />
                               </>
