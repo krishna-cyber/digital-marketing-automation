@@ -24,11 +24,19 @@ const AutomationHealthStatus = async ({
 }: {
   className?: string
 }) => {
-  const response = await api.get(`/api/v1/dashboard/automation-health`)
-  const data = response.data?.data as typeof stats
+  let data: typeof stats | undefined
+
+  try {
+    const response = await api.get(`/api/v1/dashboard/automation-health`)
+    data = response.data?.data as typeof stats | undefined
+  } catch (error) {
+    return <div className="text-red-500">Error loading automation health</div>
+  }
+
   if (!data) {
     return <div className="text-red-500">Error loading automation health</div>
   }
+
   return (
     <Card className={className}>
       <CardHeader>

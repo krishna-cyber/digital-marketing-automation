@@ -1,4 +1,5 @@
 "use client"
+import { features } from "@/app/dashboard/blogs/blogs-articles/components/table-feature"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -9,16 +10,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { type Table } from "@tanstack/react-table"
+import { RowData, type Table } from "@tanstack/react-table"
 import { SlidersVertical } from "lucide-react"
 
-type DataTableViewOptionsProps<TData> = {
-  table: Table<TData>
+type DataTableViewOptionsProps<TFeatures, TData extends RowData> = {
+  table: Table<typeof features, TData>
 }
 
-export function DataTableViewOptions<TData>({
+export function DataTableViewOptions<TData extends RowData>({
   table,
-}: Readonly<DataTableViewOptionsProps<TData>>) {
+}: Readonly<DataTableViewOptionsProps<typeof features, TData>>) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger

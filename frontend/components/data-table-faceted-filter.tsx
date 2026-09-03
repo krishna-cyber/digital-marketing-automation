@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
+import { features } from "@/app/dashboard/blogs/blogs-articles/components/table-feature"
 import {
   Popover,
   PopoverContent,
@@ -8,7 +9,7 @@ import {
 } from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
-import { type Column } from "@tanstack/react-table"
+import { RowData, type Column } from "@tanstack/react-table"
 import { CheckIcon, CirclePlus } from "lucide-react"
 import * as React from "react"
 import {
@@ -21,8 +22,8 @@ import {
   CommandSeparator,
 } from "./ui/command"
 
-type DataTableFacetedFilterProps<TData, TValue> = {
-  column?: Column<TData, TValue>
+type DataTableFacetedFilterProps<TData extends RowData, TValue> = {
+  column?: Column<typeof features, TData, TValue>
   title?: string
   options: {
     label: string
@@ -31,7 +32,7 @@ type DataTableFacetedFilterProps<TData, TValue> = {
   }[]
 }
 
-export function DataTableFacetedFilter<TData, TValue>({
+export function DataTableFacetedFilter<TData extends RowData, TValue>({
   column,
   title,
   options,

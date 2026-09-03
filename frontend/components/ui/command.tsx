@@ -1,9 +1,8 @@
 "use client"
 
-import * as React from "react"
 import { Command as CommandPrimitive } from "cmdk"
+import * as React from "react"
 
-import { cn } from "@/lib/utils"
 import {
   Dialog,
   DialogContent,
@@ -11,11 +10,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import {
-  InputGroup,
-  InputGroupAddon,
-} from "@/components/ui/input-group"
-import { SearchIcon, CheckIcon } from "lucide-react"
+import { InputGroup, InputGroupAddon } from "@/components/ui/input-group"
+import { cn } from "@/lib/utils"
+import { CheckIcon, SearchIcon } from "lucide-react"
 
 function Command({
   className,
@@ -40,7 +37,8 @@ function CommandDialog({
   className,
   showCloseButton = false,
   ...props
-}: React.ComponentProps<typeof Dialog> & {
+}: Omit<React.ComponentProps<typeof Dialog>, "children" | "className"> & {
+  children?: React.ReactNode
   title?: string
   description?: string
   className?: string
@@ -185,11 +183,11 @@ function CommandShortcut({
 export {
   Command,
   CommandDialog,
-  CommandInput,
-  CommandList,
   CommandEmpty,
   CommandGroup,
+  CommandInput,
   CommandItem,
-  CommandShortcut,
+  CommandList,
   CommandSeparator,
+  CommandShortcut,
 }

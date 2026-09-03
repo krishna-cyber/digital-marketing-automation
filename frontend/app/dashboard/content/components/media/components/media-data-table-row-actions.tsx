@@ -19,10 +19,11 @@ import {
   UserPen,
 } from "lucide-react"
 
+import { features } from "@/app/dashboard/blogs/blogs-articles/components/table-feature"
 import { useMedia } from "./media-provider"
 
 type DataTableRowActionsProps = {
-  row: Row<MediaFile>
+  row: Row<typeof features, MediaFile>
 }
 
 export function DataTableRowActions({

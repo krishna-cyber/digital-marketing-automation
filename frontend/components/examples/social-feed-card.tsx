@@ -264,16 +264,20 @@ export default function SocialFeedCard() {
 
         {/* Footer - Follow Button */}
         <div className="mt-8 flex justify-center">
-          <Button variant="default" className={`gap-2`} asChild>
-            <a
-              href={highlightedPost.url.split("/").slice(0, 3).join("/")}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span>Follow me on {platformInfo.name}</span>
-              {platformInfo.icon}
-            </a>
-          </Button>
+          <Button
+            variant="default"
+            className={`gap-2`}
+            render={
+              <a
+                href={highlightedPost.url.split("/").slice(0, 3).join("/")}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span>Follow me on {platformInfo.name}</span>
+                {platformInfo.icon}
+              </a>
+            }
+          />
         </div>
       </div>
     </div>

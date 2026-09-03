@@ -27,6 +27,12 @@ import DeleteMediaAlert from "./delete-media-alert"
 import { columns } from "./media-columns"
 import MediaEditDialog from "./media-edit-dialog"
 
+type MediaColumnMeta = {
+  className?: string
+  thClassName?: string
+  tdClassName?: string
+}
+
 const searchParams = {
   searchQuery: parseAsString.withDefault(""),
   pageIndex: parseAsInteger.withDefault(0), // 0-indexed, table-internal
@@ -122,8 +128,14 @@ export function MediaTable({
                     colSpan={header.colSpan}
                     className={cn(
                       "bg-background group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
-                      header.column.columnDef.meta?.className,
-                      header.column.columnDef.meta?.thClassName
+                      (
+                        header.column.columnDef.meta as
+                          MediaColumnMeta | undefined
+                      )?.className,
+                      (
+                        header.column.columnDef.meta as
+                          MediaColumnMeta | undefined
+                      )?.thClassName
                     )}
                   >
                     {header.isPlaceholder
@@ -152,8 +164,14 @@ export function MediaTable({
                       key={cell.id}
                       className={cn(
                         "bg-background group-hover/row:bg-muted group-data-[state=selected]/row:bg-muted",
-                        cell.column.columnDef.meta?.className,
-                        cell.column.columnDef.meta?.tdClassName
+                        (
+                          cell.column.columnDef.meta as
+                            MediaColumnMeta | undefined
+                        )?.className,
+                        (
+                          cell.column.columnDef.meta as
+                            MediaColumnMeta | undefined
+                        )?.tdClassName
                       )}
                     >
                       {flexRender(

@@ -51,17 +51,20 @@ export function AiPromptTextArea() {
               Search
             </InputGroupButton>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <InputGroupButton
-                  disabled
-                  variant="ghost"
-                  className="h-7 px-2 text-xs"
-                >
-                  <Kbd className="rounded-sm border border-border">Σ</Kbd>
-                  {model}
-                  <ChevronDownIcon className="ml-1 size-3.5 opacity-60" />
-                </InputGroupButton>
-              </DropdownMenuTrigger>
+              <DropdownMenuTrigger
+                nativeButton={false}
+                render={
+                  <InputGroupButton
+                    disabled
+                    variant="ghost"
+                    className="h-7 px-2 text-xs"
+                  >
+                    <Kbd className="rounded-sm border border-border">Σ</Kbd>
+                    {model}
+                    <ChevronDownIcon className="ml-1 size-3.5 opacity-60" />
+                  </InputGroupButton>
+                }
+              />
               <DropdownMenuContent align="start" className="min-w-32">
                 <DropdownMenuItem onClick={() => setModel("GPT-4o")}>
                   GPT-4o

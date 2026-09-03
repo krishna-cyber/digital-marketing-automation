@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
     "could-losses-fascinating-during.trycloudflare.com",
     "https://192.168.1.92",
   ],
+  output: "standalone",
 }
 
 export default nextConfig

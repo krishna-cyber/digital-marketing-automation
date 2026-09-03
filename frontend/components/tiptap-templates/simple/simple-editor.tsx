@@ -2,7 +2,13 @@
 
 import { Placeholder, Selection } from "@tiptap/extensions"
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
-import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react"
+import {
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+  type Ref,
+} from "react"
 // --- Tiptap Core Extensions ---
 import { Highlight } from "@tiptap/extension-highlight"
 import { Image } from "@tiptap/extension-image"
@@ -72,12 +78,12 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss"
 
-import { AIAutocomplete } from "@/components/tiptap-extension/ai-autocompletion/ai-autocomplete-extension"
-import { useAIAutocomplete } from "@/components/tiptap-extension/ai-autocompletion/use-ai-autocomplete"
+// import { AIAutocomplete } from "@/components/tiptap-extension/ai-autocompletion/ai-autocomplete-extension";
+// import { useAIAutocomplete } from "@/components/tiptap-extension/ai-autocompletion/use-ai-autocomplete";
 import { markDownContent } from "@/components/tiptap-templates/simple/data/content"
-import { AITextBubbleMenu } from "@/components/tiptap-ui/ai-text-bubble-menu"
+// import { AITextBubbleMenu } from "@/components/tiptap-ui/ai-text-bubble-menu"
 import { Markdown } from "@tiptap/markdown"
-import { AIGhostOverlay } from "../ai-ghost-overlay"
+// import { AIGhostOverlay } from "../ai-ghost-overlay"
 // import { AITextBubbleMenu } from "@/components/tiptap-ui/ai-text-bubble-menu"
 // import { AIGhostOverlay } from "../ai-ghost-overlay"
 
@@ -232,16 +238,16 @@ export function SimpleEditor({
         placeholder:
           "Start typing... Press Tab to autocomplete to the next sentence.",
       }),
-      AIAutocomplete.configure({
-        enabled: true,
-        model: "openrouter/auto",
-        maxTokens: 60,
-        temperature: 0.7,
-        promptTemplate: (text: string) =>
-          text.trim().length > 0
-            ? `Continue this text naturally: "${text}"\n\nContinuation:`
-            : "Write an engaging opening sentence.",
-      }),
+      // AIAutocomplete.configure({
+      //   enabled: true,
+      //   model: "openrouter/auto",
+      //   maxTokens: 60,
+      //   temperature: 0.7,
+      //   promptTemplate: (text: string) =>
+      //     text.trim().length > 0
+      //       ? `Continue this text naturally: "${text}"\n\nContinuation:`
+      //       : "Write an engaging opening sentence.",
+      // }),
       HorizontalRule,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       TaskList,
@@ -278,10 +284,10 @@ export function SimpleEditor({
 
   console.log("Editor instance:", editor?.markdown)
 
-  const rect = useCursorVisibility({
-    editor,
-    overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
-  })
+  // const rect = useCursorVisibility({
+  //   editor,
+  //   overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
+  // })
 
   useEffect(() => {
     if (!isMobile && mobileView !== "main") {
@@ -309,13 +315,13 @@ export function SimpleEditor({
       setIsLoading(false)
     }
   }
-  // AI autocomplete hook
-  const { pendingCompletion, ghostPosition, registerHandlers } =
-    useAIAutocomplete({
-      editor: editor,
-      completionProvider: { complete, completion, isLoading },
-      options: { enabled: true },
-    })
+  // // AI autocomplete hook
+  // const { pendingCompletion, ghostPosition, registerHandlers } =
+  //   useAIAutocomplete({
+  //     editor: editor,
+  //     completionProvider: { complete, completion, isLoading },
+  //     options: { enabled: true },
+  //   })
 
   return (
     <div className="simple-editor-wrapper relative">
@@ -325,7 +331,7 @@ export function SimpleEditor({
           style={{
             ...(isMobile
               ? {
-                  bottom: `calc(100% - ${height - rect.y}px)`,
+                  // bottom: `calc(100% - ${height - rect.y}px)`,
                 }
               : {}),
           }}
@@ -350,12 +356,12 @@ export function SimpleEditor({
           className="simple-editor-content prose min-h-50 max-w-none"
         />
         {/* Ghost text overlay */}
-        <AIGhostOverlay
+        {/* <AIGhostOverlay
           text={pendingCompletion}
           position={ghostPosition}
           isDark={false}
-        />
-        {editor && <AITextBubbleMenu editor={editor} />}
+        /> */}
+        {/* {editor && <AITextBubbleMenu editor={editor} />} */}
       </EditorContext.Provider>
     </div>
   )

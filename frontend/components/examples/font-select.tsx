@@ -21,7 +21,7 @@ export function FontSelect() {
         <SelectTrigger className="w-50">
           <SelectValue placeholder="Select font" />
         </SelectTrigger>
-        <SelectContent position=" popper">
+        <SelectContent>
           <SelectGroup>
             {fonts.map((font) => (
               <SelectItem key={font.value} value={font.value}>

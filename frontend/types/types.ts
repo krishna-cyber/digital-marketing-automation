@@ -463,11 +463,3 @@ export interface BlogPostsResponse {
 export interface SingleBlogPostResponse {
   data: BlogPost
 }
-
-declare module "@tanstack/react-table" {
-  interface ColumnMeta<TData extends RowData, TValue> {
-    className?: string
-    thClassName?: string
-    tdClassName?: string
-  }
-}
