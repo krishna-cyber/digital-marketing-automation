@@ -19,9 +19,10 @@ import {
 import { useRouter } from "next/navigation"
 import React from "react"
 import { useBlogs } from "./blogs-provider"
+import { features } from "./table-feature"
 
 type DataTableRowActionsProps = {
-  row: Row<BlogPost>
+  row: Row<typeof features, BlogPost>
 }
 
 const BlogTableRowActions = ({ row }: DataTableRowActionsProps) => {

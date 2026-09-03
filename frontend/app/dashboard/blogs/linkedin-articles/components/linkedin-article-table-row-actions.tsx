@@ -18,10 +18,11 @@ import {
 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import React from "react"
+import { features } from "../../blogs-articles/components/table-feature"
 import { useLinkedInArticles } from "./linkedin-articles-provider"
 
 type DataTableRowActionsProps = {
-  row: Row<LinkedInArticle>
+  row: Row<typeof features, LinkedInArticle>
 }
 
 const LinkedinArticleTableRowActions = ({ row }: DataTableRowActionsProps) => {

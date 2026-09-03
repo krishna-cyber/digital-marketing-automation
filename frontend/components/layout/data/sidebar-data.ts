@@ -82,11 +82,11 @@ export const sidebarData = {
               url: "/dashboard/settings/notifications",
               icon: Bell,
             },
-            {
-              title: "Branding",
-              url: "/dashboard/settings/brand-styles",
-              icon: Palette,
-            },
+            // {
+            //   title: "Branding",
+            //   url: "/dashboard/settings/brand-styles",
+            //   icon: Palette,
+            // },
 
             // {
             //   title: "Channels",

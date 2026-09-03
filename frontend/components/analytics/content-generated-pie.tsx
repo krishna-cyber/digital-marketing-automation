@@ -96,10 +96,7 @@ export function ContentGeneratedPie({ className }: { className?: string }) {
               content={<ChartTooltipContent hideLabel />}
               cursor={false}
             />
-            <ChartLegend
-              content={<ChartLegendContent nameKey="status" />}
-              className="-translate-y-2"
-            />
+            <ChartLegend content={<ChartLegendContent nameKey="status" />} />
             <Pie
               data={chartData}
               dataKey="count"

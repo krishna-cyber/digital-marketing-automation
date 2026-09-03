@@ -27,7 +27,7 @@ const page = async () => {
       </div>
 
       <Separator />
-      {response?.user && <Enable2faSwitch user={response?.user} />}
+      {response?.user && <Enable2faSwitch />}
       <Separator />
       <PasswordUpdateForm />
     </Main>

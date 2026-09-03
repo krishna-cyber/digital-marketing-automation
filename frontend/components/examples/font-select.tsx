@@ -18,10 +18,10 @@ export function FontSelect() {
   return (
     <Field className="max-w-xs">
       <Select defaultValue={fonts[0].value}>
-        <SelectTrigger className="w-[200px]">
+        <SelectTrigger className="w-50">
           <SelectValue placeholder="Select font" />
         </SelectTrigger>
-        <SelectContent position="popper">
+        <SelectContent position=" popper">
           <SelectGroup>
             {fonts.map((font) => (
               <SelectItem key={font.value} value={font.value}>

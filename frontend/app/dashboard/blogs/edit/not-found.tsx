@@ -21,11 +21,15 @@ const NotFound = () => {
         </EmptyHeader>
         <EmptyContent>
           <Button>Try again</Button>
-          <Button variant="link" asChild className="text-muted-foreground">
-            <Link href="/dashboard/blogs">
-              Go to Blogs <ArrowUpRightIcon />
-            </Link>
-          </Button>
+          <Button
+            variant="link"
+            render={
+              <Link href="/dashboard/blogs">
+                Go to Blogs <ArrowUpRightIcon />
+              </Link>
+            }
+            className="text-muted-foreground"
+          />
         </EmptyContent>
       </Empty>
     </div>

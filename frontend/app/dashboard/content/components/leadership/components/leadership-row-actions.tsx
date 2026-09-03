@@ -20,11 +20,12 @@ import {
   UserPen,
 } from "lucide-react"
 
+import { features } from "@/app/dashboard/blogs/blogs-articles/components/table-feature"
 import { useRouter } from "next/navigation"
 import { usePosts } from "./leadership-provider"
 
 type DataTableRowActionsProps = {
-  row: Row<ThoughtLeadershipPost>
+  row: Row<typeof features, ThoughtLeadershipPost>
 }
 
 export function DataTableRowActions({

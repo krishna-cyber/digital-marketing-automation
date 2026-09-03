@@ -246,17 +246,17 @@ export default function SocialFeedCard() {
                 <Button
                   className={`w-full gap-2 ${platformInfo.bgColor} ${platformInfo.color} border ${platformInfo.borderColor} hover:bg-opacity-90`}
                   variant="outline"
-                  asChild
-                >
-                  <a
-                    href={highlightedPost.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {platformInfo.actionText}
-                    <ExternalLink className="h-4 w-4" />
-                  </a>
-                </Button>
+                  render={
+                    <a
+                      href={highlightedPost.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {platformInfo.actionText}
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                  }
+                />
               </div>
             </div>
           </CardContent>

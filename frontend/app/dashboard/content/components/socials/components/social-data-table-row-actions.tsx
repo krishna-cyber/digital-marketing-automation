@@ -21,11 +21,12 @@ import {
   UserPen,
 } from "lucide-react"
 
+import { features } from "@/app/dashboard/blogs/blogs-articles/components/table-feature"
 import { useRouter } from "next/navigation"
 import { useSocials } from "./socials-provider"
 
 type DataTableRowActionsProps = {
-  row: Row<SocialPost>
+  row: Row<typeof features, SocialPost>
 }
 
 export function DataTableRowActions({

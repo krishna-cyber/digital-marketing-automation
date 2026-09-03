@@ -279,11 +279,17 @@ const MediaEditDialog = () => {
         </div>
 
         <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="outline" disabled={updateMediaMutation.isPending}>
-              Close
-            </Button>
-          </DialogClose>
+          <DialogClose
+            nativeButton={false}
+            render={
+              <Button
+                variant="outline"
+                disabled={updateMediaMutation.isPending}
+              >
+                Close
+              </Button>
+            }
+          />
           <Button
             type="submit"
             form="media-edit-form"
