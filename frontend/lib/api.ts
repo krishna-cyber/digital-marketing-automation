@@ -11,7 +11,6 @@ export const strapiRequest = axios.create({
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
   headers: {
-    "ngrok-skip-browser-warning": "true",
     "Content-Type": "application/json",
   },
 })
