@@ -109,7 +109,7 @@ export function AcceptedVsRejectedTrend({ className }: { className?: string }) {
           </LineChart>
         </ChartContainer>
 
-        <div className="mt-4 flex flex-col gap-1 text-center text-sm">
+        {/* <div className="mt-4 flex flex-col gap-1 text-center text-sm">
           <div className="flex items-center justify-center gap-2 leading-none font-medium">
             Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
           </div>
@@ -117,7 +117,7 @@ export function AcceptedVsRejectedTrend({ className }: { className?: string }) {
             Showing the number of posts accepted vs rejected by human reviewers
             across automation runs for the last 6 months.
           </div>
-        </div>
+        </div> */}
       </CardContent>
     </Card>
   )
